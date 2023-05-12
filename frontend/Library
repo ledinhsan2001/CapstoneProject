@@ -1,0 +1,10 @@
+npm i react-router-dom firebase bootstrap --save -dev
+redux react-redux redux-persist
+
+Import persistGate into file main bọc file App/ => Giúp delay render UI cho tới khi store updated.(import { PersistGate } from 'redux-persist/intergration/react'; import {Provider} from 'react-redux'; <Provider><PersistGate><App/></PersistGate></Provider>)
+
+npm i redux-thunk: xử lý async. axios: call api. react-router-dom --save -dev
+npm i react-icons --save -dev
+
+usenavigate dùng để điều hướng
+useCallback giữ cho một hàm không được tạo lại lần nữa, dựa trên mảng các phần phụ thuộc.

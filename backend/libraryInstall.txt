@@ -1,0 +1,5 @@
+npm init
+npm i nodemon express mongoose cors jsonwebtoken bcryptjs routes rand-token dotenv --save -dev
+
+nodemon --exec babel-node: dịch các import export trong 1 file. các loại version của js.
+npm i -D @babel/core @babel/node @babel/preset-env      => -D môi trường dev

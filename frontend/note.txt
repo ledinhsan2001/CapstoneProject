@@ -1,0 +1,6 @@
+store: dành cho redux =>
+components: dành cho component nào tái sử dụng nhiều lần
+containers: chứa các trang . Public: K cần quyền đăng nhập. System: cần author
+services: Call api
+utils: Chứa các file data
+

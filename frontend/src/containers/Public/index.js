@@ -1,0 +1,12 @@
+export { default as Home } from "./Home";
+export { default as Header } from "./Header/Header";
+export { default as Footer } from "./Footer/Footer";
+export { default as Login } from "./Account/Login";
+export { default as Register } from "./Account/Register";
+export { default as Rental } from "./Rental";
+export { default as BuySell } from "./BuySell";
+export { default as Main } from "./Main";
+export { default as ServicePrice } from "./ServicePrice";
+export { default as Blog } from "./Blog";
+export { default as HomePage } from "./HomePage";
+export { default as Search } from "./Search";
