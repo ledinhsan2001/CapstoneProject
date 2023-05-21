@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
 import { Link } from "react-router-dom";
+import { path } from "../../../utils/constant";
+import { imgLogin } from "../../../assets/images";
 
 class Login extends Component {
     constructor() {
@@ -82,30 +84,38 @@ class Login extends Component {
         const { errors } = this.state;
 
         return (
-            <div className="body">
+            <div className="bg-[#ccc6fd]">
                 <div className="container py-5 border-top">
-                    <div className="imgLogin col-md-4 mb-2 mb-md-0">
-                        <object
-                            data="imgLogin.png"
-                            aria-label="Alternative Text"
+                    <div className="border-[1px] border-black border-solid">
+                        <img
+                            src={imgLogin}
+                            aria-label="Img Login"
                             width="450"
                             height="100%"
-                        ></object>
+                        ></img>
                     </div>
-                    <div className="formLR col-md-3 mb-2 mb-md-0">
+                    <div className="formLR border-[1px] border-solid border-black">
                         <div className="mt-5">
-                            <h3>TÀI KHOẢN</h3>
+                            <h3 className="account">TÀI KHOẢN</h3>
                         </div>
-                        <div className="btnLR d-flex justify-content-center py-3">
-                            <Link to={"/login"}>
+                        <div className="flex justify-content-center py-3">
+                            <Link
+                                to={path.LOGIN}
+                                className="border-black border-[1px] border-solid rounded-[10px]"
+                            >
                                 <input
                                     type="button"
                                     id="btnLogin"
                                     defaultValue={"Đăng nhập"}
+                                    className="px-2"
                                 />
                             </Link>
-                            <Link to={"/register"}>
+                            <Link
+                                to={path.REGISTER}
+                                className="border-black border-[1px] border-solid rounded-[10px]"
+                            >
                                 <input
+                                    className="px-2"
                                     type="button"
                                     id="btnRegister"
                                     defaultValue={"Đăng ký"}
@@ -136,6 +146,7 @@ class Login extends Component {
                                     name="phone"
                                     placeholder="Nhập số điện thoại"
                                     onChange={this.handleChange}
+                                    className="border-black border-[1px] border-solid rounded-[10px]"
                                 />
                                 {errors.phone && (
                                     <div
@@ -155,6 +166,7 @@ class Login extends Component {
                                     name="password"
                                     placeholder="**********"
                                     onChange={this.handleChange}
+                                    className="border-black border-[1px] border-solid rounded-[10px]"
                                 />
                                 {errors.password && (
                                     <div
@@ -165,17 +177,24 @@ class Login extends Component {
                                     </div>
                                 )}
                             </div>
-                            <div className="aLogin">
-                                <Link to={"/"}>Quên mật khẩu?</Link>
+                            <div className="ml-[20%] text-center text-sm">
+                                <Link to={"/"} className="text-cyan-500">
+                                    Quên mật khẩu?
+                                </Link>
                             </div>
-                            <div className="btnLR d-flex justify-content-center py-3">
+                            <div className="flex justify-content-center py-3">
                                 <button type="submit" id="submitLogin">
                                     Đăng nhập
                                 </button>
                             </div>
-                            <div className="aRegister">
+                            <div className="text-sm">
                                 Tạo tài khoản{" "}
-                                <Link to={"/register"}>ngay bây giờ?</Link>
+                                <Link
+                                    to={path.REGISTER}
+                                    className="text-cyan-500"
+                                >
+                                    ngay bây giờ?
+                                </Link>
                             </div>
                         </form>
                     </div>

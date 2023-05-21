@@ -1,0 +1,36 @@
+
+.column {
+    float: left;
+    padding: 15px;
+  }
+  
+  /* Cột trái và phải */
+  .column.side {
+  width: 20%;
+  }
+  .column.side.right {
+    width: 16%;
+    background-color: white;
+    }
+  
+  
+  /* Cột giữa */
+  .column.middle {
+    width: 63.4%;
+    /* padding: 15px 0px 15px 0px; */
+    overflow: hidden;
+  }
+  /* Xóa float khác sau các cột */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* Bố cục linh hoạt: ba cột xếp chồng lên nhau thay vì cạnh nhau khi màn hình 
+  có chiều rộng dưới 600px */
+  @media screen and (max-width:600px) {
+    .column {
+      width: 100%;
+    }
+  }

@@ -13,7 +13,10 @@ const realHomeTypeRouter = express.Router();
 
 realHomeTypeRouter.get("/", getAllRHT);
 realHomeTypeRouter.get("/detail", getDetailRHT);
-realHomeTypeRouter.get("/list-re-type-by-trans-type", getAllTypeRHByTransType);
+realHomeTypeRouter.get(
+    "/list-re-type-by-trans-type/:transaction_type_id",
+    getAllTypeRHByTransType
+);
 realHomeTypeRouter.post("/add", addRealHomeType);
 realHomeTypeRouter.put("/put/:id", putRealHomeType);
 realHomeTypeRouter.delete("/delete/:id", deleteRealHomeType);

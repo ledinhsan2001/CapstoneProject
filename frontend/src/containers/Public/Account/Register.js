@@ -3,11 +3,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Register.css";
 import firebaseCF from "../../../config/firebase";
 import { Link } from "react-router-dom";
+import { imgLogin } from "../../../assets/images";
 import {
     getAuth,
     RecaptchaVerifier,
     signInWithPhoneNumber,
 } from "firebase/auth";
+import { path } from "../../../utils/constant";
 
 const auth = getAuth(firebaseCF);
 
@@ -243,35 +245,46 @@ class Register extends Component {
     render() {
         const { errors } = this.state;
         return (
-            <div className="body">
-                <div className="container py-5 border-top">
-                    <div className="imgLogin col-md-4 mb-2 mb-md-0">
-                        <object
-                            data="imgLogin.png"
-                            aria-label="Alternative Text"
+            <div className="bg-[#CCC6FD]">
+                <div className="flex text-center justify-center py-2 border-top">
+                    <div className="border-[1px] border-black border-solid">
+                        <img
+                            src={imgLogin}
+                            aria-label="img Register"
                             width="600"
                             height="100%"
-                        ></object>
+                            className="object-container"
+                        ></img>
                     </div>
-                    <div className="formLR col-md-3 mb-2 mb-md-0">
+                    <div className="border-[1px] border-black border-solid bg-white w-[30%]">
                         <div className="mt-5">
-                            <h3>TÀI KHOẢN</h3>
+                            <h3 className="font-['Irish_Grover'] text-[25px] not-italic">
+                                TÀI KHOẢN
+                            </h3>
                         </div>
                         <div id="recaptcha-container"></div>
-                        <div className="btnLR d-flex justify-content-center py-3">
-                            <Link to={"/login"}>
+                        <div className="flex justify-content-center py-3 ">
+                            <Link
+                                to={path.LOGIN}
+                                className="border-black border-[1px] border-solid rounded-[10px]"
+                            >
                                 <input
                                     type="button"
                                     id="btnLogin"
                                     defaultValue={"Đăng nhập"}
                                     onClick={this.LoginForm}
+                                    className="px-2 "
                                 />
                             </Link>
-                            <Link to={"/register"}>
+                            <Link
+                                to={path.REGISTER}
+                                className="border-black border-[1px] border-solid rounded-[10px]"
+                            >
                                 <input
                                     type="button"
                                     id="btnRegister"
                                     defaultValue={"Đăng ký"}
+                                    className="px-2"
                                 />
                             </Link>
                         </div>
@@ -302,6 +315,7 @@ class Register extends Component {
                                         name="firstname"
                                         id="firstname"
                                         onChange={this.handleChangeRegister}
+                                        className="border-black border-[1px] border-solid rounded-[10px]"
                                     />
                                     {errors.fname && (
                                         <div
@@ -321,6 +335,7 @@ class Register extends Component {
                                         name="lastname"
                                         id="lastname"
                                         onChange={this.handleChangeRegister}
+                                        className="border-black border-[1px] border-solid rounded-[10px]"
                                     />
                                     {errors.lname && (
                                         <div
@@ -335,14 +350,14 @@ class Register extends Component {
                             <div className="formPhone">
                                 <label htmlFor="phone2">Số điện thoại</label>
                                 <br />
-                                <div className="verifyphone row">
+                                <div className="verifyphone row mr-2">
                                     <input
                                         type="text"
                                         id="phone2"
                                         name="phone2"
-                                        className="col"
                                         placeholder="0326687233"
                                         onChange={this.handleChangeRegister}
+                                        className="col border-black border-[1px] border-solid rounded-[10px]"
                                     />
                                     {this.state.buttonVerify ? (
                                         <input
@@ -385,13 +400,13 @@ class Register extends Component {
                                             type="text"
                                             id="otp"
                                             name="otp"
-                                            className="col"
+                                            className="col border-black border-[1px] border-solid rounded-[10px]"
                                             placeholder="Nhập OTP"
                                             onChange={this.handleChangeRegister}
                                         />
                                         <input
                                             type="button"
-                                            className="d-flex justify-content-center col-4"
+                                            className="flex justify-content-center col-4  border-black border-[1px] border-solid rounded-[10px]"
                                             defaultValue={"OTP"}
                                             onClick={this.verifyCode}
                                         />
@@ -408,6 +423,7 @@ class Register extends Component {
                                     name="password2"
                                     placeholder="**********"
                                     onChange={this.handleChangeRegister}
+                                    className="border-black border-[1px] border-solid rounded-[10px]"
                                 />
                                 {errors.password2 && (
                                     <div
@@ -429,6 +445,7 @@ class Register extends Component {
                                     name="repassword"
                                     placeholder="**********"
                                     onChange={this.handleChangeRegister}
+                                    className="border-black border-[1px] border-solid rounded-[10px]"
                                 />
                                 {errors.repassword && (
                                     <div
@@ -439,14 +456,16 @@ class Register extends Component {
                                     </div>
                                 )}
                             </div>
-                            <div className="btnLR d-flex justify-content-center py-3">
+                            <div className="flex justify-content-center py-3">
                                 <button type="submit" id="submitRegister">
                                     Đăng ký
                                 </button>
                             </div>
                             <div className="aRegister">
                                 Bạn đã có tài khoản?
-                                <Link to={"/login"}>Đăng nhập</Link>
+                                <Link to={path.LOGIN} className="text-cyan-500">
+                                    Đăng nhập
+                                </Link>
                             </div>
                         </form>
                     </div>

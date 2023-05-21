@@ -32,7 +32,19 @@ const RealHome = new Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "RealHomeType",
         },
+        transaction_type_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "TransactionType",
+        },
         description: DescriptionSchema,
+        price_id: {
+            type: mongoose.Schema.Types.String,
+            ref: "Price",
+        },
+        area_id: {
+            type: mongoose.Schema.Types.String,
+            ref: "Area",
+        },
         active: {
             type: Boolean,
             default: false,

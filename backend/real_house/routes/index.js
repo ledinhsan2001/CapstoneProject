@@ -7,11 +7,15 @@ const serviceRouter = require("./services");
 const numberDayRouter = require("./numberDayRouter");
 const newsTypeRouter = require("./newsTypeRouter");
 const insertDataDb = require("./insertDataDb");
-// const realHomeRouter = require("./realHomeRouter");
+const priceRouter = require("./priceRouter");
+const areaRouter = require("./areaRouter");
+const realHomeRouter = require("./realHomeRouter");
 const catchError = require("../middlewares/catchErr");
 
 const initRoute = (app) => {
     app.use("/api/insert-data-db", insertDataDb);
+    app.use("/api/get-price", priceRouter);
+    app.use("/api/get-area", areaRouter);
     app.use("/api/user", userRouter);
     app.use("/api/auth", authRouter);
 
@@ -21,7 +25,7 @@ const initRoute = (app) => {
     app.use("/api/admin/number-day", numberDayRouter);
 
     app.use("/api/service", serviceRouter);
-    // app.use("/api/real-home", realHomeRouter);
+    app.use("/api/real-home", realHomeRouter);
 
     app.use(catchError);
 

@@ -4,7 +4,7 @@ const { TransactionType } = require("../models/transactionType");
 const ApiError = require("../utils/ApiError");
 
 const getDetailRHT = catchAsync(async (req, res) => {
-    const { id } = req.body;
+    const { id } = req.params;
     const typeRH = await RealHomeType.find({ _id: id }, { __v: 0 });
     res.status(200).json({ success: true, data: typeRH });
 });
@@ -26,7 +26,7 @@ const getAllRHT = catchAsync(async (req, res) => {
 });
 
 const getAllTypeRHByTransType = catchAsync(async (req, res) => {
-    const { transaction_type_id } = req.body;
+    const { transaction_type_id } = req.params;
     const typerh_by_trans_typess = await RealHomeType.find({}, { __v: 0 });
     const typerh_by_trans_types = typerh_by_trans_typess.filter(
         (item) => item.transaction_type._id == transaction_type_id
@@ -69,7 +69,7 @@ const addRealHomeType = catchAsync(async (req, res) => {
 });
 
 const putRealHomeType = catchAsync(async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.query;
     const { name, transaction_type_id } = req.body;
     const transType = await TransactionType.findOne({
         _id: transaction_type_id,
