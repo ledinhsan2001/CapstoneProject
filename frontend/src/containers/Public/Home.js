@@ -1,103 +1,63 @@
-import React from "react";
+import React, { useEffect } from "react";
 //Outlet đại diện route con cho Route mẹ. Khi có các route lồng nhau
 // import  { Outlet } from "react-router-dom";
 import "./Home.css";
-import Search from "./Search";
+import Search from "./Search/Search";
 import { title } from "../../utils/constant";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { LinkNavigate } from "../components";
-import icons from "../../utils/icons";
-
-const { IoIosArrowForward } = icons;
+import { UrlHomePage } from "./index";
+import List from "./List";
+import { useDispatch, useSelector } from "react-redux";
+import { ItemSidebarMain, NewPost } from "../components/index";
+import * as actions from "../../store/actions";
 
 const Home = () => {
+    const { prices } = useSelector((state) => state.price);
+    const { areas } = useSelector((state) => state.area);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(actions.actionPrices());
+        dispatch(actions.actionAreas());
+        dispatch(actions.newPost());
+        dispatch(actions.realHomeTypes());
+    }, [dispatch]);
+
     return (
-        <div className="row">
+        <div className="row w-full">
             <Search></Search>
 
-            <div className="column middle">
-                <h5
-                    style={{
-                        color: "black",
-                        fontFamily: "auto",
-                        marginTop: "4px",
-                    }}
-                >
+            <div className="column middle bg-[#F5F5F5]">
+                <h5 className="text-black mt-2 text-2xl">
                     <b>{title.HeaderMain}</b>
                 </h5>
-                <div className="column-main">
-                    <div className="column-main-side">
-                        <div className="sale">
-                            <img src="sale.png" alt="sale"></img>
-                            {title.titleSale}
-                        </div>
-                        <div className="btn-sale">
-                            <div className="sale1">
-                                <LinkNavigate
-                                    text="linknavigate"
-                                    icon={<IoIosArrowForward color="red" />}
-                                />
-                                <LinkNavigate
-                                    text="linknavigate"
-                                    icon={<IoIosArrowForward color="red" />}
-                                />
-                                <LinkNavigate
-                                    text="linknavigate"
-                                    icon={<IoIosArrowForward color="red" />}
-                                />
-                                <LinkNavigate
-                                    text="linknavigate"
-                                    icon={<IoIosArrowForward color="red" />}
-                                />
-                                <LinkNavigate
-                                    text="linknavigate"
-                                    icon={<IoIosArrowForward color="red" />}
-                                />
-                            </div>
-                            <div className="sale2">
-                                <LinkNavigate
-                                    text="linknavigate"
-                                    icon={<IoIosArrowForward color="red" />}
-                                />
-                                <LinkNavigate
-                                    text="linknavigate"
-                                    icon={<IoIosArrowForward color="red" />}
-                                />
-                                <LinkNavigate
-                                    text="linknavigate"
-                                    icon={<IoIosArrowForward color="red" />}
-                                />
-                                <LinkNavigate
-                                    text="linknavigate"
-                                    icon={<IoIosArrowForward color="red" />}
-                                />
-                                <LinkNavigate
-                                    text="linknavigate"
-                                    icon={<IoIosArrowForward color="red" />}
-                                />
-                            </div>
-                        </div>
+                <div className="column-main flex">
+                    <UrlHomePage />
+                </div>
+                <div className="main flex justify-evenly mt-3">
+                    <div className="list block bg-[#F5F5F5] w-[67%] overflow-hidden text-ellipsis whitespace-nowrap">
+                        <List />
                     </div>
-                    <div className="column-main-side">
-                        <div className="rental">
-                            <img src="rental.png" alt="sale"></img>
-                            {title.titleRental}
-                        </div>
-                        <div className="btn-rental"></div>
+                    <div className="sidebar mt-5 flex flex-col justify-start items-center w-[28%] bg-[#F5F5F5]">
+                        <ItemSidebarMain
+                            title="Xem theo giá"
+                            data_link={prices}
+                            isDouble="ok"
+                            price="price"
+                            type="gia"
+                            home="home"
+                        />
+                        <ItemSidebarMain
+                            title="Xem theo diện tích"
+                            data_link={areas}
+                            isDouble="ok"
+                            type="dien_tich"
+                        />
                     </div>
                 </div>
             </div>
 
-            <div className="column side">
-                <h2>Column</h2>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Maecenas sit amet pretium urna. Vivamus venenatis velit nec
-                    neque ultricies, eget elementum magna tristique. Quisque
-                    vehicula, risus eget aliquam placerat, purus leo tincidunt
-                    eros, eget luctus quam orci in velit. Praesent scelerisque
-                    tortor sed accumsan convallis.
-                </p>
+            <div className="column side right h-fit">
+                <NewPost />
             </div>
         </div>
     );

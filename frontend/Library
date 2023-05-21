@@ -1,5 +1,6 @@
 npm i react-router-dom firebase bootstrap --save -dev
-redux react-redux redux-persist
+redux react-redux redux-persist  --save -dev
+npm install -D tailwindcss postcss autoprefixer
 
 Import persistGate into file main bọc file App/ => Giúp delay render UI cho tới khi store updated.(import { PersistGate } from 'redux-persist/intergration/react'; import {Provider} from 'react-redux'; <Provider><PersistGate><App/></PersistGate></Provider>)
 
@@ -8,3 +9,6 @@ npm i react-icons --save -dev
 
 usenavigate dùng để điều hướng
 useCallback giữ cho một hàm không được tạo lại lần nữa, dựa trên mảng các phần phụ thuộc.
+
+npm i react-paginate --save -dev
+npm i moment --save -dev để hiện thị theo khoảng cách thời gian

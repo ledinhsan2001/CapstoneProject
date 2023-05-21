@@ -14,3 +14,7 @@ code {
 #root{
   background-color: #D9D9D9;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

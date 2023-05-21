@@ -1,22 +1,36 @@
 import { Link } from "react-router-dom";
-import "./Header.css";
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import { apiGetTransactionType } from "../../../services/transactionType";
+import React, { useEffect } from "react";
 import { formatUniToString } from "../../../utils/constant";
+import {
+    LogoNav,
+    mdi_user,
+    pushnews,
+    registeruser,
+    Login,
+    heart,
+} from "../../../assets/images/index";
+import { useRef } from "react";
+import * as actions from "../../../store/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
+    const { transaction_types } = useSelector(
+        (state) => state.transaction_type
+    );
+
+    const dispatch = useDispatch();
+    var query = window.location.search.substring(1);
+    const headerRef = useRef();
     const navigate = useNavigate();
-    const [transactionType, settransactionType] = useState([]);
+
     useEffect(() => {
-        const fetTransType = async () => {
-            const response = await apiGetTransactionType();
-            if (response.data.success === true) {
-                settransactionType(response.data.data);
-            }
-        };
-        fetTransType();
-    }, []);
+        dispatch(actions.actionTransactionType());
+        headerRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    }, [query, dispatch]);
 
     const logOut = (e) => {
         e.preventDefault();
@@ -25,52 +39,59 @@ const Header = () => {
     };
     const isLoggedIn = window.localStorage.getItem("isLoggedIn");
     return (
-        <div>
-            <header className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-1 mb-1 border-bottom">
-                <div className="col-md-3 mb-2 mb-md-0">
+        <div ref={headerRef}>
+            <header className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-1 mb-1 border-bottom h-[100px] bg-white w-full">
+                <div className="col-md-2 mb-2 mb-md-0">
                     <Link to={"/"}>
                         <img
-                            src="LogoNav.svg"
+                            className="h-[110px]"
+                            src={LogoNav}
                             alt="logo"
                             width="170"
-                            height="100"
                         ></img>
                     </Link>
                 </div>
-                <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                    <li className="nav-link px-2 link-secondary">
-                        <Link to={"/"}>Trang chủ</Link>
+                <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 font-normal">
+                    <li className="nav-link m-2 px-2">
+                        <Link to={"/"}>
+                            <h5 className="hover:font-bold">Trang chủ</h5>
+                        </Link>
                     </li>
-                    {transactionType.length > 0 &&
-                        transactionType.map((item) => {
+                    {transaction_types?.length > 0 &&
+                        transaction_types.map((item) => {
                             return (
                                 <li
                                     key={item._id}
-                                    className="nav-link px-2 link-secondary"
+                                    className="nav-link m-2 px-2"
                                 >
                                     <Link
                                         to={`${formatUniToString(item.name)}`}
                                     >
-                                        {item.name}
+                                        <h5 className="hover:font-bold">
+                                            {item.name}
+                                        </h5>
                                     </Link>
                                 </li>
                             );
                         })}
-                    <li className="nav-link px-2 link-secondary">
-                        <Link to={"/bang-gia-dich-vu"}>Bảng giá dịch vụ</Link>
+                    <li className="nav-link m-2 px-2">
+                        <Link to={"/bang-gia-dich-vu"}>
+                            <h5 className="hover:font-bold">
+                                Bảng giá dịch vụ
+                            </h5>
+                        </Link>
                     </li>
-                    <li className="nav-link px-2 link-secondary">
-                        <Link to={"/blog"}>Blog</Link>
+                    <li className="nav-link m-2 px-2">
+                        <Link to={"/blog"}>
+                            <h5 className="hover:font-bold">Blog</h5>
+                        </Link>
                     </li>
                 </ul>
 
                 {isLoggedIn && (
-                    <div
-                        className="col-md-3 text-end"
-                        style={{ display: "flex" }}
-                    >
-                        <Link to={"/trang-quan-ly"} className="nav-link">
-                            <div className="TagANav">
+                    <div className="col-md-3 text-end flex items-center">
+                        <Link to={"/trang-quan-ly"} className="nav-link m-2">
+                            <div className="TagANav flex justify-item items-center">
                                 <img
                                     src="pageManagement.png"
                                     alt="pageManagement"
@@ -80,10 +101,10 @@ const Header = () => {
                                 Trang quản lý
                             </div>
                         </Link>
-                        <Link to={"/yeu-thich"} className="nav-link">
-                            <div className="TagANav">
+                        <Link to={"/yeu-thich"} className="nav-link m-2 ">
+                            <div className="TagANav flex justify-item items-center">
                                 <img
-                                    src="heart.png"
+                                    src={heart}
                                     alt="heart"
                                     width="30"
                                     height="30"
@@ -91,20 +112,23 @@ const Header = () => {
                                 Yêu thích
                             </div>
                         </Link>
-                        <Link to={"/trang-ca-nhan"} className="nav-link">
-                            <div className="TagUserNav">
+                        <Link
+                            to={"/trang-ca-nhan"}
+                            className="nav-link m-2 flex"
+                        >
+                            <div className="TagUserNav rounded-xl bg-[#D9D9D9] justify-item items-center">
                                 <img
-                                    src="mdi_user.png"
+                                    src={mdi_user}
                                     alt="mdi_user"
                                     width="35"
                                     height="35"
                                 ></img>
                             </div>
                         </Link>
-                        <Link to={"/dang-tin"} className="nav-link">
-                            <div className="pushNew">
+                        <Link to={"/dang-tin"} className="nav-link m-2">
+                            <div className="bg-red-500 text-white rounded-xl pr-2 flex justify-item items-center">
                                 <img
-                                    src="pushnews.png"
+                                    src={pushnews}
                                     alt="post"
                                     width="45"
                                     height="35"
@@ -120,14 +144,11 @@ const Header = () => {
                     </div>
                 )}
                 {!isLoggedIn && (
-                    <div
-                        className="col-md-3 text-end"
-                        style={{ display: "flex" }}
-                    >
-                        <Link to={"/dang-ky"} className="nav-link">
-                            <div className="TagANav">
+                    <div className="col-md-3 text-end flex items-center">
+                        <Link to={"/dang-ky"} className="nav-link m-2">
+                            <div className="TagANav flex justify-item items-center">
                                 <img
-                                    src="registeruser.png"
+                                    src={registeruser}
                                     alt="register"
                                     width="30"
                                     height="30"
@@ -135,10 +156,10 @@ const Header = () => {
                                 Đăng ký
                             </div>
                         </Link>
-                        <Link to={"/dang-nhap"} className="nav-link ">
-                            <div className="TagANav">
+                        <Link to={"/dang-nhap"} className="nav-link m-2">
+                            <div className="TagANav flex justify-item items-center">
                                 <img
-                                    src="Login.png"
+                                    src={Login}
                                     alt="login"
                                     width="30"
                                     height="30"
@@ -146,10 +167,13 @@ const Header = () => {
                                 Đăng nhập
                             </div>
                         </Link>
-                        <Link to={"/dang-nhap"} className="nav-link">
-                            <div className="pushNew">
+                        <Link
+                            to={"/dang-nhap"}
+                            className="nav-link m-2 bg-red text-white rounded-xl pr-2"
+                        >
+                            <div className="bg-red-500 text-white rounded-xl pr-2 flex justify-item items-center">
                                 <img
-                                    src="pushnews.png"
+                                    src={pushnews}
                                     alt="post"
                                     width="45"
                                     height="35"

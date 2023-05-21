@@ -1,33 +1,32 @@
 
 .column {
   float: left;
-  padding: 15px;
+  /* padding: 15px; */
 }
 
 /* Cột trái và phải */
 .column.side {
 width: 20%;
-border:1px solid black;
 background-color: white;
 }
+.column.side.right {
+  width: 16%;
+  background-color: white;
+  }
 
 
 /* Cột giữa */
 .column.middle {
-  margin: 0px 0.5%;
-  border:1px solid black;
-  width: 58%;
-  background-color: white;
+  margin: 0px 0.3%;
+  width: 63.4%;
   padding: 15px 0px 15px 0px;
 }
 .column-main-side{
   width: 100%;
-  border:1px solid black;
   background-color: white;
 }
 .column-main{
-  display: flex;
-  padding: 15px 0px 15px 0px;
+  margin: 15px 0px 15px 0px;
 }
 /* Xóa float khác sau các cột */
 .row:after {
@@ -42,46 +41,4 @@ có chiều rộng dưới 600px */
   .column {
     width: 100%;
   }
-}
-.sale{
-  background-color: #5BBF38;
-  display: flex;
-  font-size: x-large;
-  color: white;
-  justify-content: center;
-  align-items: center;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.rental{
-  background-color: #5326D4;
-  display: flex;
-  font-size: x-large;
-  color: white;
-  justify-content: center;
-  align-items: center;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.column-main-side img {
-  margin: 0px 30px 0px 30px;
-}
-
-.btn-sale .btn-rental {
-  display: flex;
-  border: 1px solid black;
-  width: 50%;    
-  height: 250px;
-
-}
-.sale1{
-  display:inline-block;
-  flex-wrap: wrap;
-  margin-top: 5%;
-}
-.sale2{
-  display:inline-block;
-  flex-wrap: wrap;
 }
