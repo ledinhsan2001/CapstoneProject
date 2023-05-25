@@ -18,12 +18,12 @@ const ItemSidebarMain = ({
     price,
     type,
     home,
-    transaction_type,
+    rental,
 }) => {
     data_link =
-        price && !home && !transaction_type
+        price && !home && !rental
             ? data_link.slice(0, 8)
-            : transaction_type
+            : rental
             ? data_link.slice(8, 16)
             : data_link;
 

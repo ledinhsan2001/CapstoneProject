@@ -50,8 +50,8 @@ class Login extends Component {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    alert(data.message);
                     if (data.error) {
+                        alert(data.error);
                         errors.errsv = data.error;
                         this.setState({
                             errors: errors,
@@ -84,119 +84,126 @@ class Login extends Component {
         const { errors } = this.state;
 
         return (
-            <div className="bg-[#ccc6fd]">
-                <div className="container py-5 border-top">
-                    <div className="border-[1px] border-black border-solid">
-                        <img
-                            src={imgLogin}
-                            aria-label="Img Login"
-                            width="450"
-                            height="100%"
-                        ></img>
-                    </div>
-                    <div className="formLR border-[1px] border-solid border-black">
-                        <div className="mt-5">
-                            <h3 className="account">TÀI KHOẢN</h3>
+            <div className="row w-full">
+                <div className="bg-[#ccc6fd]">
+                    <div className="container py-5 border-top">
+                        <div className="border-[1px] border-black border-solid">
+                            <img
+                                src={imgLogin}
+                                aria-label="Img Login"
+                                width="450"
+                                height="100%"
+                            ></img>
                         </div>
-                        <div className="flex justify-content-center py-3">
-                            <Link
-                                to={path.LOGIN}
-                                className="border-black border-[1px] border-solid rounded-[10px]"
-                            >
-                                <input
-                                    type="button"
-                                    id="btnLogin"
-                                    defaultValue={"Đăng nhập"}
-                                    className="px-2"
-                                />
-                            </Link>
-                            <Link
-                                to={path.REGISTER}
-                                className="border-black border-[1px] border-solid rounded-[10px]"
-                            >
-                                <input
-                                    className="px-2"
-                                    type="button"
-                                    id="btnRegister"
-                                    defaultValue={"Đăng ký"}
-                                />
-                            </Link>
-                        </div>
-
-                        {/* err from server */}
-                        {errors.errsv && (
-                            <div className="formPhone">
-                                <div
-                                    id="validationName"
-                                    className="alert alert-danger"
-                                >
-                                    {errors.errsv}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Form login */}
-                        <form id="formLogin" onSubmit={this.handleSubmitLogin}>
-                            <div className="formPhone">
-                                <label htmlFor="username">Số điện thoại</label>
-                                <br />
-                                <input
-                                    type="text"
-                                    id="phone"
-                                    name="phone"
-                                    placeholder="Nhập số điện thoại"
-                                    onChange={this.handleChange}
-                                    className="border-black border-[1px] border-solid rounded-[10px]"
-                                />
-                                {errors.phone && (
-                                    <div
-                                        id="validationUsername"
-                                        className="alert alert-danger"
-                                    >
-                                        {errors.phone}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="formPhone">
-                                <label htmlFor="password">Mật khẩu</label>
-                                <br />
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    placeholder="**********"
-                                    onChange={this.handleChange}
-                                    className="border-black border-[1px] border-solid rounded-[10px]"
-                                />
-                                {errors.password && (
-                                    <div
-                                        id="validationPassword"
-                                        className="alert alert-danger"
-                                    >
-                                        {errors.password}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="ml-[20%] text-center text-sm">
-                                <Link to={"/"} className="text-cyan-500">
-                                    Quên mật khẩu?
-                                </Link>
+                        <div className="formLR border-[1px] border-solid border-black">
+                            <div className="mt-5">
+                                <h3 className="account">TÀI KHOẢN</h3>
                             </div>
                             <div className="flex justify-content-center py-3">
-                                <button type="submit" id="submitLogin">
-                                    Đăng nhập
-                                </button>
-                            </div>
-                            <div className="text-sm">
-                                Tạo tài khoản{" "}
                                 <Link
-                                    to={path.REGISTER}
-                                    className="text-cyan-500"
+                                    to={`/${path.LOGIN}`}
+                                    className="border-black border-[1px] border-solid rounded-[10px]"
                                 >
-                                    ngay bây giờ?
+                                    <input
+                                        type="button"
+                                        id="btnLogin"
+                                        defaultValue={"Đăng nhập"}
+                                        className="px-2"
+                                    />
+                                </Link>
+                                <Link
+                                    to={`/${path.REGISTER}`}
+                                    className="border-black border-[1px] border-solid rounded-[10px]"
+                                >
+                                    <input
+                                        className="px-2"
+                                        type="button"
+                                        id="btnRegister"
+                                        defaultValue={"Đăng ký"}
+                                    />
                                 </Link>
                             </div>
-                        </form>
+
+                            {/* err from server */}
+                            {errors.errsv && (
+                                <div className="formPhone">
+                                    <div
+                                        id="validationName"
+                                        className="alert alert-danger"
+                                    >
+                                        {errors.errsv}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Form login */}
+                            <form
+                                id="formLogin"
+                                onSubmit={this.handleSubmitLogin}
+                            >
+                                <div className="formPhone">
+                                    <label htmlFor="username">
+                                        Số điện thoại
+                                    </label>
+                                    <br />
+                                    <input
+                                        type="text"
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="Nhập số điện thoại"
+                                        onChange={this.handleChange}
+                                        className="border-black border-[1px] border-solid rounded-[10px]"
+                                    />
+                                    {errors.phone && (
+                                        <div
+                                            id="validationUsername"
+                                            className="alert alert-danger"
+                                        >
+                                            {errors.phone}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="formPhone">
+                                    <label htmlFor="password">Mật khẩu</label>
+                                    <br />
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        placeholder="**********"
+                                        onChange={this.handleChange}
+                                        className="border-black border-[1px] border-solid rounded-[10px]"
+                                    />
+                                    {errors.password && (
+                                        <div
+                                            id="validationPassword"
+                                            className="alert alert-danger"
+                                        >
+                                            {errors.password}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="ml-[20%] text-center text-sm">
+                                    <Link to={"/"} className="text-cyan-500">
+                                        Quên mật khẩu?
+                                    </Link>
+                                </div>
+                                <div className="flex justify-content-center py-3">
+                                    <button type="submit" id="submitLogin">
+                                        Đăng nhập
+                                    </button>
+                                </div>
+                                <div className="text-sm">
+                                    Tạo tài khoản{" "}
+                                    <Link
+                                        to={`/${path.REGISTER}`}
+                                        className="text-cyan-500"
+                                    >
+                                        ngay bây giờ?
+                                    </Link>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

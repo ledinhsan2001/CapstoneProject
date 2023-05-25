@@ -52,48 +52,46 @@ const getNewPost = catchAsync(async (req, res) => {
 });
 
 const getAllLimit = catchAsync(async (req, res) => {
-    const { real_home_type_id, transaction_type_id, page, ...query } =
+    const { page, transaction_type_id, real_home_type_id, price_id, area_id } =
         req.query;
+
+    //search is format arr[[1,2,3]] = object
+    let arr_price;
+    let arr_area;
+    arr_price =
+        typeof price_id === "object"
+            ? (arr_price = price_id[0])
+            : (arr_price = [price_id]);
+    arr_area =
+        typeof area_id === "object"
+            ? (arr_area = area_id[0])
+            : (arr_area = [area_id]);
+
     let page_number = parseInt(page);
     let limit = process.env.LIMIT;
     const results = {};
     let typeRHs;
 
-    if (!page_number) {
-        page_number = 0;
+    // if (!page_number) {
+    //     page_number = 0;
+    // }
+
+    let clause_where = {};
+    if (transaction_type_id) {
+        clause_where["transaction_type_id"] = transaction_type_id;
+    }
+    if (real_home_type_id) {
+        clause_where["real_home_type_id"] = real_home_type_id;
+    }
+    if (price_id) {
+        clause_where["price_id"] = { $in: arr_price };
+    }
+    if (area_id) {
+        clause_where["arr_area"] = { $in: arr_area };
     }
 
-    if (real_home_type_id) {
-        typeRHs = query.price
-            ? await RealHome.find(
-                  { real_home_type_id, price_id: query.price },
-                  { __v: 0 }
-              )
-            : query.area
-            ? await RealHome.find(
-                  { real_home_type_id, area_id: query.area },
-                  { __v: 0 }
-              )
-            : await RealHome.find({ real_home_type_id }, { __v: 0 });
-    } else if (transaction_type_id) {
-        typeRHs = query.price
-            ? await RealHome.find(
-                  { transaction_type_id, price_id: query.price },
-                  { __v: 0 }
-              )
-            : query.area
-            ? await RealHome.find(
-                  { transaction_type_id, area_id: query.area },
-                  { __v: 0 }
-              )
-            : await RealHome.find({ transaction_type_id }, { __v: 0 });
-    } else {
-        typeRHs = query.price
-            ? await RealHome.find({ price_id: query.price }, { __v: 0 })
-            : query.area
-            ? await RealHome.find({ area_id: query.area }, { __v: 0 })
-            : await RealHome.find({}, { __v: 0 });
-    }
+    // console.log(clause_where);
+    typeRHs = await RealHome.find(clause_where, { __v: 0 });
 
     // const limit_data = page_number * limit;
     // .skip(limit_data)

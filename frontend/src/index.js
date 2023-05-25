@@ -6,13 +6,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { Header, Footer } from "./containers/Public/index";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import reduxStore from "./redux";
 import { BrowserRouter } from "react-router-dom";
-
-import { Overview, Contact } from "./containers/components/index";
+import { Header, Footer } from "./containers/Public/index";
 
 const { store, persistor } = reduxStore();
 
@@ -24,8 +22,6 @@ root.render(
             <BrowserRouter>
                 <Header />
                 <App />
-                <Overview />
-                <Contact />
                 <Footer />
             </BrowserRouter>
         </PersistGate>

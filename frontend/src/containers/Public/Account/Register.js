@@ -170,7 +170,6 @@ class Register extends Component {
                                 errors: errors,
                             });
                         } else {
-                            console.log(data);
                             window.location.href = "./login";
                         }
                         document.getElementById("firstname").value = "";
@@ -245,229 +244,238 @@ class Register extends Component {
     render() {
         const { errors } = this.state;
         return (
-            <div className="bg-[#CCC6FD]">
-                <div className="flex text-center justify-center py-2 border-top">
-                    <div className="border-[1px] border-black border-solid">
-                        <img
-                            src={imgLogin}
-                            aria-label="img Register"
-                            width="600"
-                            height="100%"
-                            className="object-container"
-                        ></img>
-                    </div>
-                    <div className="border-[1px] border-black border-solid bg-white w-[30%]">
-                        <div className="mt-5">
-                            <h3 className="font-['Irish_Grover'] text-[25px] not-italic">
-                                TÀI KHOẢN
-                            </h3>
+            <div className="row w-full">
+                <div className="bg-[#CCC6FD]">
+                    <div className="flex text-center justify-center py-2 border-top">
+                        <div className="border-[1px] border-black border-solid">
+                            <img
+                                src={imgLogin}
+                                aria-label="img Register"
+                                width="600"
+                                height="100%"
+                                className="object-container"
+                            ></img>
                         </div>
-                        <div id="recaptcha-container"></div>
-                        <div className="flex justify-content-center py-3 ">
-                            <Link
-                                to={path.LOGIN}
-                                className="border-black border-[1px] border-solid rounded-[10px]"
-                            >
-                                <input
-                                    type="button"
-                                    id="btnLogin"
-                                    defaultValue={"Đăng nhập"}
-                                    onClick={this.LoginForm}
-                                    className="px-2 "
-                                />
-                            </Link>
-                            <Link
-                                to={path.REGISTER}
-                                className="border-black border-[1px] border-solid rounded-[10px]"
-                            >
-                                <input
-                                    type="button"
-                                    id="btnRegister"
-                                    defaultValue={"Đăng ký"}
-                                    className="px-2"
-                                />
-                            </Link>
-                        </div>
-                        {/* err from server */}
-                        {errors.errsv && (
-                            <div className="formPhone">
-                                <div
-                                    id="validationName"
-                                    className="alert alert-danger"
+                        <div className="border-[1px] border-black border-solid bg-white w-[30%]">
+                            <div className="mt-5">
+                                <h3 className="font-['Irish_Grover'] text-[25px] not-italic">
+                                    TÀI KHOẢN
+                                </h3>
+                            </div>
+                            <div id="recaptcha-container"></div>
+                            <div className="flex justify-content-center py-3 ">
+                                <Link
+                                    to={`/${path.LOGIN}`}
+                                    className="border-black border-[1px] border-solid rounded-[10px]"
                                 >
-                                    {errors.errsv}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Form register */}
-                        <form
-                            id="formRegister"
-                            onSubmit={this.handleSubmitRegister}
-                        >
-                            <div className="formPhone row">
-                                <div className="fname col-6">
-                                    <label htmlFor="name">Họ</label>
-                                    <br />
                                     <input
-                                        type="text"
-                                        placeholder="First Name"
-                                        name="firstname"
-                                        id="firstname"
-                                        onChange={this.handleChangeRegister}
-                                        className="border-black border-[1px] border-solid rounded-[10px]"
+                                        type="button"
+                                        id="btnLogin"
+                                        defaultValue={"Đăng nhập"}
+                                        onClick={this.LoginForm}
+                                        className="px-2 "
                                     />
-                                    {errors.fname && (
-                                        <div
-                                            id="validationFName"
-                                            className="alert alert-danger"
-                                        >
-                                            {errors.fname}
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="lname col-6">
-                                    <label htmlFor="name">Tên</label>
-                                    <br />
-                                    <input
-                                        type="text"
-                                        placeholder="Last Name"
-                                        name="lastname"
-                                        id="lastname"
-                                        onChange={this.handleChangeRegister}
-                                        className="border-black border-[1px] border-solid rounded-[10px]"
-                                    />
-                                    {errors.lname && (
-                                        <div
-                                            id="validationLName"
-                                            className="alert alert-danger"
-                                        >
-                                            {errors.lname}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="formPhone">
-                                <label htmlFor="phone2">Số điện thoại</label>
-                                <br />
-                                <div className="verifyphone row mr-2">
-                                    <input
-                                        type="text"
-                                        id="phone2"
-                                        name="phone2"
-                                        placeholder="0326687233"
-                                        onChange={this.handleChangeRegister}
-                                        className="col border-black border-[1px] border-solid rounded-[10px]"
-                                    />
-                                    {this.state.buttonVerify ? (
-                                        <input
-                                            type="button"
-                                            id="btn-verify"
-                                            className="d-flex justify-content-center col-4"
-                                            defaultValue={
-                                                this.state.verified
-                                                    ? "Verified"
-                                                    : "Verify"
-                                            }
-                                            onClick={this.onSignInSubmit}
-                                        />
-                                    ) : null}
-                                </div>
-                                {errors.verify && (
-                                    <div
-                                        id="validationPhone2"
-                                        className="alert alert-danger"
-                                    >
-                                        {errors.verify}
-                                    </div>
-                                )}
-                                {errors.phone2 && (
-                                    <div
-                                        id="validationPhone2"
-                                        className="alert alert-danger"
-                                    >
-                                        {errors.phone2}
-                                    </div>
-                                )}
-                            </div>
-
-                            {this.state.verifyOtp ? (
-                                <div className="formPhone">
-                                    <label htmlFor="otp">Mã OTP</label>
-                                    <br />
-                                    <div className="verifyphone row">
-                                        <input
-                                            type="text"
-                                            id="otp"
-                                            name="otp"
-                                            className="col border-black border-[1px] border-solid rounded-[10px]"
-                                            placeholder="Nhập OTP"
-                                            onChange={this.handleChangeRegister}
-                                        />
-                                        <input
-                                            type="button"
-                                            className="flex justify-content-center col-4  border-black border-[1px] border-solid rounded-[10px]"
-                                            defaultValue={"OTP"}
-                                            onClick={this.verifyCode}
-                                        />
-                                    </div>
-                                </div>
-                            ) : null}
-
-                            <div className="formPhone">
-                                <label htmlFor="password2">Mật khẩu</label>
-                                <br />
-                                <input
-                                    type="password"
-                                    id="password2"
-                                    name="password2"
-                                    placeholder="**********"
-                                    onChange={this.handleChangeRegister}
+                                </Link>
+                                <Link
+                                    to={`/${path.REGISTER}`}
                                     className="border-black border-[1px] border-solid rounded-[10px]"
-                                />
-                                {errors.password2 && (
-                                    <div
-                                        id="validationPassword2"
-                                        className="alert alert-danger"
-                                    >
-                                        {errors.password2}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="formPhone">
-                                <label htmlFor="repassword">
-                                    Nhập lại mật khẩu
-                                </label>
-                                <br />
-                                <input
-                                    type="password"
-                                    id="repassword"
-                                    name="repassword"
-                                    placeholder="**********"
-                                    onChange={this.handleChangeRegister}
-                                    className="border-black border-[1px] border-solid rounded-[10px]"
-                                />
-                                {errors.repassword && (
-                                    <div
-                                        id="validationRePassword"
-                                        className="alert alert-danger"
-                                    >
-                                        {errors.repassword}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="flex justify-content-center py-3">
-                                <button type="submit" id="submitRegister">
-                                    Đăng ký
-                                </button>
-                            </div>
-                            <div className="aRegister">
-                                Bạn đã có tài khoản?
-                                <Link to={path.LOGIN} className="text-cyan-500">
-                                    Đăng nhập
+                                >
+                                    <input
+                                        type="button"
+                                        id="btnRegister"
+                                        defaultValue={"Đăng ký"}
+                                        className="px-2"
+                                    />
                                 </Link>
                             </div>
-                        </form>
+                            {/* err from server */}
+                            {errors.errsv && (
+                                <div className="formPhone">
+                                    <div
+                                        id="validationName"
+                                        className="alert alert-danger"
+                                    >
+                                        {errors.errsv}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Form register */}
+                            <form
+                                id="formRegister"
+                                onSubmit={this.handleSubmitRegister}
+                            >
+                                <div className="formPhone row">
+                                    <div className="fname col-6">
+                                        <label htmlFor="name">Họ</label>
+                                        <br />
+                                        <input
+                                            type="text"
+                                            placeholder="First Name"
+                                            name="firstname"
+                                            id="firstname"
+                                            onChange={this.handleChangeRegister}
+                                            className="border-black border-[1px] border-solid rounded-[10px]"
+                                        />
+                                        {errors.fname && (
+                                            <div
+                                                id="validationFName"
+                                                className="alert alert-danger"
+                                            >
+                                                {errors.fname}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="lname col-6">
+                                        <label htmlFor="name">Tên</label>
+                                        <br />
+                                        <input
+                                            type="text"
+                                            placeholder="Last Name"
+                                            name="lastname"
+                                            id="lastname"
+                                            onChange={this.handleChangeRegister}
+                                            className="border-black border-[1px] border-solid rounded-[10px]"
+                                        />
+                                        {errors.lname && (
+                                            <div
+                                                id="validationLName"
+                                                className="alert alert-danger"
+                                            >
+                                                {errors.lname}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="formPhone">
+                                    <label htmlFor="phone2">
+                                        Số điện thoại
+                                    </label>
+                                    <br />
+                                    <div className="verifyphone row mr-2">
+                                        <input
+                                            type="text"
+                                            id="phone2"
+                                            name="phone2"
+                                            placeholder="0326687233"
+                                            onChange={this.handleChangeRegister}
+                                            className="col border-black border-[1px] border-solid rounded-[10px]"
+                                        />
+                                        {this.state.buttonVerify ? (
+                                            <input
+                                                type="button"
+                                                id="btn-verify"
+                                                className="d-flex justify-content-center col-4"
+                                                defaultValue={
+                                                    this.state.verified
+                                                        ? "Verified"
+                                                        : "Verify"
+                                                }
+                                                onClick={this.onSignInSubmit}
+                                            />
+                                        ) : null}
+                                    </div>
+                                    {errors.verify && (
+                                        <div
+                                            id="validationPhone2"
+                                            className="alert alert-danger"
+                                        >
+                                            {errors.verify}
+                                        </div>
+                                    )}
+                                    {errors.phone2 && (
+                                        <div
+                                            id="validationPhone2"
+                                            className="alert alert-danger"
+                                        >
+                                            {errors.phone2}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {this.state.verifyOtp ? (
+                                    <div className="formPhone">
+                                        <label htmlFor="otp">Mã OTP</label>
+                                        <br />
+                                        <div className="verifyphone row">
+                                            <input
+                                                type="text"
+                                                id="otp"
+                                                name="otp"
+                                                className="col border-black border-[1px] border-solid rounded-[10px]"
+                                                placeholder="Nhập OTP"
+                                                onChange={
+                                                    this.handleChangeRegister
+                                                }
+                                            />
+                                            <input
+                                                type="button"
+                                                className="flex justify-content-center col-4  border-black border-[1px] border-solid rounded-[10px]"
+                                                defaultValue={"OTP"}
+                                                onClick={this.verifyCode}
+                                            />
+                                        </div>
+                                    </div>
+                                ) : null}
+
+                                <div className="formPhone">
+                                    <label htmlFor="password2">Mật khẩu</label>
+                                    <br />
+                                    <input
+                                        type="password"
+                                        id="password2"
+                                        name="password2"
+                                        placeholder="**********"
+                                        onChange={this.handleChangeRegister}
+                                        className="border-black border-[1px] border-solid rounded-[10px]"
+                                    />
+                                    {errors.password2 && (
+                                        <div
+                                            id="validationPassword2"
+                                            className="alert alert-danger"
+                                        >
+                                            {errors.password2}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="formPhone">
+                                    <label htmlFor="repassword">
+                                        Nhập lại mật khẩu
+                                    </label>
+                                    <br />
+                                    <input
+                                        type="password"
+                                        id="repassword"
+                                        name="repassword"
+                                        placeholder="**********"
+                                        onChange={this.handleChangeRegister}
+                                        className="border-black border-[1px] border-solid rounded-[10px]"
+                                    />
+                                    {errors.repassword && (
+                                        <div
+                                            id="validationRePassword"
+                                            className="alert alert-danger"
+                                        >
+                                            {errors.repassword}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="flex justify-content-center py-3">
+                                    <button type="submit" id="submitRegister">
+                                        Đăng ký
+                                    </button>
+                                </div>
+                                <div className="aRegister">
+                                    Bạn đã có tài khoản?
+                                    <Link
+                                        to={`/${path.LOGIN}`}
+                                        className="text-cyan-500"
+                                    >
+                                        Đăng nhập
+                                    </Link>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

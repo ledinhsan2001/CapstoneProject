@@ -38,7 +38,7 @@ const Item = ({
     const [isHoverHeart, setIsHoverHeart] = useState(false);
     return (
         <div className="flex w-[100%] border-t-[2px] border-solid border-orange-400 pt-[10px] pb-[20px] bg-white">
-            <div className="flex w-[40%] float-left w-[330px] h-[310px] whitespace-pre-wrap relative cursor-pointer pr-2">
+            <div className="flex w-[40%] float-left h-[310px] whitespace-pre-wrap relative cursor-pointer pr-2">
                 <img
                     className="object-fit-cover"
                     src={images[0]}

@@ -13,6 +13,7 @@ const Footer = () => {
                             alt="logo"
                             width="170"
                             height="100"
+                            className="hover:drop-shadow-2xl"
                         ></img>
                     </Link>
                     <br></br>

@@ -16,6 +16,7 @@ import { FaToilet } from "react-icons/fa";
 import { ImPhone } from "react-icons/im";
 import { BsImages } from "react-icons/bs";
 import { MdQuestionMark } from "react-icons/md";
+import { GrLinkPrevious } from "react-icons/gr";
 
 const icons = {
     AiOutlineDown,
@@ -36,6 +37,7 @@ const icons = {
     ImPhone,
     BsImages,
     MdQuestionMark,
+    GrLinkPrevious,
 };
 
 export default icons;
