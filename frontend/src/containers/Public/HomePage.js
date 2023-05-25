@@ -1,34 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { title } from "../../../utils/constant";
+import React from "react";
+import { title } from "../../utils/constant";
 import "bootstrap/dist/css/bootstrap.min.css";
-import List from "../List";
+import { UrlHomePage } from "./index";
+import List from "./List";
 import { useSelector } from "react-redux";
-import { ItemSidebarMain } from "../../components/index";
-import { useLocation } from "react-router-dom";
-import { formatUniToString } from "../../../utils/constant";
+import { ItemSidebarMain } from "../components/index";
 
-const Main = () => {
-    const location = useLocation();
+const HomePage = () => {
     const { prices, areas } = useSelector((state) => state.price_area);
-    const [real_home_type_id, setRealHomeTypeId] = useState();
-    const { real_home_types_bs, real_home_types_r } = useSelector(
-        (state) => state.real_home_type
-    );
-
-    useEffect(() => {
-        const real_home_type_sale = real_home_types_bs.find(
-            (item) => `/${formatUniToString(item.name)}` === location.pathname
-        );
-        const real_home_type_rent = real_home_types_r.find(
-            (item) => `/${formatUniToString(item.name)}` === location.pathname
-        );
-        if (real_home_type_sale) {
-            setRealHomeTypeId(real_home_type_sale._id);
-        }
-        if (real_home_type_rent) {
-            setRealHomeTypeId(real_home_type_rent._id);
-        }
-    }, [location, real_home_types_bs, real_home_types_r]);
 
     return (
         <div>
@@ -36,9 +15,12 @@ const Main = () => {
                 <h5 className="text-black mt-2 text-2xl">
                     <b>{title.HeaderMain}</b>
                 </h5>
+                <div className="column-main flex w-[98%]">
+                    <UrlHomePage />
+                </div>
                 <div className="main flex justify-evenly mt-3">
                     <div className="list block bg-[#F5F5F5] w-[67%] overflow-hidden text-ellipsis whitespace-nowrap">
-                        <List real_home_type_id={real_home_type_id} />
+                        <List />
                     </div>
                     <div className="sidebar mt-5 flex flex-col justify-start items-center w-[28%] bg-[#F5F5F5]">
                         <ItemSidebarMain
@@ -62,4 +44,4 @@ const Main = () => {
     );
 };
 
-export default Main;
+export default HomePage;

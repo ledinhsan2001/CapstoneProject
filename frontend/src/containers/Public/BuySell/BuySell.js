@@ -1,10 +1,8 @@
 import React from "react";
-import Search from "../Search/Search";
 import { LinkNavigate } from "../../components";
 import icons from "../../../utils/icons";
-import "./BuySell.css";
 import List from "../List";
-import { ItemSidebarMain, NewPost } from "../../components/index";
+import { ItemSidebarMain } from "../../components/index";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { formatUniToString } from "../../../utils/constant";
@@ -17,8 +15,7 @@ const BuySell = () => {
     const location = useLocation();
     const [transaction_type_id, setTransactionTypeId] = useState();
     const { real_home_types_bs } = useSelector((state) => state.real_home_type);
-    const { prices } = useSelector((state) => state.price);
-    const { areas } = useSelector((state) => state.area);
+    const { prices, areas } = useSelector((state) => state.price_area);
     const { transaction_types } = useSelector(
         (state) => state.transaction_type
     );
@@ -30,11 +27,10 @@ const BuySell = () => {
         if (transaction_type) {
             setTransactionTypeId(transaction_type._id);
         }
-    }, [location]);
+    }, [location, transaction_types]);
     return (
-        <div className="row w-full">
-            <Search></Search>
-            <div className="column middle bg-[#F5F5F5]">
+        <div>
+            <div>
                 <div className="bg-[#F5F5F5]">
                     <h3 className="text-black mt-3 text-2xl">
                         <b>Mua bán bất động sản ưu đãi 2023</b>
@@ -84,10 +80,6 @@ const BuySell = () => {
                         />
                     </div>
                 </div>
-            </div>
-
-            <div className="column side right h-fit">
-                <NewPost />
             </div>
         </div>
     );

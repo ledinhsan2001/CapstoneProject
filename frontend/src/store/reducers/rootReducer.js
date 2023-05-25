@@ -2,7 +2,6 @@ import authReducer from "./authReducer";
 import userReducer from "./userReducer";
 import realHomeReducer from "./realHomeReducer";
 import pricesReducer from "./pricesReducer";
-import areasReducer from "./areasReducer";
 import { combineReducers } from "redux";
 import storage from "redux-persist/lib/storage";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
@@ -28,8 +27,7 @@ const rootReducer = combineReducers({
     real_home: realHomeReducer,
     real_home_type: realHTReducer,
     transaction_type: transactionTypeReducer,
-    price: pricesReducer,
-    area: areasReducer,
+    price_area: pricesReducer,
 });
 
 export default rootReducer;

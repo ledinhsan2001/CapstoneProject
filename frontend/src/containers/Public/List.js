@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { Button } from "../components/Button";
 import { Item } from "../components";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,7 @@ import {
     useLocation,
 } from "react-router-dom";
 
-const List = ({ transaction_type_id, real_home_type_id }) => {
+const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
     const location = useLocation();
     const navigate = useNavigate();
     const [params] = useSearchParams();
@@ -25,32 +25,42 @@ const List = ({ transaction_type_id, real_home_type_id }) => {
     );
     useEffect(() => {
         let page_value = params.get("page");
-        let price = params.get("gia");
-        let area = params.get("dien_tich");
+        let price = params.get("price_id");
+        let area = params.get("area_id");
         let page = page_value ? +page_value - 1 : 0;
         let code = price ? price : area ? area : undefined;
-        let type = price ? "price" : area ? "area" : undefined;
-
-        dispatch(
-            realHomeLimit({
-                real_home_type_id,
-                transaction_type_id,
-                page,
-                [type]: code,
-            })
-        );
-        dispatch(actions.realHomeTypes());
+        let type = price ? "price_id" : area ? "area_id" : undefined;
+        if (arr_search) {
+            arr_search["page"] = page;
+        }
+        arr_search
+            ? dispatch(realHomeLimit(arr_search))
+            : dispatch(
+                  realHomeLimit({
+                      page,
+                      transaction_type_id,
+                      real_home_type_id,
+                      [type]: code,
+                  })
+              );
         setCurrentPage(+page);
-    }, [dispatch, params, real_home_type_id, transaction_type_id]);
+    }, [params, real_home_type_id, transaction_type_id, arr_search]);
 
     function handlePageClick(e) {
-        let price = params.get("gia");
-        let area = params.get("dien_tich");
+        let price = params.get("price_id");
+        let area = params.get("area_id");
 
         let code = price ? price : area ? area : undefined;
-        let type = price ? "gia" : area ? "dien_tich" : undefined;
-
-        type
+        let type = price ? "price_id" : area ? "area_id" : undefined;
+        if (arr_search) {
+            arr_search["page"] = e.selected + 1;
+        }
+        arr_search
+            ? navigate({
+                  pathname: location.pathname,
+                  search: createSearchParams(arr_search).toString(),
+              })
+            : type
             ? navigate({
                   pathname: location.pathname,
                   search: createSearchParams({
@@ -117,7 +127,7 @@ const List = ({ transaction_type_id, real_home_type_id }) => {
                     nextLabel="next >"
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={3}
-                    pageCount={page_count}
+                    pageCount={page_count || 10}
                     previousLabel="< previous"
                     renderOnZeroPageCount={null}
                     marginPagesDisplayed={1}
@@ -135,4 +145,4 @@ const List = ({ transaction_type_id, real_home_type_id }) => {
         </div>
     );
 };
-export default List;
+export default memo(List);

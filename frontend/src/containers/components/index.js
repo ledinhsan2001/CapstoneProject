@@ -7,3 +7,4 @@ export { default as Overview } from "./Overview";
 export { default as Contact } from "./Contact";
 export { default as NewPost } from "./NewPost";
 export { default as ItemSide } from "./ItemSide";
+export { default as SelectSearchForm } from "./SelectSearchForm";
