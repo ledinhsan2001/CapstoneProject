@@ -1,11 +1,11 @@
 import axiosConfig from "../axiosConfig";
 
-export const apiGetTransactionType = () =>
+export const apiGetUser = () =>
     new Promise(async (resolve, reject) => {
         try {
             const response = await axiosConfig({
                 method: "get",
-                url: "/api/admin/transaction-type",
+                url: "/api/user/detail",
             });
             resolve(response);
         } catch (error) {

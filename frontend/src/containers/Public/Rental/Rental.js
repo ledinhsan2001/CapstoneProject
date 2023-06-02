@@ -14,11 +14,10 @@ const { IoIosArrowForward } = icons;
 const BuySell = () => {
     const location = useLocation();
     const [transaction_type_id, setTransactionTypeId] = useState();
-    const { real_home_types_r } = useSelector((state) => state.real_home_type);
-    const { prices, areas } = useSelector((state) => state.price_area);
-    const { transaction_types } = useSelector(
-        (state) => state.transaction_type
+    const { real_home_types_r, transaction_types } = useSelector(
+        (state) => state.real_home
     );
+    const { prices, areas } = useSelector((state) => state.price_area);
 
     useEffect(() => {
         const transaction_type = transaction_types.find(

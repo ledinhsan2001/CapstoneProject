@@ -8,3 +8,7 @@ export { default as Contact } from "./Contact";
 export { default as NewPost } from "./NewPost";
 export { default as ItemSide } from "./ItemSide";
 export { default as SelectSearchForm } from "./SelectSearchForm";
+export { default as SelectCategories } from "./SelectCategories";
+export { default as SelectAddress } from "./SelectAddress";
+export { default as TextAreaDescription } from "./TextAreaDescription";
+export { default as SelectDescription } from "./SelectDescription";

@@ -6,6 +6,7 @@ const DescriptionSchema = new Schema(
         title_description: {
             type: String,
             minLength: [10, "Ít nhất phải 10 kí tự."],
+            maxLength: [200, "Dài nhất phải 200 kí tự."],
             required: [true, "Phải nhập tiêu đề mô tả."],
         },
         short_description: {
@@ -15,16 +16,13 @@ const DescriptionSchema = new Schema(
         },
         content_description: {
             type: String,
+            minLength: [50, "Ít nhất phải 10 kí tự."],
             maxLength: [10000, "Dài nhất 1000 kí tự."],
             required: [true, "Phải nhập nội dung mô tả."],
         },
         price: {
             type: String,
             default: 0,
-        },
-        agree: {
-            type: Boolean,
-            default: false,
         },
         area: {
             type: Number,
@@ -39,10 +37,10 @@ const DescriptionSchema = new Schema(
             type: Number,
             default: 0,
         },
-        published: {
-            type: String,
-            default: "",
-        },
+        // published: {
+        //     type: String, use moment show distance
+        //     default: "",
+        // },
     },
     {
         //auto createdAt, updatedAt

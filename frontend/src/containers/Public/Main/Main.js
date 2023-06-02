@@ -12,7 +12,7 @@ const Main = () => {
     const { prices, areas } = useSelector((state) => state.price_area);
     const [real_home_type_id, setRealHomeTypeId] = useState();
     const { real_home_types_bs, real_home_types_r } = useSelector(
-        (state) => state.real_home_type
+        (state) => state.real_home
     );
 
     useEffect(() => {

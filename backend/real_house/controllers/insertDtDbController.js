@@ -98,6 +98,7 @@ export const insertDtDbController = async (req, res) => {
                 password: hash_password,
                 link_zalo: item.userPost.zalo,
                 roles: [role],
+                refresh_token: "",
             });
             const images = await Image.create({
                 url: JSON.stringify(item.images),

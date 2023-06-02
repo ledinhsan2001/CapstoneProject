@@ -10,6 +10,7 @@ import {
     signInWithPhoneNumber,
 } from "firebase/auth";
 import { path } from "../../../utils/constant";
+import Swal from "sweetalert2";
 
 const auth = getAuth(firebaseCF);
 
@@ -68,7 +69,14 @@ class Register extends Component {
                 window.confirmationResult = confirmationResult;
 
                 //run10
-                alert(`Mã otp đã gửi đến: ${phoneNumber}`);
+                const alert = () => {
+                    Swal.fire(
+                        "OTP!",
+                        `Mã otp đã gửi đến: ${phoneNumber}`,
+                        "success"
+                    );
+                };
+                alert();
                 this.setState({
                     verifyOtp: true,
                 });
@@ -91,7 +99,10 @@ class Register extends Component {
                 this.setState({
                     errors: errors,
                 });
-                alert("Mã OTP thành công!");
+                const alert = () => {
+                    Swal.fire("OTP!", `Xác nhận mã OTP thành công`, "success");
+                };
+                alert();
                 this.setState({
                     verified: true,
                     verifyOtp: false,
@@ -100,7 +111,10 @@ class Register extends Component {
             })
             .catch((error) => {
                 // User couldn't sign in (bad verification code?)
-                alert("Mã OTP không chính xác");
+                const alert = () => {
+                    Swal.fire("OTP!", `Mã OTP không chính xác`, "error");
+                };
+                alert();
                 // ...
             });
     };
@@ -165,12 +179,25 @@ class Register extends Component {
                     .then((res) => res.json())
                     .then((data) => {
                         if (data.error) {
+                            const alert = () => {
+                                Swal.fire("OTP!", data.error, "error");
+                            };
+                            alert();
                             errors.errsv = data.error;
                             this.setState({
                                 errors: errors,
                             });
                         } else {
-                            window.location.href = "./login";
+                            const alert = () => {
+                                Swal.fire(
+                                    "Thành công!",
+                                    "Đăng ký thành công",
+                                    "success"
+                                ).then(() => {
+                                    window.location.href = "./login";
+                                });
+                            };
+                            alert();
                         }
                         document.getElementById("firstname").value = "";
                         document.getElementById("lastname").value = "";
@@ -315,7 +342,7 @@ class Register extends Component {
                                             name="firstname"
                                             id="firstname"
                                             onChange={this.handleChangeRegister}
-                                            className="border-black border-[1px] border-solid rounded-[10px]"
+                                            className="border-black border-[1px] border-solid rounded-[10px] bg-white text-black w-[75%]"
                                         />
                                         {errors.fname && (
                                             <div
@@ -335,7 +362,7 @@ class Register extends Component {
                                             name="lastname"
                                             id="lastname"
                                             onChange={this.handleChangeRegister}
-                                            className="border-black border-[1px] border-solid rounded-[10px]"
+                                            className="border-black border-[1px] border-solid rounded-[10px] bg-white text-black w-[75%]"
                                         />
                                         {errors.lname && (
                                             <div
@@ -359,7 +386,7 @@ class Register extends Component {
                                             name="phone2"
                                             placeholder="0326687233"
                                             onChange={this.handleChangeRegister}
-                                            className="col border-black border-[1px] border-solid rounded-[10px]"
+                                            className="col border-black border-[1px] border-solid rounded-[10px] bg-white text-black w-[75%]"
                                         />
                                         {this.state.buttonVerify ? (
                                             <input
@@ -402,7 +429,7 @@ class Register extends Component {
                                                 type="text"
                                                 id="otp"
                                                 name="otp"
-                                                className="col border-black border-[1px] border-solid rounded-[10px]"
+                                                className="col border-black border-[1px] border-solid rounded-[10px] bg-white text-black w-[75%]"
                                                 placeholder="Nhập OTP"
                                                 onChange={
                                                     this.handleChangeRegister
@@ -427,7 +454,7 @@ class Register extends Component {
                                         name="password2"
                                         placeholder="**********"
                                         onChange={this.handleChangeRegister}
-                                        className="border-black border-[1px] border-solid rounded-[10px]"
+                                        className="border-black border-[1px] border-solid rounded-[10px] bg-white text-black w-[75%]"
                                     />
                                     {errors.password2 && (
                                         <div
@@ -449,7 +476,7 @@ class Register extends Component {
                                         name="repassword"
                                         placeholder="**********"
                                         onChange={this.handleChangeRegister}
-                                        className="border-black border-[1px] border-solid rounded-[10px]"
+                                        className="border-black border-[1px] border-solid rounded-[10px] bg-white text-black w-[75%]"
                                     />
                                     {errors.repassword && (
                                         <div

@@ -17,7 +17,7 @@ input[type='button'], button[type='submit']  {
     background-color: white;
     border-radius: 10px;
 }
-input[type='text'],input[type='password'], input[type='submit']  {
+input[type='submit']  {
     color: black;
     background-color: white;
     border-radius: 8px;

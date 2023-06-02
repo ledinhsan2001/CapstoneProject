@@ -16,12 +16,12 @@ const RealHome = new Schema(
             default: false,
         },
         start_date: {
-            type: Date,
-            default: Date.now(),
+            type: String,
+            default: "",
         },
         end_date: {
-            type: Date,
-            default: Date.now(),
+            type: String,
+            default: "",
         },
         expired: {
             type: Boolean,
@@ -44,6 +44,10 @@ const RealHome = new Schema(
         area_id: {
             type: mongoose.Schema.Types.String,
             ref: "Area",
+        },
+        province_id: {
+            type: mongoose.Schema.Types.String,
+            ref: "Province",
         },
         active: {
             type: Boolean,

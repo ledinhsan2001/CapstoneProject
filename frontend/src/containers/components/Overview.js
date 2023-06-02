@@ -1,23 +1,21 @@
 import React, { memo } from "react";
 import { SellRental, sale, rental, User } from "../../assets/images/index";
 
-const Contact = () => {
+const Overview = () => {
     return (
-        <div className="p-5 w-[100%] flex items-center justify-center">
-            <div className=" flex w-[63%]">
-                <img
-                    src={SellRental}
-                    alt="sellRental"
-                    className="h-[300px] w-[450px] mr-[10%] mt-2"
-                ></img>
+        <div className="items-center mt-5 p-4 w-[100%] flex justify-center">
+            <div className="flex justify-between bg-white w-[60%]">
+                <div className="h-[294px] w-[500px]">
+                    <img src={SellRental} alt="sellRental"></img>
+                </div>
 
-                <div className="flex flex-col items-center ml-2">
+                <div className="flex flex-col items-center ml-2 mt-3 mr-7">
                     <h1 className="font-['Merriweather_Bold'] text-2xl">
                         Bán và cho thuê cùng RealHomes
                     </h1>
                     <h4>Nền tảng giao dịch bất động sản hàng đầu Việt Nam</h4>
-                    <div className="flex items-center mt-3 cursor-pointer">
-                        <div className="flex flex-col m-1 pt-3 items-center bg-white w-[150px] h-[150px]">
+                    <div className="flex items-center mt-3 cursor-pointer justify-around">
+                        <div className="flex flex-col mx-1 pt-2 items-center bg-white w-[150px] h-[150px]">
                             <img
                                 src={User}
                                 alt="user"
@@ -26,7 +24,7 @@ const Contact = () => {
                             <p>50.000+</p>
                             <p>Người dùng</p>
                         </div>
-                        <div className="flex flex-col m-1 pt-3 items-center bg-white w-[150px] h-[150px]">
+                        <div className="flex flex-col mx-1 pt-2 items-center bg-white w-[150px] h-[150px]">
                             <img
                                 src={sale}
                                 alt="sale"
@@ -35,7 +33,7 @@ const Contact = () => {
                             <p>137.351+</p>
                             <p>Bất động sản bán</p>
                         </div>
-                        <div className="flex flex-col m-1 pt-3 items-center bg-white w-[150px] h-[150px]">
+                        <div className="flex flex-col mx-1 pt-2 items-center bg-white w-[150px] h-[150px]">
                             <img
                                 src={rental}
                                 alt="sale"
@@ -46,7 +44,7 @@ const Contact = () => {
                         </div>
                     </div>
                     <button
-                        className=" mt-3 bg-blue-500  text-white rounded-4 hover:bg-blue-300 w-[120px] h-[45px] border-[1px] overflow-hidden text-ellipsis whitespace-nowrap"
+                        className="bg-blue-500  text-white rounded-4 hover:bg-blue-300 w-[120px] h-[45px] border-[1px] overflow-hidden text-ellipsis whitespace-nowrap"
                         type="button"
                     >
                         Bắt đầu ngay
@@ -57,4 +55,4 @@ const Contact = () => {
     );
 };
 
-export default memo(Contact);
+export default memo(Overview);

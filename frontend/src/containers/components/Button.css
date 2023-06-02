@@ -7,7 +7,7 @@
     background-color: #F5F5F5;
 }
 .btn input[type=button]:hover{
-    background-color: rgb(41, 87, 203);
+    background-color: #2957cc;
     color: white;
 } 
 .btn{

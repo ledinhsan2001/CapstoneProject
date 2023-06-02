@@ -10,7 +10,7 @@ const Contact = () => {
                 <img
                     src={contact}
                     alt="contact"
-                    className="w-[400px] h-[300px]"
+                    className="w-[50%] h-auto"
                 ></img>
                 <div className="flex flex-col items-center pt-4 pr-5">
                     <b>

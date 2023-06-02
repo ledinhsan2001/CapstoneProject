@@ -6,8 +6,6 @@ import { combineReducers } from "redux";
 import storage from "redux-persist/lib/storage";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import { persistReducer } from "redux-persist";
-import realHTReducer from "./realHTReducer";
-import transactionTypeReducer from "./transactionTypesReducer";
 
 const commonConfig = {
     storage,
@@ -25,9 +23,8 @@ const rootReducer = combineReducers({
     auth: persistReducer(authConfig, authReducer),
     user: userReducer,
     real_home: realHomeReducer,
-    real_home_type: realHTReducer,
-    transaction_type: transactionTypeReducer,
     price_area: pricesReducer,
+    user: userReducer,
 });
 
 export default rootReducer;

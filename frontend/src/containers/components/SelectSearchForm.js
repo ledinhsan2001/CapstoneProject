@@ -36,6 +36,7 @@ const SelectForm = ({
         if (element) {
             let final_range1 = range2 < range1 ? range2 : range1;
             element.style.left = `${final_range1}%`;
+            //
             let final_range2 = range1 > range2 ? 100 - range1 : 100 - range2;
             element.style.right = `${final_range2}%`;
         }
@@ -69,8 +70,11 @@ const SelectForm = ({
             : Math.floor((percent / 90) * 100);
     };
 
+    //Click select fast
     const handPrice = (code, value) => {
         setActiveEle(code);
+
+        //arr number
         let arrRange =
             name === "price" ? getNumbersPrice(value) : getNumbersArea(value);
         if (arrRange.length === 1) {
@@ -96,6 +100,7 @@ const SelectForm = ({
     const beforeSubmit = (e) => {
         let min = range1 <= range2 ? range1 : range2;
         let max = range1 <= range2 ? range2 : range1;
+        //convert percent to value max min
         let range_minmax = [FormatPercent(min), FormatPercent(max)];
         let arrType =
             name === "price"
@@ -135,7 +140,7 @@ const SelectForm = ({
                 e.stopPropagation();
                 setIsShowForm(false);
             }}
-            className="fixed left-0 bottom-0 right-0 top-0 z-20 bg-overlay-70 flex justify-center items-center"
+            className="fixed z-50 left-0 bottom-0 right-0 top-0 bg-overlay-70 flex justify-center items-center"
         >
             <div
                 className="w-1/3 bg-white rounded-md mt-[-15%]"

@@ -3,7 +3,9 @@ const cors = require("cors");
 const db = require("./config/connectDB");
 require("dotenv").config();
 import initRoute from "./real_house/routes";
-
+import { FormatDate } from "./real_house/utils/FormatDate";
+import moment from "moment";
+import "moment/locale/vi";
 const app = express();
 
 // import area from "./real_house/models/area";
@@ -32,12 +34,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // route
-app.get("/", (req, res) => {
-    res.json({ message: "Homepage!" });
-});
-// app.get('/api/user', [authJwt.verifyToken] ,(req, res) => {
-//     res.json({data: req.userId})
+// app.get("/", (req, res) => {
+//     res.json({ message: "Homepage!" });
 // });
+// app.get("/api/user", [authJwt.verifyToken], (req, res) => {
+//     res.json({ data: req.userId });
+// });
+
 initRoute(app);
 
 // catch error từ các đường dẫn trên
