@@ -50,7 +50,7 @@ const ItemSidebarMain = ({
                     return (
                         <Link
                             to={`/${formatUniToString(item.name)}`}
-                            className="flex items-center m-3 hover:text-orange-400 cursor-pointer border-b border-gray-300 border-dashed text-sm"
+                            className="flex items-center m-3 hover:text-orange-400 cursor-pointer border-b border-gray-300 border-dashed text-sm hover:translate-x-2"
                             key={item._id}
                         >
                             <IoIosArrowForward
@@ -71,7 +71,7 @@ const ItemSidebarMain = ({
                             return (
                                 <div
                                     onClick={() => handleFilter(item._id)}
-                                    className="flex items-center my-2 hover:text-orange-400 cursor-pointer border-b border-gray-300 border-dashed text-xs text-start overflow-hidden textflow-ellipsis whitespace-pre-line w-[47%] pb-1"
+                                    className="flex items-center my-2 hover:text-orange-400 cursor-pointer border-b border-gray-300 border-dashed text-xs text-start overflow-hidden textflow-ellipsis whitespace-pre-line w-[47%] pb-1 hover:translate-x-3"
                                     key={item._id}
                                 >
                                     <IoIosArrowForward
@@ -93,7 +93,7 @@ const ItemSidebarMain = ({
                                 <div
                                     onClick={() => handleFilter(item._id)}
                                     key={item._id}
-                                    className="flex items-center my-2 hover:text-orange-400 cursor-pointer border-b border-gray-300 border-dashed text-xs text-start overflow-hidden textflow-ellipsis whitespace-pre-line w-[47%] pb-1"
+                                    className="flex items-center my-2 hover:text-orange-400 cursor-pointer border-b border-gray-300 border-dashed text-xs text-start overflow-hidden textflow-ellipsis whitespace-pre-line w-[47%] pb-1 hover:translate-x-3"
                                 >
                                     <IoIosArrowForward
                                         size={15}

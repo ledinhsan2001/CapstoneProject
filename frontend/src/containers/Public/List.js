@@ -3,7 +3,6 @@ import { Button } from "../components/Button";
 import { Item } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { realHomeLimit } from "../../store/actions/realHome";
-import * as actions from "../../store/actions";
 import ReactPaginate from "react-paginate";
 import {
     useNavigate,
@@ -120,28 +119,30 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
                         );
                     })}
             </div>
-            <div className="mt-2 w-[100%]">
-                <ReactPaginate
-                    className=""
-                    breakLabel="..."
-                    nextLabel="next >"
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={3}
-                    pageCount={page_count || 10}
-                    previousLabel="< previous"
-                    renderOnZeroPageCount={null}
-                    marginPagesDisplayed={1}
-                    containerClassName="pagination justify-content-center"
-                    pageClassName="page-item"
-                    pageLinkClassName="page-link"
-                    previousClassName="page-item"
-                    previousLinkClassName="page-link"
-                    nextClassName="page-item"
-                    nextLinkClassName="page-link"
-                    activeClassName="active"
-                    forcePage={currentPage}
-                />
-            </div>
+            {real_homes.length > 0 && (
+                <div className="mt-2 w-[100%]">
+                    <ReactPaginate
+                        className=""
+                        breakLabel="..."
+                        nextLabel="next >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={3}
+                        pageCount={page_count}
+                        previousLabel="< previous"
+                        renderOnZeroPageCount={null}
+                        marginPagesDisplayed={1}
+                        containerClassName="pagination justify-content-center"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        previousClassName="page-item"
+                        previousLinkClassName="page-link"
+                        nextClassName="page-item"
+                        nextLinkClassName="page-link"
+                        activeClassName="active"
+                        forcePage={currentPage}
+                    />
+                </div>
+            )}
         </div>
     );
 };

@@ -1,4 +1,4 @@
-npm i react-router-dom firebase bootstrap --save -dev
+npm i react-router-dom firebase bootstrap sweetalert2 --save -dev
 redux react-redux redux-persist  --save -dev
 npm install -D tailwindcss postcss autoprefixer
 
@@ -12,3 +12,4 @@ useCallback giữ cho một hàm không được tạo lại lần nữa, dựa 
 
 npm i react-paginate --save -dev
 npm i moment --save -dev để hiện thị theo khoảng cách thời gian
+npm install react-loader-spinner --save   loading

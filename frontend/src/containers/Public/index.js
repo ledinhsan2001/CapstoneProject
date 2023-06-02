@@ -10,7 +10,6 @@ export { default as Blog } from "./Blog";
 export { default as Main } from "./Main/Main";
 export { default as Search } from "./Search/Search";
 export { default as UrlHomePage } from "./UrlHomePage";
-export { default as Sidebar } from "./Sidebar";
 export { default as List } from "./List";
 export { default as DetailRealHome } from "./DetailRealHome";
 export { default as DataSearch } from "./DataSearch/DataSearch";

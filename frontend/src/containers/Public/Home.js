@@ -6,21 +6,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useDispatch } from "react-redux";
 import { NewPost } from "../components/index";
 import * as actions from "../../store/actions";
-import { Search } from "./index";
+import { Footer, Header, Search } from "./index";
 import { Contact, Overview } from "../components/index";
 
-const isLoggedIn = window.localStorage.getItem("isLoggedIn");
-const refreshToken = window.localStorage.getItem("refreshToken");
-const token = window.localStorage.getItem("token");
-
 const Home = () => {
-    useEffect(() => {
-        console.log(isLoggedIn);
-        console.log(refreshToken);
-        console.log(token);
-    }, [isLoggedIn, refreshToken, token]);
-
     const dispatch = useDispatch();
+
+    const isLoggedIn = window.localStorage.getItem("isLoggedIn");
+    const refreshToken = window.localStorage.getItem("refreshToken");
+    const token = window.localStorage.getItem("token");
+
     useEffect(() => {
         dispatch(actions.actionPrices());
         dispatch(actions.actionAreas());
@@ -30,6 +25,7 @@ const Home = () => {
 
     return (
         <div className="row w-full">
+            <Header />
             <Search />
             <div className="column middle bg-[#F5F5F5]">
                 <Outlet />
@@ -41,6 +37,7 @@ const Home = () => {
 
             <Overview />
             <Contact />
+            <Footer />
         </div>
     );
 };

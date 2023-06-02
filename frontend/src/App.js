@@ -15,10 +15,11 @@ import {
     DataSearch,
     HomePage,
 } from "./containers/Public/index";
+import { Private, CreatePost, ManagePost } from "./containers/Private";
 
 function App() {
     return (
-        <div className="App">
+        <div className="App overflow-hidden w-screen">
             <div className="auth-wrapper">
                 <div className="auth-inner flex">
                     <Routes>
@@ -154,6 +155,33 @@ function App() {
                                 element={
                                     <Main content={path.RENTAL_WHOLE_HOUSE} />
                                 }
+                            />
+                        </Route>
+                        {/*  */}
+                        <Route path={path.PRIVATE} element={<Private />}>
+                            <Route
+                                path={path.CREATE_POST}
+                                element={<CreatePost />}
+                            />
+                            <Route
+                                path={path.POST_MANAGEMENT}
+                                element={<ManagePost />}
+                            />
+                            <Route
+                                path={path.EDIT_INFOR}
+                                element={<CreatePost />}
+                            />
+                            <Route
+                                path={path.HISTORY_PAYMENT}
+                                element={<CreatePost />}
+                            />
+                            <Route
+                                path={path.SAVED_POST}
+                                element={<CreatePost />}
+                            />
+                            <Route
+                                path={path.MANAGEMENT_PAGE}
+                                element={<CreatePost />}
                             />
                         </Route>
                     </Routes>

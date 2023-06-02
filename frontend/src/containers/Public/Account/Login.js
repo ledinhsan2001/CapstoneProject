@@ -4,6 +4,7 @@ import "./Login.css";
 import { Link } from "react-router-dom";
 import { path } from "../../../utils/constant";
 import { imgLogin } from "../../../assets/images";
+import Swal from "sweetalert2";
 
 class Login extends Component {
     constructor() {
@@ -51,20 +52,32 @@ class Login extends Component {
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.error) {
-                        alert(data.error);
+                        const alert = () => {
+                            Swal.fire("Lỗi!", data.error, "error");
+                        };
+                        alert();
                         errors.errsv = data.error;
                         this.setState({
                             errors: errors,
                         });
                     } else {
-                        //giữ trạng thái loggin khi bật tab mới
-                        window.localStorage.setItem("isLoggedIn", true);
-                        window.localStorage.setItem("token", data.accessToken);
-                        window.localStorage.setItem(
-                            "refreshToken",
-                            data.refreshToken
-                        );
-                        window.location.href = "/";
+                        Swal.fire(
+                            "Thành công!",
+                            "Đăng nhập thành công",
+                            "success"
+                        ).then(() => {
+                            //giữ trạng thái loggin khi bật tab mới
+                            window.localStorage.setItem("isLoggedIn", true);
+                            window.localStorage.setItem(
+                                "token",
+                                data.accessToken
+                            );
+                            window.localStorage.setItem(
+                                "refreshToken",
+                                data.refreshToken
+                            );
+                            window.location.href = "/";
+                        });
                     }
                     document.getElementById("phone").value = "";
                     document.getElementById("password").value = "";
@@ -152,7 +165,7 @@ class Login extends Component {
                                         name="phone"
                                         placeholder="Nhập số điện thoại"
                                         onChange={this.handleChange}
-                                        className="border-black border-[1px] border-solid rounded-[10px]"
+                                        className="border-black border-[1px] border-solid rounded-[10px] bg-white text-black w-[75%]"
                                     />
                                     {errors.phone && (
                                         <div
@@ -172,7 +185,7 @@ class Login extends Component {
                                         name="password"
                                         placeholder="**********"
                                         onChange={this.handleChange}
-                                        className="border-black border-[1px] border-solid rounded-[10px]"
+                                        className="border-black border-[1px] border-solid rounded-[10px] bg-white text-black w-[75%]"
                                     />
                                     {errors.password && (
                                         <div

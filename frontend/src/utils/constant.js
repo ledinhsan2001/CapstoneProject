@@ -10,6 +10,15 @@ export const path = {
     DETAIL_REALHOMES__TITLE_ID: "chi-tiet/:title/:id",
     SEARCH: "tim-kiem",
 
+    PRIVATE: "/rieng-tu/*",
+    CREATE_POST: "dang-tin",
+    SAVED_POST: "tin-dang-da-luu",
+    MANAGEMENT_PAGE: "trang-quan-ly",
+    POST_MANAGEMENT: "quan-ly-tin-dang",
+    EDIT_INFOR: "sua-thong-tin-ca-nhang",
+    INFOR: "trang-ca-nhan",
+    HISTORY_PAYMENT: "lich-su-thanh-toan",
+
     SELL_APARTMENTS: "ban-can-ho",
     SELL_VILLA: "ban-biet-thu",
     SELL_FRONT_HOMES: "ban-nha-mat-tien",
@@ -50,6 +59,13 @@ export const formatUniToString = (str) => {
         .join("-");
 };
 
+export const GetNummberFromString = (string) => {
+    let number = +string.replace(/[^0-9]/g, "");
+    if (number) {
+        return number.toString().slice(0, 6);
+    }
+};
+
 export const getNumbersPrice = (string) =>
     string.split(" ").filter((item) => +item);
 export const getNumbersArea = (string) =>
@@ -58,6 +74,7 @@ export const getNumbersArea = (string) =>
         .map((item) => item.match(/\d+/))
         .filter((item) => item !== null);
 
+//Search
 export const getCodePrice = (arrType) => {
     return arrType.map((item) => {
         let arr = getNumbersPrice(item.name);
@@ -129,4 +146,12 @@ export const getCodeRangeArea = (range_maxmin, areas) => {
             (item.min >= range_maxmin[0] && item.min < range_maxmin[1]) ||
             (item.max > range_maxmin[0] && item.min < range_maxmin[1])
     );
+};
+
+// create Post
+export const FormatGetNummber = (string) => {
+    let number = +string.match(/\d+/);
+    if (number) {
+        return number;
+    }
 };

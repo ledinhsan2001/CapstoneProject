@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { formatUniToString } from "../../utils/constant";
-// import "./LinkNavigate.css";
 
 const LinkNavigate = ({ text, icon, url, className }) => {
     return (

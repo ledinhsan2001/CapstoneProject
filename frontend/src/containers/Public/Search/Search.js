@@ -24,12 +24,9 @@ const Search = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { prices, areas } = useSelector((state) => state.price_area);
-    const { real_home_types_bs, real_home_types_r } = useSelector(
-        (state) => state.real_home_type
-    );
-    const { transaction_types } = useSelector(
-        (state) => state.transaction_type
-    );
+    const { real_home_types_bs, real_home_types_r, transaction_types } =
+        useSelector((state) => state.real_home);
+
     const [isShowForm, setIsShowForm] = useState(false);
     const [content, setContent] = useState([]);
     const [text, setText] = useState("");
@@ -65,16 +62,16 @@ const Search = () => {
     );
 
     const submitSearch = () => {
-        //get cac id from search
+        //get cac id from search(name and name_id)
         const arr_search = Object.entries(queries).filter((item) =>
             item[0].includes("_id")
         );
         let arr_search_id = {};
         let drop_id_null = arr_search.filter((item) => item[1] !== null);
-        console.log(drop_id_null);
+        // [] => {}
         drop_id_null.map((item) => (arr_search_id[item[0]] = item[1]));
 
-        //get cac name from search
+        //get cac name from search to show title page search data
         let title_search = "";
         let obj_search = {};
         const arr_search_name = Object.entries(queries).filter(
@@ -99,12 +96,12 @@ const Search = () => {
                 title_search += `${obj_search[i]}, `;
             }
         } else {
+            // only have price, area, province
             title_search = "Bất động sản ";
             for (let i in obj_search) {
                 title_search += `${obj_search[i]}, `;
             }
         }
-        //Gộp main và searchdata
 
         navigate(
             {
@@ -117,15 +114,9 @@ const Search = () => {
 
     return (
         <>
-            <div className="search flex flex-col gap-3 w-[20%] max-h-[470px] bg-white items-center justify-center">
+            <div className="search flex flex-col gap-3 w-[19.3%] max-h-[470px] bg-white items-center justify-center">
                 <div>
-                    <h4
-                        style={{
-                            color: "blue",
-                            fontFamily: "inherit",
-                            marginTop: "4px",
-                        }}
-                    >
+                    <h4 className="text-blue-700 font-['inherit'] mt-[4px]">
                         <b>{title.HeaderSearch}</b>
                     </h4>
                 </div>
@@ -176,13 +167,13 @@ const Search = () => {
                             handleForm(
                                 "Khu vuc",
                                 "--- Khu vực ---",
-                                "district"
+                                "province"
                             );
                         }}
                     >
                         <SearchItem
                             beforeIcon={<BiMap />}
-                            text={queries.district}
+                            text={queries.province}
                             textDefault="--- Khu vực ---"
                             icon={<AiOutlineDown />}
                         />

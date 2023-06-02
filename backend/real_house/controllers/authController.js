@@ -1,11 +1,10 @@
 const { User } = require("../models/user");
 const Role = require("../models/role");
-const secret = require("../settings");
 var bcrypt = require("bcryptjs");
 const Token = require("../token/gendecToken");
 const randToken = require("rand-token");
 const catchAsync = require("../middlewares/catchAsync");
-const ApiError = require("../utils/ApiError");
+require("dotenv").config();
 
 const loginController = async (req, res) => {
     const { phone, password } = req.body;
@@ -19,14 +18,16 @@ const loginController = async (req, res) => {
             };
             const accessToken = await Token.generateToken(
                 dataForAccessToken,
-                secret.secret,
-                secret.expiresIn
+                process.env.SECRET_KEY,
+                process.env.EXPIRES_IN
             );
+
             if (!accessToken) {
                 return res.status(401).send({
                     error: "Đăng nhập không thành công, vui lòng thử lại.",
                 });
             }
+
             const refreshToken = randToken.generate(50); // tạo 1 refresh token ngẫu nhiên
             if (!refreshToken) {
                 return res.status(401).send({
@@ -35,20 +36,29 @@ const loginController = async (req, res) => {
             }
 
             // Nếu user này chưa có refresh token thì lưu refresh token đó vào database
-            await Token.updateRefreshToken(user.phone, refreshToken);
-
-            const roleId = user.roles[0];
-            const nameRole = await Role.findById({ _id: roleId });
-            res.status(200).json({
-                message: "Đăng nhập thành công.",
-                id: user._id,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                phone: user.phone,
-                roles: ["ROLE_" + nameRole.name.toUpperCase()],
-                accessToken: accessToken,
-                refreshToken: refreshToken,
-            });
+            const update_ref_token = await Token.updateRefreshToken(
+                user.phone,
+                refreshToken
+            );
+            if (update_ref_token) {
+                const roleId = user.roles[0];
+                const nameRole = await Role.findById({ _id: roleId });
+                return res.status(200).json({
+                    message: "Đăng nhập thành công.",
+                    id: user._id,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    phone: user.phone,
+                    roles: ["ROLE_" + nameRole.name.toUpperCase()],
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
+                });
+            } else {
+                return res.status(400).json({
+                    accessToken: null,
+                    error: "Cập nhật refresh token lỗi!",
+                });
+            }
         } else {
             return res
                 .status(400)
@@ -61,8 +71,8 @@ const loginController = async (req, res) => {
 
 const registerController = catchAsync(async (req, res) => {
     const { first_name, last_name, phone, password } = req.body;
-    const existUsername = await User.findOne({ phone: phone });
-    if (existUsername == 0) {
+    const exist_phone = await User.findOne({ phone: phone });
+    if (!exist_phone) {
         const user = new User({
             first_name: first_name,
             last_name: last_name,
@@ -76,7 +86,7 @@ const registerController = catchAsync(async (req, res) => {
         const success = await user.save().then((user) => {
             user.password = undefined;
             res.status(201).send({
-                message: "User was registered successfully!",
+                message: "Đăng ký tài khoản thành công!",
                 data: user,
             });
         });
@@ -94,35 +104,36 @@ const refreshTokenController = async (req, res) => {
     // Lấy access token từ header
 
     // let token = req.headers["x-access-token"];// or
-    const accessTokenFromHeader = req.headers.x_authorization;
+    const accessTokenFromHeader = req.headers.authorization.split(" ")[1];
+    // const accessTokenFromHeader = req.headers.x_authorization;
     if (!accessTokenFromHeader) {
-        return res.status(400).send({ error: "Không tìm thấy access token." });
+        return res.status(400).json({ error: "Không tìm thấy access token." });
     }
 
     // Lấy refresh token từ body
     const refreshTokenFromBody = req.body.refreshToken;
     if (!refreshTokenFromBody) {
-        return res.status(400).send({ error: "Không tìm thấy refresh token." });
+        return res.status(400).json({ error: "Không tìm thấy refresh token." });
     }
 
     // Decode access token đó
     const decoded = await Token.decodeToken(
         accessTokenFromHeader,
-        secret.secret
+        process.env.SECRET_KEY
     );
     if (!decoded) {
-        return res.status(400).send({ error: "Access token không hợp lệ." });
+        return res.status(400).json({ error: "Access token không hợp lệ." });
     }
 
     const id = decoded.payload.id; // Lấy username từ payload
 
     const user = await User.findById({ _id: id });
     if (!user) {
-        return res.status(401).send({ error: "User không tồn tại." });
+        return res.status(401).json({ error: "User không tồn tại." });
     }
 
-    if (refreshTokenFromBody !== user.refreshToken) {
-        return res.status(400).send({ error: "Refresh token không hợp lệ." });
+    if (refreshTokenFromBody !== user.refresh_token) {
+        return res.status(400).json({ error: "Refresh token không hợp lệ." });
     }
 
     // Tạo access token mới
@@ -130,13 +141,13 @@ const refreshTokenController = async (req, res) => {
         id: user._id,
     };
 
-    const accessToken = await authMethod.generateToken(
+    const accessToken = await Token.generateToken(
         dataForAccessToken,
-        secret.secret,
-        secret.expiresIn
+        process.env.SECRET_KEY,
+        process.env.EXPIRES_IN
     );
     if (!accessToken) {
-        return res.status(400).send({
+        return res.status(400).json({
             error: "Tạo access token không thành công, vui lòng thử lại.",
         });
     }
