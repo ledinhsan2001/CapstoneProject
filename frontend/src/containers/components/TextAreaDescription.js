@@ -12,6 +12,11 @@ const TextAreaDescription = ({
     seterrors,
     name,
 }) => {
+    const MessageErr = () => {
+        let mess = errors.find((item) => item.name === name);
+        return mess?.message;
+    };
+
     return (
         <div className="flex flex-col w-full">
             <div className="font-bold my-2 flex">
@@ -25,6 +30,7 @@ const TextAreaDescription = ({
                     name={type}
                     type="text"
                     id={type}
+                    value={value}
                     onChange={(e) => {
                         setValue((prev) => ({
                             ...prev,
@@ -39,15 +45,7 @@ const TextAreaDescription = ({
                     onFocus={() => seterrors([])}
                 ></textarea>
             }
-            {errors.map((item, index) => {
-                if (item[name]) {
-                    return (
-                        <p className="text-red-500" key={index}>
-                            <i>{item[name]}</i>
-                        </p>
-                    );
-                }
-            })}
+            <p className="text-red-500">{errors && MessageErr()}</p>
         </div>
     );
 };

@@ -17,7 +17,7 @@ const {
 
 const SideBar = () => {
     const { user_data } = useSelector((state) => state.user);
-    const [active, setactive] = useState("");
+    const [active, setactive] = useState("dangtin");
     const navigate = useNavigate();
     useEffect(() => {
         if (!user_data) {

@@ -105,6 +105,21 @@ export const newPost = () => async (dispatch) => {
     }
 };
 
+// dispatch data post
+export const dataEdit = (data_edit) => async (dispatch) => {
+    dispatch({
+        type: actionTypes.RH_EDIT,
+        data_edit,
+    });
+};
+
+export const delDataEdit = () => async (dispatch) => {
+    dispatch({
+        type: actionTypes.DEL_DATA_EDIT,
+        data_edit: null,
+    });
+};
+
 // ----------------------------------------------------------
 
 export const realHomeTypes = () => async (dispatch) => {

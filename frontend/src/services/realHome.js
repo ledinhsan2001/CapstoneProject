@@ -137,3 +137,33 @@ export const apiCreateRealHome = (payload) =>
             reject(error);
         }
     });
+
+//update post
+export const apiUpdateRealHome = (payload) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "put",
+                url: `/api/real-home/put`,
+                data: payload,
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
+
+//delete post
+export const apiDeleteRealHome = ({ ...payload }) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "delete",
+                url: `/api/real-home/delete`,
+                data: payload,
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
