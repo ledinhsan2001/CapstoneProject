@@ -6,11 +6,14 @@ import { RotatingLines } from "react-loader-spinner";
 const { FcAddImage, BsTrash } = icons;
 
 const Images = ({ payload, setpayload, errors, seterrors, name }) => {
-    const [imagesSelected, setimagesSelected] = useState([]);
+    const [imagesSelected, setimagesSelected] = useState(() => {
+        const init = payload.images.url || [];
+        return init;
+    });
     const [isLoading, setisLoading] = useState(false);
 
     useEffect(() => {
-        if (payload.images.url.length === 0) {
+        if (payload?.images?.url?.length === 0) {
             setimagesSelected([]);
         }
     }, [payload]);
@@ -50,9 +53,14 @@ const Images = ({ payload, setpayload, errors, seterrors, name }) => {
         setpayload((prev) => ({
             ...prev,
             images: {
-                url: payload.images.url?.filter((item) => item !== image),
+                url: payload?.images.url?.filter((item) => item !== image),
             },
         }));
+    };
+
+    const MessageErr = () => {
+        let mess = errors.find((item) => item.name === name);
+        return mess?.message;
     };
 
     return (
@@ -87,15 +95,7 @@ const Images = ({ payload, setpayload, errors, seterrors, name }) => {
                     </label>
                 )}
             </div>
-            {errors?.map((item, index) => {
-                if (item[name]) {
-                    return (
-                        <p className="text-red-500" key={index}>
-                            <i>{item[name]}</i>
-                        </p>
-                    );
-                }
-            })}
+            <p className="text-red-500">{errors && MessageErr()}</p>
             <div className="flex flex-col mt-2">
                 <p className="text-xl font-bold">Các ảnh đã upload</p>
                 <div className="flex flex-wrap mt-2 w-full">

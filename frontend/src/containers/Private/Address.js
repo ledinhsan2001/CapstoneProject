@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SelectAddress } from "../components/";
 import { apiGetProvince, apiGetDistrict, apiGetWard } from "../../services";
+import { useSelector } from "react-redux";
 
 const Address = ({ payload, setpayload, errors, seterrors }) => {
     const [provinces, setprovinces] = useState([]);
@@ -9,14 +10,19 @@ const Address = ({ payload, setpayload, errors, seterrors }) => {
     const [province, setprovince] = useState("");
     const [district, setdistrict] = useState("");
     const [ward, setward] = useState("");
-    const [number_home, setnumber_home] = useState("");
+    const { data_edit } = useSelector((state) => state.real_home);
 
+    // create and put load re-data all null
     useEffect(() => {
         if (payload.province_id === "") {
             setprovince("");
             setdistrict("");
             setward("");
-            setnumber_home("");
+        }
+        if (data_edit) {
+            let arradd = data_edit.address.split(",");
+            let number_home = arradd.length === 4 ? arradd[0] : "";
+            payload.number_home = number_home;
         }
     }, [payload]);
 
@@ -31,6 +37,10 @@ const Address = ({ payload, setpayload, errors, seterrors }) => {
     }, []);
 
     useEffect(() => {
+        setprovince(data_edit ? data_edit.province_id : "");
+    }, [provinces]);
+
+    useEffect(() => {
         // Province change 2 field district and ward change follow
         setdistrict("");
 
@@ -42,6 +52,18 @@ const Address = ({ payload, setpayload, errors, seterrors }) => {
         };
         province ? fetchDistrict() : setdistricts(null);
     }, [province]);
+
+    useEffect(() => {
+        if (data_edit) {
+            let arradd = data_edit?.address?.split(",");
+            let district_name = arradd?.length === 4 ? arradd[2] : arradd[1];
+            let find_district_id = districts?.find((item) => {
+                return item.district_name === district_name;
+            });
+            setdistrict(data_edit ? find_district_id?.district_id : "");
+        }
+    }, [districts]);
+
     useEffect(() => {
         // Province change 2 field district and ward change follow
         setward("");
@@ -56,9 +78,20 @@ const Address = ({ payload, setpayload, errors, seterrors }) => {
     }, [district]);
 
     useEffect(() => {
+        if (data_edit) {
+            let arradd = data_edit.address.split(",");
+            let ward_name = arradd.length === 4 ? arradd[1] : arradd[0];
+            let find_ward_id = wards?.find((item) => {
+                return item.ward_name === ward_name;
+            });
+            setward(data_edit ? find_ward_id?.ward_id : "");
+        }
+    }, [wards]);
+
+    useEffect(() => {
         setpayload((prev) => ({
             ...prev,
-            address: `${number_home ? number_home.number_home + "," : ""}${
+            address: `${payload.number_home ? payload.number_home + "," : ""}${
                 ward
                     ? wards?.find((item) => item.ward_id === ward)?.ward_name +
                       ","
@@ -78,7 +111,7 @@ const Address = ({ payload, setpayload, errors, seterrors }) => {
             district_id: district,
             ward_id: ward,
         }));
-    }, [province, district, ward, number_home]);
+    }, [province, district, ward, payload.number_home]);
 
     return (
         <div className="flex-col bg-white p-3 rounded-md mt-4 w-full">
@@ -129,10 +162,11 @@ const Address = ({ payload, setpayload, errors, seterrors }) => {
                 <SelectAddress
                     title={"Số nhà"}
                     defaultValue={"ví dụ: 100"}
-                    simple={"true"}
                     type="number_home"
-                    value={number_home}
-                    setValue={setnumber_home}
+                    simple="true"
+                    value={payload.number_home}
+                    setValue={setpayload}
+                    data_edit={data_edit}
                 />
             </div>
             <div className="flex flex-col my-3 px-3 w-full">
@@ -142,7 +176,9 @@ const Address = ({ payload, setpayload, errors, seterrors }) => {
                     className="h-[50px] w-[95%] items-center pt-1 px-2 rounded-xl bg-gray-200 cursor-pointer border-solid border-2 border-gray-200 outline-none text-gray-500"
                     readOnly
                     placeholder="Ví dụ: 100 nguyễn lương bằng, hòa khánh bắc, liên chiểu, đàn nẵng"
-                    value={`${number_home ? number_home.number_home : ""}${
+                    value={`${
+                        payload.number_home ? payload.number_home + "," : ""
+                    }${
                         ward
                             ? wards?.find((item) => item.ward_id === ward)
                                   ?.ward_name + ","

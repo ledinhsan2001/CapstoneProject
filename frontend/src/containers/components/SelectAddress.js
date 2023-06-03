@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const SelectAddress = ({
     title,
@@ -13,6 +14,11 @@ const SelectAddress = ({
     seterrors,
     name,
 }) => {
+    const MessageErr = () => {
+        let mess = errors.find((item) => item.name === name);
+        return mess?.message;
+    };
+
     return (
         <div className="flex flex-col w-full">
             <label className="font-bold my-2 flex" htmlFor="select-">
@@ -56,18 +62,11 @@ const SelectAddress = ({
                     })}
                 </select>
             )}
-            {errors?.map((item, index) => {
-                if (item[name]) {
-                    return (
-                        <p className="text-red-500" key={index}>
-                            <i>{item[name]}</i>
-                        </p>
-                    );
-                }
-            })}
+            <p className="text-red-500">{errors && MessageErr()}</p>
             {simple && (
                 <input
                     className="flex items-center justify-between h-[50px] w-[95%] px-2 relative rounded-xl bg-blue-100 border-solid border-1 border-black hover:bg-white hover:border-solid hover:border-2 hover:border-blue-300 cursor-pointer "
+                    value={value}
                     placeholder={defaultValue}
                     onChange={(e) =>
                         setValue((prev) => ({

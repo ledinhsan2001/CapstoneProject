@@ -21,7 +21,6 @@ const authConfig = {
 
 const rootReducer = combineReducers({
     auth: persistReducer(authConfig, authReducer),
-    user: userReducer,
     real_home: realHomeReducer,
     price_area: pricesReducer,
     user: userReducer,

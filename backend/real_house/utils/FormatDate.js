@@ -3,7 +3,6 @@ import "moment/locale/vi";
 
 export const FormatDate = (number_day) => {
     let data = new Date();
-    console.log(data);
     let date_moment;
     if (number_day) {
         date_moment = moment(data).add(number_day, "d");

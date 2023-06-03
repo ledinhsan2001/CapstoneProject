@@ -3,43 +3,50 @@ import { useState } from "react";
 import { Categories, Address, Description, Images } from "./";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { Contact } from "../components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     FormatGetNummber,
     getCodeArea,
     getCodePrice,
 } from "../../utils/constant";
-import { apiCreateRealHome } from "../../services";
+import { apiCreateRealHome, apiUpdateRealHome } from "../../services";
 import Swal from "sweetalert2";
 import { validate_data } from "../../utils/validate_data";
+import { delDataEdit } from "../../store/actions";
 
 const CreatePost = ({ edit }) => {
     const { prices, areas } = useSelector((state) => state.price_area);
+    const { data_edit } = useSelector((state) => state.real_home);
     const { user_data } = useSelector((state) => state.user);
-
     const [errors, seterrors] = useState([]);
+    const dispatch = useDispatch();
 
-    const [payload, setpayload] = useState({
-        address: "",
-        images: {
-            url: [],
-        },
-        real_home_type_id: "",
-        transaction_type_id: "",
-        description: {
-            title_description: "",
-            short_description: "",
-            content_description: "",
-            price: "",
-            area: 0,
-            bedroom: 0,
-            toilet: 0,
-        },
-        price_id: "",
-        area_id: "",
-        province_id: "",
-        // district_id: "",
-        // ward_id: "",
+    const [payload, setpayload] = useState(() => {
+        const init = {
+            address: data_edit?.address || "",
+            images: {
+                url: data_edit
+                    ? data_edit?.images?.url
+                        ? JSON.parse(data_edit?.images?.url)
+                        : []
+                    : [],
+            },
+            real_home_type_id: data_edit?.real_home_type_id || "",
+            transaction_type_id: data_edit?.transaction_type_id || "",
+            title_description: data_edit?.description?.title_description || "",
+            short_description: data_edit?.description?.short_description || "",
+            content_description:
+                data_edit?.description?.content_description || "",
+            price: data_edit?.description?.price || "",
+            area: data_edit?.description?.area || 0,
+            bedroom: data_edit?.description?.bedroom || 0,
+            toilet: data_edit?.description?.toilet || 0,
+            price_id: data_edit?.price_id || "",
+            area_id: data_edit?.area_id || "",
+            province_id: data_edit?.province_id || "",
+            number_home: "",
+        };
+        return init;
     });
 
     const handleSubmit = async () => {
@@ -52,15 +59,15 @@ const CreatePost = ({ edit }) => {
 
         let price_id;
         let area_id;
-        let checkUnit = payload?.description?.price?.split(" ");
+        let checkUnit = payload?.price?.split(" ");
         let price_number;
-        if (payload?.description?.price) {
-            price_number = FormatGetNummber(payload?.description?.price);
+        if (payload?.price) {
+            price_number = FormatGetNummber(payload?.price);
         }
 
         let area_number;
-        if (payload?.description?.area) {
-            area_number = FormatGetNummber(payload?.description?.area);
+        if (payload?.area) {
+            area_number = FormatGetNummber(payload?.area);
         }
 
         //price_number khác số là undefined: thỏa thuận
@@ -106,24 +113,28 @@ const CreatePost = ({ edit }) => {
             area_id,
             user_post: user_data._id,
         };
+        console.log(finalPayload);
         let count = validate_data(finalPayload, seterrors);
         if (count !== 0) {
             Swal.fire("Lỗi!", "Thêm bài viết mới không thành công!", "error");
         } else {
-            const response = await apiCreateRealHome(finalPayload);
-            if (response.data.success === true) {
-                Swal.fire("Thành công!", response.data.message, "success");
-                document.getElementById("title_description").value = "";
-                document.getElementById("content_description").value = "";
-
-                setpayload({
-                    address: "",
-                    images: {
-                        url: [],
-                    },
-                    real_home_type_id: "",
-                    transaction_type_id: "",
-                    description: {
+            if (data_edit) {
+                finalPayload = {
+                    ...finalPayload,
+                    real_home_id: data_edit._id,
+                    description_id: data_edit.description._id,
+                    images_id: data_edit?.images?._id,
+                };
+                const response = await apiUpdateRealHome(finalPayload);
+                if (response.data.success === true) {
+                    Swal.fire("Thành công!", response.data.message, "success");
+                    setpayload({
+                        address: "",
+                        images: {
+                            url: [],
+                        },
+                        real_home_type_id: "",
+                        transaction_type_id: "",
                         title_description: "",
                         short_description: "",
                         content_description: "",
@@ -131,13 +142,41 @@ const CreatePost = ({ edit }) => {
                         area: 0,
                         bedroom: 0,
                         toilet: 0,
-                    },
-                    price_id: "",
-                    area_id: "",
-                    province_id: "",
-                });
+                        price_id: "",
+                        area_id: "",
+                        province_id: "",
+                        number_home: "",
+                    });
+                    dispatch(delDataEdit());
+                } else {
+                    Swal.fire("Lỗi!", response.data.message, "error");
+                }
             } else {
-                Swal.fire("Lỗi!", response.data.message, "error");
+                const response = await apiCreateRealHome(finalPayload);
+                if (response.data.success === true) {
+                    Swal.fire("Thành công!", response.data.message, "success");
+                    setpayload({
+                        address: "",
+                        images: {
+                            url: [],
+                        },
+                        real_home_type_id: "",
+                        transaction_type_id: "",
+                        title_description: "",
+                        short_description: "",
+                        content_description: "",
+                        price: "",
+                        area: 0,
+                        bedroom: 0,
+                        toilet: 0,
+                        price_id: "",
+                        area_id: "",
+                        province_id: "",
+                        number_home: "",
+                    });
+                } else {
+                    Swal.fire("Lỗi!", response.data.message, "error");
+                }
             }
         }
     };
@@ -150,9 +189,7 @@ const CreatePost = ({ edit }) => {
                             ? `ml-[15%] text-left flex flex-col px-[10%] mt-4 w-[70%] bg-[#F5F5F5] pb-10`
                             : `ml-[15%] text-left flex flex-col px-[10%] pt-4 w-[70%]`
                     }`}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                    }}
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <div className="font-bold text-4xl my-4">
                         {edit ? "Chỉnh sửa tin" : `Đăng tin mới`}
@@ -190,7 +227,8 @@ const CreatePost = ({ edit }) => {
                                 handleSubmit();
                             }}
                         >
-                            Tiếp tục <AiOutlineArrowRight className="mt-1" />
+                            {edit ? "Cập nhật" : `Tiếp tục`}
+                            <AiOutlineArrowRight className="mt-1" />
                         </button>
                     </div>
                 </div>

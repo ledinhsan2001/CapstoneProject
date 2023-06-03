@@ -68,7 +68,7 @@ export const getAllByUser = catchAsync(async (req, res) => {
     let typeRHs = await RealHome.find(
         { "user_post._id": user_id },
         { __v: 0 }
-    ).sort({ start_date: 1 });
+    ).sort({ start_date: -1 });
     // const limit_data = page_number * limit;
     // .skip(limit_data)
     // .limit(limit);
@@ -187,7 +187,12 @@ export const create = async (req, res) => {
         images,
         real_home_type_id,
         transaction_type_id,
-        description,
+        title_description,
+        content_description,
+        price,
+        area,
+        bedroom,
+        toilet,
         price_id,
         area_id,
         province_id,
@@ -202,18 +207,17 @@ export const create = async (req, res) => {
         _id: transaction_type_id,
     });
 
-    const short_des = `Anh/Chị ${nameExist.first_name} ${nameExist.last_name}. SĐT: ${nameExist.phone}. ${transaction_type_name.name} ${address} Giá: ${description.price}, diện tích: ${description.area}`;
-    description.short_description = short_des;
+    const short_des = `Anh/Chị ${nameExist.first_name} ${nameExist.last_name}. SĐT: ${nameExist.phone}. ${transaction_type_name.name} ${address} Giá: ${price}, diện tích: ${area}`;
 
     try {
         const obj_description = await Description.create({
-            title_description: description.title_description,
-            short_description: description.short_description,
-            content_description: description.content_description,
-            price: description.price,
-            area: description.area,
-            bedroom: description.bedroom,
-            toilet: description.toilet,
+            title_description,
+            short_description: short_des,
+            content_description,
+            price,
+            area,
+            bedroom,
+            toilet,
         });
         let start_date = FormatDate();
 
@@ -238,7 +242,7 @@ export const create = async (req, res) => {
         if (real_home) {
             res.status(201).json({
                 success: true,
-                message: "Tạo mới bất động sản thành công",
+                message: "Bạn đã tạo mới bất động sản thành công",
                 data: real_home,
             });
         } else {
@@ -267,39 +271,123 @@ export const create = async (req, res) => {
 };
 
 export const put = catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const { name, transaction_type_id } = req.body;
-    const transType = await transactionType.findOne({
+    const {
+        user_post,
+        address,
+        images,
+        real_home_type_id,
+        transaction_type_id,
+        title_description,
+        content_description,
+        price,
+        area,
+        bedroom,
+        toilet,
+        price_id,
+        area_id,
+        province_id,
+        description_id,
+        images_id,
+        real_home_id,
+    } = req.body;
+    const nameExist = await User.findOne({ _id: user_post });
+    let obj_images = await Image.findOneAndUpdate(
+        { _id: images_id },
+        {
+            url: JSON.stringify(images.url),
+        }
+    );
+    // id img not exist then create new images
+    if (!obj_images) {
+        obj_images = await Image.create({
+            url: JSON.stringify(images.url),
+        });
+    }
+
+    const transaction_type_name = await TransactionType.findOne({
         _id: transaction_type_id,
     });
-    if (transType) {
-        const typeOfRH = await typeOfRealHouse.findByIdAndUpdate(
-            id,
-            { name: name, transaction_type: transType.id },
-            { new: true }
+
+    const short_description = `Anh/Chị ${nameExist.first_name} ${nameExist.last_name}. SĐT: ${nameExist.phone}. ${transaction_type_name.name} ${address} Giá: ${price}, diện tích: ${area}`;
+
+    try {
+        const obj_description = await Description.findOneAndUpdate(
+            { _id: description_id },
+            {
+                title_description,
+                short_description,
+                content_description,
+                price,
+                area,
+                bedroom,
+                toilet,
+            }
         );
-        if (typeOfRH) {
-            typeOfRH.__v = undefined;
+
+        const real_home = await RealHome.findOneAndUpdate(
+            { _id: real_home_id },
+            {
+                user_post: nameExist,
+                address,
+                images: obj_images,
+                real_home_type_id,
+                transaction_type_id,
+                description: obj_description,
+                price_id,
+                area_id,
+                province_id,
+            }
+        );
+
+        real_home.save();
+
+        if (real_home) {
             res.status(201).json({
                 success: true,
-                message: "Update kiểu bất động sản thành công",
-                data: typeOfRH,
+                message: "Bạn đã cập nhật bất động sản thành công",
+                data: real_home,
             });
         } else {
-            throw new ApiError(400, "lỗi tạo kiểu bất động sản!");
+            return res.status(400).json({
+                success: false,
+                message: "Cập nhật bất động sản không thành công!",
+            });
         }
-    }
-});
-
-export const drop = catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const torh = await typeOfRealHouse.findByIdAndDelete({ _id: id });
-    if (torh) {
-        torh.__v = undefined;
-        res.status(201).json({
-            success: true,
-            message: "Delete kiểu bất động sản thành công",
-            data: torh,
+    } catch (error) {
+        const errors = error.errors;
+        let errMessage;
+        const errObj = {};
+        if (error.name === "ValidationError") {
+            const keys = Object.keys(errors);
+            keys.map((key) => {
+                errObj[key] = errors[key].message;
+            });
+            errMessage = errObj;
+        }
+        return res.status(500).json({
+            success: false,
+            message: errMessage || "Lỗi server!",
         });
     }
 });
+
+export const drop = async (req, res) => {
+    const { _id, description_id, images_id } = req.body;
+    try {
+        const image = await Image.findOneAndDelete({ _id: images_id });
+        const description = await Description.findOneAndDelete({
+            _id: description_id,
+        });
+        const real_home = await RealHome.findOneAndDelete({ _id: _id });
+
+        return res.status(200).json({
+            success: true,
+            message: "Bạn đã xóa bất động sản thành công!",
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: "Xóa bất động sản không thành công!",
+        });
+    }
+};

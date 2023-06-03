@@ -16,6 +16,8 @@ const actionTypes = {
 
     // USER
     GET_USER: "GET_USER",
+    RH_EDIT: "RH_EDIT",
+    DEL_DATA_EDIT: "DEL_DATA_EDIT",
 };
 
 export default actionTypes;

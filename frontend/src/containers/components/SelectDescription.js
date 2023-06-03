@@ -9,6 +9,10 @@ const SelectDescription = ({
     setValue,
     errors,
 }) => {
+    const MessageErr = () => {
+        let mess = errors.find((item) => item.name === type);
+        return mess?.message;
+    };
     return (
         <div className="flex flex-col w-full">
             <label className="font-bold my-2 flex" htmlFor={type}>
@@ -21,7 +25,12 @@ const SelectDescription = ({
                     className={`flex items-center justify-between h-[50px] w-[90%] px-2 rounded-xl bg-blue-100 border-solid border-1 border-black hover:bg-white hover:border-solid hover:border-2 hover:border-blue-300 cursor-pointer outline-none`}
                     placeholder={placeHolder}
                     value={value}
-                    onChange={(e) => setValue(e.target.value)}
+                    onChange={(e) =>
+                        setValue((prev) => ({
+                            ...prev,
+                            [type]: e.target.value,
+                        }))
+                    }
                 />
                 {type === "area" && (
                     <label className=" flex bg-blue-400 w-[50px] h-[50px] rounded-r-xl items-center justify-center absolute right-8">
@@ -34,15 +43,7 @@ const SelectDescription = ({
                     </label>
                 )}
             </div>
-            {errors?.map((item, index) => {
-                if (item[type]) {
-                    return (
-                        <p className="text-red-500" key={index}>
-                            <i>{item[type]}</i>
-                        </p>
-                    );
-                }
-            })}
+            <p className="text-red-500">{errors && MessageErr()}</p>
         </div>
     );
 };

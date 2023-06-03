@@ -150,7 +150,8 @@ export const getCodeRangeArea = (range_maxmin, areas) => {
 
 // create Post
 export const FormatGetNummber = (string) => {
-    let number = +string.match(/\d+/);
+    string = string.toString();
+    let number = +string?.match(/\d+/);
     if (number) {
         return number;
     }

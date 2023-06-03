@@ -10,6 +10,11 @@ const SelectCategories = ({
     seterrors,
     name,
 }) => {
+    const MessageErr = () => {
+        let mess = errors.find((item) => item.name === name);
+        return mess?.message;
+    };
+
     return (
         <div className="flex flex-col w-full">
             <label className="font-bold my-2 flex" htmlFor="select-category">
@@ -18,7 +23,9 @@ const SelectCategories = ({
             <select
                 id="select-category"
                 className="text-blue-600 font-bold items-center justify-center h-[50px] w-[90%] px-2 rounded-xl bg-blue-100 border-solid border-1 border-black hover:bg-white hover:border-solid hover:border-2 hover:border-blue-300 cursor-pointer outline-none"
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) =>
+                    setValue((prev) => ({ ...prev, [name]: e.target.value }))
+                }
                 value={value}
                 onFocus={() => seterrors([])}
             >
@@ -40,15 +47,7 @@ const SelectCategories = ({
                     );
                 })}
             </select>
-            {errors.map((item, index) => {
-                if (item[name]) {
-                    return (
-                        <p className="text-red-500" key={index}>
-                            <i>{item[name]}</i>
-                        </p>
-                    );
-                }
-            })}
+            <p className="text-red-500">{errors && MessageErr()}</p>
         </div>
     );
 };
