@@ -5,12 +5,12 @@ import { formatUniToString, path } from "../../../utils/constant";
 import icons from "../../../utils/icons";
 import {
     LogoNav,
-    mdi_user,
     pushnews,
     registeruser,
     Login,
     heart,
     pageManagement,
+    mdi_user,
 } from "../../../assets/images/index";
 import { useRef } from "react";
 import * as actions from "../../../store/actions";
@@ -146,13 +146,17 @@ const Header = () => {
                             className="m-2 flex hover:drop-shadow-2xl"
                         >
                             <div
-                                className="TagUserNav rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[50px] w-[50px] pt-1 relative hover:translate-y-2 z-1000"
+                                className="TagUserNav rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[50px] w-[50px] relative hover:translate-y-2 z-1000"
                                 onMouseOver={overListItem}
                                 onMouseLeave={leaveListItem}
                             >
                                 <div className="cursor-pointer">
                                     <span className="animate-ping absolute inline-flex h-[6px] w-[6px] rounded-full bg-green-500 opacity-100 ml-[16px] mb-[40px]"></span>
-                                    <img src={mdi_user} alt="mdi_user"></img>
+                                    <img
+                                        src={user_data.avt || mdi_user}
+                                        alt="avatar"
+                                        className="rounded-full h-[50px] w-[50px]"
+                                    ></img>
                                 </div>
                                 {Show && (
                                     <div
@@ -162,12 +166,15 @@ const Header = () => {
                                         className="absolute bg-white border-2 right-0 top-full shadow-md rounded-md p-2 w-[280px] h-[370px]"
                                     >
                                         <div className="flex cursor-pointer">
-                                            <div className="flex rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[70px] w-[70px] pt-1 mb-2 mx-2 z-1000">
+                                            <div className="flex rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[70px] w-[70px] mb-2 mx-2 z-1000">
                                                 <span className="animate-ping absolute inline-flex h-[8px] w-[8px] rounded-full bg-green-500 opacity-100 ml-[55px] mb-[50px]"></span>
                                                 <img
-                                                    src={mdi_user}
-                                                    alt="mdi_user"
-                                                    className="h-[65px] w-[70px]"
+                                                    src={
+                                                        user_data.avt ||
+                                                        mdi_user
+                                                    }
+                                                    alt="avatar"
+                                                    className="h-[65px] w-[70px] rounded-full"
                                                 ></img>
                                             </div>
                                             <Link

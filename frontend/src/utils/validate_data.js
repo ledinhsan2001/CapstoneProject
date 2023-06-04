@@ -7,9 +7,25 @@ export const validate_data = (finalPayload, seterrors) => {
             item[0] === "short_description" ||
             item[0] === "bedroom" ||
             item[0] === "toilet" ||
-            item[0] === "number_home"
+            item[0] === "email" ||
+            item[0] === "link_zalo" ||
+            item[0] === "address" ||
+            item[0] === "avt"
         ) {
             return;
+        }
+        if (item[0] === "first_name" || item[0] === "last_name") {
+            if (!item[1]) {
+                seterrors((prev) => [
+                    ...prev,
+                    {
+                        name: item[0],
+                        message: "Thôn tin này không được bỏ trống!",
+                    },
+                ]);
+                count++;
+                return;
+            }
         }
         if (item[0] === "price" || item[0] === "area") {
             if (!item[1]) {
