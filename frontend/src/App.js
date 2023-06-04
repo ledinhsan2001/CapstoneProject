@@ -15,7 +15,12 @@ import {
     DataSearch,
     HomePage,
 } from "./containers/Public/index";
-import { Private, CreatePost, ManagePost } from "./containers/Private";
+import {
+    Private,
+    CreatePost,
+    ManagePost,
+    EditInfor,
+} from "./containers/Private";
 
 function App() {
     return (
@@ -43,7 +48,7 @@ function App() {
                                 element={<DetailRealHome />}
                             />
                             <Route
-                                path={"chi-tiet/*"}
+                                path={"chi-tiet/"}
                                 element={<DetailRealHome />}
                             />
 
@@ -157,8 +162,12 @@ function App() {
                                 }
                             />
                         </Route>
-                        {/*  */}
+                        {/* Private */}
                         <Route path={path.PRIVATE} element={<Private />}>
+                            <Route
+                                path={path.MANAGEMENT_PAGE}
+                                element={<ManagePost />}
+                            />
                             <Route
                                 path={path.CREATE_POST}
                                 element={<CreatePost />}
@@ -169,7 +178,7 @@ function App() {
                             />
                             <Route
                                 path={path.EDIT_INFOR}
-                                element={<CreatePost />}
+                                element={<EditInfor />}
                             />
                             <Route
                                 path={path.HISTORY_PAYMENT}
@@ -177,10 +186,6 @@ function App() {
                             />
                             <Route
                                 path={path.SAVED_POST}
-                                element={<CreatePost />}
-                            />
-                            <Route
-                                path={path.MANAGEMENT_PAGE}
                                 element={<CreatePost />}
                             />
                         </Route>

@@ -15,7 +15,7 @@ export const path = {
     SAVED_POST: "tin-dang-da-luu",
     MANAGEMENT_PAGE: "trang-quan-ly",
     POST_MANAGEMENT: "quan-ly-tin-dang",
-    EDIT_INFOR: "sua-thong-tin-ca-nhang",
+    EDIT_INFOR: "sua-thong-tin-ca-nhan",
     INFOR: "trang-ca-nhan",
     HISTORY_PAYMENT: "lich-su-thanh-toan",
 

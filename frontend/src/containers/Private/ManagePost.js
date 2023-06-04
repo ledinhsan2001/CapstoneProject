@@ -61,7 +61,6 @@ const ManagePost = () => {
     };
 
     const handleFilter = (value) => {
-        console.log(value);
         if (value === 1) {
             let expired = real_homes_by_user.filter(
                 (item) => !check_expired(item?.end_date.split(" ")[3])
@@ -79,7 +78,7 @@ const ManagePost = () => {
 
     return (
         <div>
-            <div className="px-10">
+            <div className="px-10 py-2">
                 <div className="text-left text-black font-bold text-4xl pb-4">
                     Quản lý tin đăng
                 </div>

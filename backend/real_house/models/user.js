@@ -20,16 +20,9 @@ const UserSchema = new Schema(
             type: String,
             default: "",
         },
-        dob: {
-            type: Date,
-            default: Date.now(),
-        },
-        gender: {
-            type: Boolean,
-            default: 0,
-        },
         saved_news_count: { type: Number, default: 0 },
-        link_zalo: { type: String },
+        link_zalo: { type: String, default: "" },
+        email: { type: String, default: "" },
         refresh_token: String,
         roles: [
             {

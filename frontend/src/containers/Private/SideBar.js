@@ -17,13 +17,19 @@ const {
 
 const SideBar = () => {
     const { user_data } = useSelector((state) => state.user);
-    const [active, setactive] = useState("dangtin");
+    const [active, setactive] = useState("dang-tin");
     const navigate = useNavigate();
     useEffect(() => {
         if (!user_data) {
             expired();
         }
     });
+
+    useEffect(() => {
+        let url = window.location.pathname;
+        let pathname = url.split("/")[2];
+        setactive(pathname);
+    }, [window.location.pathname]);
 
     const expired = () => {
         window.localStorage.clear();
@@ -48,9 +54,9 @@ const SideBar = () => {
                 <div className="flex rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[60px] w-[60px] pt-1 mb-2">
                     <span className="animate-ping absolute inline-flex h-[8px] w-[8px] rounded-full bg-green-500 opacity-100 ml-[50px] mb-[40px]"></span>
                     <img
-                        src={mdi_user}
+                        src={user_data.avt || mdi_user}
                         alt="mdi_user"
-                        className="h-[65px] w-[70px]"
+                        className="h-[65px] w-[70px] rounded-full"
                     ></img>
                 </div>
                 <Link
@@ -74,11 +80,11 @@ const SideBar = () => {
                 <Link
                     onClick={(e) => {
                         e.stopPropagation();
-                        setactive("dangtin");
+                        setactive("dang-tin");
                     }}
                     to={`/rieng-tu/${path.CREATE_POST}`}
                     className={`flex p-2 border-b ${
-                        active === "dangtin"
+                        active === "dang-tin"
                             ? `font-bold text-gray-700 translate-x-3 bg-green-200 text-md rounded-lg hover:text-gray-700 items-center mt-3`
                             : `border-gray-300 hover:bg-green-200 text-md rounded-lg cursor-pointer items-center hover:font-bold hover:text-gray-700 mt-3 hover:translate-x-3`
                     } `}
@@ -93,11 +99,12 @@ const SideBar = () => {
                 <Link
                     onClick={(e) => {
                         e.stopPropagation();
-                        setactive("quanlytindang");
+                        setactive("quan-ly-tin-dang");
                     }}
                     to={`/rieng-tu/${path.POST_MANAGEMENT}`}
                     className={`flex p-2 border-b ${
-                        active === "quanlytindang"
+                        active === "quan-ly-tin-dang" ||
+                        active === "trang-quan-ly"
                             ? `font-bold text-gray-700 translate-x-3 bg-green-200 text-md rounded-lg hover:text-gray-700 items-center mt-3`
                             : `border-gray-300 hover:bg-green-200 text-md rounded-lg cursor-pointer items-center hover:font-bold hover:text-gray-700 mt-3 hover:translate-x-3`
                     } `}
@@ -108,11 +115,11 @@ const SideBar = () => {
                 <Link
                     onClick={(e) => {
                         e.stopPropagation();
-                        setactive("lichsuthanhtoan");
+                        setactive("lich-su-thanh-toan");
                     }}
                     to={`/rieng-tu/${path.HISTORY_PAYMENT}`}
                     className={`flex p-2 border-b ${
-                        active === "lichsuthanhtoan"
+                        active === "lich-su-thanh-toan"
                             ? `font-bold text-gray-700 translate-x-3 bg-green-200 text-md rounded-lg hover:text-gray-700 items-center mt-3`
                             : `border-gray-300 hover:bg-green-200 text-md rounded-lg cursor-pointer items-center hover:font-bold hover:text-gray-700 mt-3 hover:translate-x-3`
                     } `}
@@ -123,11 +130,11 @@ const SideBar = () => {
                 <Link
                     onClick={(e) => {
                         e.stopPropagation();
-                        setactive("tindangdaluu");
+                        setactive("tin-dang-da-luu");
                     }}
                     to={`/rieng-tu/${path.SAVED_POST}`}
                     className={`flex p-2 border-b ${
-                        active === "tindangdaluu"
+                        active === "tin-dang-da-luu"
                             ? `font-bold text-gray-700 translate-x-3 bg-green-200 text-md rounded-lg hover:text-gray-700 items-center mt-3`
                             : `border-gray-300 hover:bg-green-200 text-md rounded-lg cursor-pointer items-center hover:font-bold hover:text-gray-700 mt-3 hover:translate-x-3`
                     } `}
@@ -138,11 +145,11 @@ const SideBar = () => {
                 <Link
                     onClick={(e) => {
                         e.stopPropagation();
-                        setactive("banggiadichvu");
+                        setactive("bang-gia-dich-vu");
                     }}
-                    to={`/rieng-tu/${path.SAVED_POST}`}
+                    to={`/rieng-tu/${path.SERVICE_PRICE}`}
                     className={`flex p-2 border-b ${
-                        active === "banggiadichvu"
+                        active === "bang-gia-dich-vu"
                             ? `font-bold text-gray-700 translate-x-3 bg-green-200 text-md rounded-lg hover:text-gray-700 items-center mt-3`
                             : `border-gray-300 hover:bg-green-200 text-md rounded-lg cursor-pointer items-center hover:font-bold hover:text-gray-700 mt-3 hover:translate-x-3`
                     } `}
@@ -153,11 +160,11 @@ const SideBar = () => {
                 <Link
                     onClick={(e) => {
                         e.stopPropagation();
-                        setactive("suathongtincanhan");
+                        setactive("sua-thong-tin-ca-nhan");
                     }}
                     to={`/rieng-tu/${path.EDIT_INFOR}`}
                     className={`flex p-2 border-b ${
-                        active === "suathongtincanhan"
+                        active === "sua-thong-tin-ca-nhan"
                             ? `font-bold text-gray-700 translate-x-3 bg-green-200 text-md rounded-lg hover:text-gray-700 items-center mt-3`
                             : `border-gray-300 hover:bg-green-200 text-md rounded-lg cursor-pointer items-center hover:font-bold hover:text-gray-700 mt-3 hover:translate-x-3`
                     } `}

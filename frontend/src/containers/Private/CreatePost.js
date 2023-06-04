@@ -101,7 +101,7 @@ const CreatePost = ({ edit }) => {
               )?._id);
 
         !area_number
-            ? //area_number khác số là undefined: thỏa thuận
+            ? //area_number khác số là undefined
               (area_id = "duoi_20m2")
             : (area_id = area_maxmin.find(
                   (area) => area_number >= +area.min && area_number < +area.max
@@ -113,7 +113,6 @@ const CreatePost = ({ edit }) => {
             area_id,
             user_post: user_data._id,
         };
-        console.log(finalPayload);
         let count = validate_data(finalPayload, seterrors);
         if (count !== 0) {
             Swal.fire("Lỗi!", "Thêm bài viết mới không thành công!", "error");
