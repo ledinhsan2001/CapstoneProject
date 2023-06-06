@@ -3,10 +3,16 @@ import { contact } from "../../assets/images/index";
 import icons from "../../utils/icons";
 
 const { MdQuestionMark } = icons;
-const Contact = () => {
+const Contact = ({ max }) => {
     return (
-        <div className="mt-5 p-4 w-[100%] flex justify-center">
-            <div className="flex justify-around bg-white w-[60%]">
+        <div className="mt-5 p-4 w-[100%] flex justify-center ml-[1%]">
+            <div
+                className={
+                    max
+                        ? `flex justify-around bg-white w-[100%]`
+                        : `flex justify-around bg-white w-[60%]`
+                }
+            >
                 <img
                     src={contact}
                     alt="contact"

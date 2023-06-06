@@ -3,7 +3,7 @@ import { SellRental, sale, rental, User } from "../../assets/images/index";
 
 const Overview = () => {
     return (
-        <div className="items-center mt-5 p-4 w-[100%] flex justify-center">
+        <div className="items-center mt-5 p-4 w-[100%] flex justify-center ml-[1%]">
             <div className="flex justify-between bg-white w-[60%]">
                 <div className="h-[294px] w-[500px]">
                     <img src={SellRental} alt="sellRental"></img>

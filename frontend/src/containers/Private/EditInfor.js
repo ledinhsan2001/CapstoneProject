@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Contact } from "../components";
 import { mdi_user } from "../../assets/images";
 import InputInfor from "../components/InputInfor";
@@ -177,9 +177,9 @@ const EditInfor = () => {
                             </button>
                         </div>
                     </div>
-                    <div className="">
+                    <div className="w-full">
                         <div className=" flex mb-[120px]">
-                            <Contact />
+                            <Contact max />
                         </div>
                     </div>
                 </div>
@@ -188,4 +188,4 @@ const EditInfor = () => {
     );
 };
 
-export default EditInfor;
+export default memo(EditInfor);

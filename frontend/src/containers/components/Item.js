@@ -27,6 +27,12 @@ const Item = ({
     user,
     _id,
 }) => {
+    const [isHoverHeart, setIsHoverHeart] = useState(false);
+
+    const activeHeart = () => {
+        setIsHoverHeart(!isHoverHeart);
+    };
+
     const data = address.split(",");
     let Address;
     if (data.length === 4) {
@@ -35,10 +41,13 @@ const Item = ({
     if (data.length === 3) {
         Address = data[1] + "," + data[2];
     }
-    const [isHoverHeart, setIsHoverHeart] = useState(false);
+
     return (
         <div className="flex w-[100%] border-t-[2px] border-solid border-orange-400 pt-[10px] pb-[20px] bg-white">
-            <div className="flex w-[40%] float-left h-[310px] whitespace-pre-wrap relative cursor-pointer pr-2">
+            <Link
+                to={`/chi-tiet/${_id}/${formatUniToString(shortDescription)}`}
+                className="flex w-[40%] float-left h-[310px] whitespace-pre-wrap relative cursor-pointer pr-2 "
+            >
                 <img
                     className="object-fit-cover"
                     src={images[0]}
@@ -52,24 +61,27 @@ const Item = ({
                 </span>
                 <span
                     className="img-heart d-flex"
-                    onMouseEnter={() => setIsHoverHeart(true)}
-                    onMouseLeave={() => setIsHoverHeart(false)}
+                    onClick={() => activeHeart(true)}
                 >
                     {isHoverHeart ? (
-                        <RiHeartFill size={28} color="red" />
+                        <RiHeartFill
+                            size={28}
+                            color="red"
+                            className="hover:text-red-500"
+                        />
                     ) : (
-                        <RiHeartFill size={28} />
+                        <RiHeartFill size={28} className="hover:text-red-500" />
                     )}
                 </span>
-            </div>
+            </Link>
             <div className="w-[60%]">
                 <Link
-                    to={`/chi-tiet/${formatUniToString(
+                    to={`/chi-tiet/${_id}/${formatUniToString(
                         shortDescription
-                    )}/${_id}`}
+                    )}`}
                     className="pt-2"
                 >
-                    <div className="short-des text-red-500 max-h-[65px] text-ellipsis text-left ml-1 items-center whitespace-pre-line overflow-hidden">
+                    <div className="short-des text-red-500 max-h-[65px] text-ellipsis text-left ml-1 items-center whitespace-pre-line overflow-hidden hover:text-red-300">
                         <FaStar
                             size={30}
                             color="orange"
@@ -136,12 +148,12 @@ const Item = ({
                             <ImPhone size={30} className="mb-1 p-1" />
                             {user.phone}
                         </button>
-                        <button
-                            className="bg-blue-50 text-blue-500 rounded-4 hover:bg-blue-500 hover:text-white w-[80px] h-[45px] border-[1px] border-solid border-blue-500 overflow-hidden text-ellipsis whitespace-nowrap"
-                            type="button"
+                        <a
+                            className="bg-blue-50 text-blue-500 rounded-4 hover:bg-blue-500 hover:text-white w-[80px] h-[45px] border-[1px] border-solid border-blue-500 overflow-hidden text-ellipsis whitespace-nowrap items-center flex justify-center"
+                            href={`http://zalo.me/${user.phone}`}
                         >
                             zalo
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

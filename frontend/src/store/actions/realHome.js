@@ -1,6 +1,6 @@
 import actionTypes from "./actionTypes";
 import {
-    apiGetAllRealHome,
+    apiGetDetailRealHome,
     apiGetLimitRealHome,
     apiGetNewPost,
     apiGetRealHomeTypeBS,
@@ -10,24 +10,24 @@ import {
 } from "../../services/index";
 
 // ----------------------------------------------------------
-export const realHome = () => async (dispatch) => {
+export const realHomeDetail = (id) => async (dispatch) => {
     try {
-        const response = await apiGetAllRealHome();
+        const response = await apiGetDetailRealHome(id);
         if (response?.data.success === true) {
             dispatch({
-                type: actionTypes.GET_RHS,
-                real_homes: response.data.data,
+                type: actionTypes.GET_DETAIL_POST,
+                real_home_detail: response.data.data,
             });
         } else {
             dispatch({
-                type: actionTypes.GET_RHS,
+                type: actionTypes.GET_DETAIL_POST,
                 message: response.data.message,
             });
         }
     } catch (error) {
         dispatch({
-            type: actionTypes.GET_RHS,
-            real_homes: null,
+            type: actionTypes.GET_DETAIL_POST,
+            real_home_detail: null,
         });
     }
 };

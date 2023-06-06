@@ -5,12 +5,49 @@ import { UrlHomePage } from "./index";
 import List from "./List";
 import { useSelector } from "react-redux";
 import { ItemSidebarMain } from "../components/index";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import { bds, bds1, bds2 } from "../../assets/images";
 
 const HomePage = () => {
     const { prices, areas } = useSelector((state) => state.price_area);
 
+    var settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+    };
+
     return (
         <div>
+            <div className="p-4 bg-gray-700 justify-center">
+                <Slider {...settings}>
+                    <div className="ml-[10%]">
+                        <img
+                            src={bds}
+                            alt="bds1"
+                            className="object-cover w-[80%] h-[250px]"
+                        ></img>
+                    </div>
+                    <div className="ml-[10%]">
+                        <img
+                            src={bds1}
+                            alt="bds2"
+                            className="object-cover w-[80%] h-[250px]"
+                        ></img>
+                    </div>
+                    <div className="ml-[10%]">
+                        <img
+                            src={bds2}
+                            alt="bds3"
+                            className="object-cover w-[80%] h-[250px]"
+                        ></img>
+                    </div>
+                </Slider>
+            </div>
             <div>
                 <h5 className="text-black mt-2 text-2xl">
                     <b>{title.HeaderMain}</b>

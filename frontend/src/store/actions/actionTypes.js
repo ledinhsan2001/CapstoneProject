@@ -16,6 +16,7 @@ const actionTypes = {
 
     // USER
     GET_USER: "GET_USER",
+    GET_DETAIL_POST: "GET_DETAIL_POST",
     RH_EDIT: "RH_EDIT",
     DEL_DATA_EDIT: "DEL_DATA_EDIT",
 };

@@ -123,6 +123,21 @@ export const apiUploadImages = (images) =>
         }
     });
 
+//Detail post
+export const apiGetDetailRealHome = (id) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "get",
+                url: `/api/real-home/detail`,
+                params: id,
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
+
 //create post
 export const apiCreateRealHome = (payload) =>
     new Promise(async (resolve, reject) => {

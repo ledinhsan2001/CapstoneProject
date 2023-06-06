@@ -12,18 +12,14 @@ const { FormatDate } = require("../utils/FormatDate");
 require("dotenv").config();
 
 export const getDetail = catchAsync(async (req, res) => {
-    const { id } = req.body;
+    const { id } = req.query;
     const real_home = await RealHome.find({ _id: id }, { __v: 0 });
     if (real_home) {
-        const RHT = await realHomeType.findOne(
-            {
-                _id: real_home[0].real_home_type_id,
-            },
-            { _id: 1, name: 1, transaction_type: 1 }
-        );
-        real_home[0].real_home_type_id = RHT;
-        res.status(200).json({ success: true, data: real_home });
+        return res.status(200).json({ success: true, data: real_home });
     }
+    return res
+        .status(400)
+        .json({ success: false, message: "Bất động sản không tồn tại!" });
 });
 
 export const getNewPost = catchAsync(async (req, res) => {
@@ -80,16 +76,16 @@ export const getAllByUser = catchAsync(async (req, res) => {
             lastIndex = typeRHs.length;
         }
         results.data = typeRHs.slice(startIndex, lastIndex);
-        if (startIndex > 0) {
-            results.previous = {
-                page: page_number - 1,
-            };
-        }
-        if (lastIndex < typeRHs.length) {
-            results.next = {
-                page: page_number + 1,
-            };
-        }
+        // if (startIndex > 0) {
+        //     results.previous = {
+        //         page: page_number - 1,
+        //     };
+        // }
+        // if (lastIndex < typeRHs.length) {
+        //     results.next = {
+        //         page: page_number + 1,
+        //     };
+        // }
         results.total_data = typeRHs.length;
         results.page_count = Math.ceil(typeRHs.length / limit);
         res.status(200).json({ success: true, data: results });
@@ -150,16 +146,16 @@ export const getAllLimit = catchAsync(async (req, res) => {
             lastIndex = typeRHs.length;
         }
         results.data = typeRHs.slice(startIndex, lastIndex);
-        if (startIndex > 0) {
-            results.previous = {
-                page: page_number - 1,
-            };
-        }
-        if (lastIndex < typeRHs.length) {
-            results.next = {
-                page: page_number + 1,
-            };
-        }
+        // if (startIndex > 0) {
+        //     results.previous = {
+        //         page: page_number - 1,
+        //     };
+        // }
+        // if (lastIndex < typeRHs.length) {
+        //     results.next = {
+        //         page: page_number + 1,
+        //     };
+        // }
         results.total_data = typeRHs.length;
         results.page_count = Math.ceil(typeRHs.length / limit);
         res.status(200).json({ success: true, data: results });

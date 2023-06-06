@@ -88,7 +88,7 @@ const Header = () => {
                             return (
                                 <li key={item._id} className="m-2 px-2">
                                     <Link
-                                        to={`${formatUniToString(item.name)}`}
+                                        to={`/${formatUniToString(item.name)}`}
                                     >
                                         <h5 className="hover:font-bold text-blue-600 hover:text-blue-700 text-lg">
                                             {item.name}
@@ -153,7 +153,7 @@ const Header = () => {
                                 <div className="cursor-pointer">
                                     <span className="animate-ping absolute inline-flex h-[6px] w-[6px] rounded-full bg-green-500 opacity-100 ml-[16px] mb-[40px]"></span>
                                     <img
-                                        src={user_data.avt || mdi_user}
+                                        src={user_data?.avt || mdi_user}
                                         alt="avatar"
                                         className="rounded-full h-[50px] w-[50px]"
                                     ></img>

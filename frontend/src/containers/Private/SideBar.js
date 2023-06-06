@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { path } from "../../utils/constant";
 import icons from "../../utils/icons";
 import { mdi_user, pushnew_black } from "../../assets/images";
@@ -147,7 +147,7 @@ const SideBar = () => {
                         e.stopPropagation();
                         setactive("bang-gia-dich-vu");
                     }}
-                    to={`/rieng-tu/${path.SERVICE_PRICE}`}
+                    to={`/${path.SERVICE_PRICE}`}
                     className={`flex p-2 border-b ${
                         active === "bang-gia-dich-vu"
                             ? `font-bold text-gray-700 translate-x-3 bg-green-200 text-md rounded-lg hover:text-gray-700 items-center mt-3`
@@ -184,4 +184,4 @@ const SideBar = () => {
     );
 };
 
-export default SideBar;
+export default memo(SideBar);

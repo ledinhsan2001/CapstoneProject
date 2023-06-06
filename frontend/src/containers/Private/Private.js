@@ -20,7 +20,6 @@ const Private = () => {
                     <Outlet />
                 </div>
             </div>
-            <Contact />
         </div>
     );
 };

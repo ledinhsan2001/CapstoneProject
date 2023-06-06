@@ -7,7 +7,6 @@ import { FormatDate } from "./real_house/utils/FormatDate";
 import moment from "moment";
 import "moment/locale/vi";
 const app = express();
-
 // import area from "./real_house/models/area";
 // import {
 //     price_buysell,
