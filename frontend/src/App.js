@@ -47,11 +47,6 @@ function App() {
                                 path={path.DETAIL_REALHOMES__TITLE_ID}
                                 element={<DetailRealHome />}
                             />
-                            <Route
-                                path={"chi-tiet/"}
-                                element={<DetailRealHome />}
-                            />
-
                             {/*Page Search data  */}
                             <Route
                                 path={path.SEARCH}

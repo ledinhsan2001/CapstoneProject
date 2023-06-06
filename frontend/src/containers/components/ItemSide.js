@@ -1,10 +1,15 @@
 import React, { memo } from "react";
 import moment from "moment";
 import "moment/locale/vi";
+import { Link } from "react-router-dom";
+import { formatUniToString } from "../../utils/constant";
 
-const ItemSide = ({ title, price, img, upAt }) => {
+const ItemSide = ({ key, title, price, img, upAt }) => {
     return (
-        <div className="w-full flex items-center gap-1 border-b border-b-gray-300 pb-2">
+        <Link
+            to={`/chi-tiet/${key}/${formatUniToString(title)}`}
+            className="w-full flex items-center gap-1 border-b border-b-gray-300 pb-2"
+        >
             <img
                 className="w-[80px] h-[80px] object-cover flex-none rounded-md"
                 src={img[0]}
@@ -23,7 +28,7 @@ const ItemSide = ({ title, price, img, upAt }) => {
                     </span>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 

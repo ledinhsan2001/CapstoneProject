@@ -7,9 +7,11 @@ import { BiMap } from "react-icons/bi";
 import { BiStar } from "react-icons/bi";
 import { BiBuildingHouse } from "react-icons/bi";
 import { AiOutlineAreaChart } from "react-icons/ai";
+import { AiOutlineClockCircle } from "react-icons/ai";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { RiHeartFill } from "react-icons/ri";
+import { FiHeart } from "react-icons/fi";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { FaTradeFederation } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
@@ -27,6 +29,7 @@ import { RiUserSettingsLine } from "react-icons/ri";
 import { VscSave } from "react-icons/vsc";
 import { MdDeleteOutline } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
+import { GiMoneyStack } from "react-icons/gi";
 
 const icons = {
     AiOutlineDown,
@@ -39,6 +42,7 @@ const icons = {
     IoIosArrowForward,
     BiStar,
     RiHeartFill,
+    FiHeart,
     FaStar,
     FaVectorSquare,
     MdOutlineBed,
@@ -58,6 +62,8 @@ const icons = {
     BsTrash,
     MdDeleteOutline,
     CiEdit,
+    GiMoneyStack,
+    AiOutlineClockCircle,
 };
 
 export default icons;

@@ -7,7 +7,7 @@ export const path = {
     BUYSELL: "mua-ban",
     SERVICE_PRICE: "bang-gia-dich-vu",
     BLOG: "blog",
-    DETAIL_REALHOMES__TITLE_ID: "chi-tiet/:title/:id",
+    DETAIL_REALHOMES__TITLE_ID: "chi-tiet/:id/:slug",
     SEARCH: "tim-kiem",
 
     PRIVATE: "/rieng-tu/*",
@@ -53,7 +53,7 @@ export const formatUniToString = (str) => {
     return str
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f-,]/g, "")
+        .replace(/[\u0300-\u036f-,./]/g, "")
         .replace(/đ/g, "d")
         .split(" ")
         .join("-");

@@ -33,6 +33,12 @@ const realHomeReducer = (state = initState, action) => {
                 new_posts: action.new_posts || [],
                 message: action.message || "",
             };
+        case actionTypes.GET_DETAIL_POST:
+            return {
+                ...state,
+                real_home_detail: action.real_home_detail || [],
+                message: action.message || "",
+            };
         case actionTypes.RH_EDIT:
             return {
                 ...state,

@@ -4,7 +4,7 @@ import { formatUniToString } from "../../../utils/constant";
 
 const Footer = () => {
     return (
-        <div className="border-t-black bg-white mt-2 w-full">
+        <div className="bg-white mt-2 w-full border-b-black border-[1px]">
             <footer className="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-4 border-top">
                 <div className="col-md-6 mb-2 ml-2">
                     <Link to={"/"}>
