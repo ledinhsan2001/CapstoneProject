@@ -15,6 +15,7 @@ const NewPost = () => {
                         return (
                             <ItemSide
                                 key={item._id}
+                                id={item._id}
                                 img={JSON.parse(item?.images?.url)}
                                 title={item.description.title_description}
                                 price={item.description.price}

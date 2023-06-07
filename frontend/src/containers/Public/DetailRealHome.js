@@ -13,7 +13,7 @@ import "moment/locale/vi";
 import { GetNummberFromString, path } from "../../utils/constant";
 import { mdi_user } from "../../assets/images";
 import Swal from "sweetalert2";
-import { NewPost } from "../components";
+import { MapLeaflet, NewPost } from "../components";
 
 const {
     FaStar,
@@ -32,14 +32,15 @@ const DetailRealHome = () => {
     const dispatch = useDispatch();
     const [real_home, setreal_home] = useState("");
     const { real_home_detail } = useSelector((state) => state.real_home);
-    const { user_data } = useSelector((state) => state.user);
     const [isHoverHeart, setIsHoverHeart] = useState(false);
+
     useEffect(() => {
         dispatch(realHomeDetail({ id: id }));
-    }, [id]);
+    }, [id, dispatch]);
+
     useEffect(() => {
         real_home_detail && setreal_home(real_home_detail[0]);
-    }, real_home_detail);
+    }, [real_home_detail]);
 
     var settings = {
         dots: true,
@@ -62,7 +63,7 @@ const DetailRealHome = () => {
         let province = arr.pop();
         return province;
     };
-    console.log(real_home);
+
     return (
         <div className="bg-white">
             <div className="mx-[10%] ">
@@ -189,7 +190,13 @@ const DetailRealHome = () => {
                                     />
                                     {real_home?.address}
                                 </div>
-                                <div>map</div>
+                                {real_home && (
+                                    <div className="mt-3">
+                                        <MapLeaflet
+                                            address={real_home?.address}
+                                        />
+                                    </div>
+                                )}
                             </div>
                             <div className="my-4 ">
                                 <p className="font-bold text-2xl mb-3">

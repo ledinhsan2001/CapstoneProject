@@ -4,10 +4,10 @@ import "moment/locale/vi";
 import { Link } from "react-router-dom";
 import { formatUniToString } from "../../utils/constant";
 
-const ItemSide = ({ key, title, price, img, upAt }) => {
+const ItemSide = ({ id, title, price, img, upAt }) => {
     return (
         <Link
-            to={`/chi-tiet/${key}/${formatUniToString(title)}`}
+            to={`/chi-tiet/${id}/${formatUniToString(title)}`}
             className="w-full flex items-center gap-1 border-b border-b-gray-300 pb-2"
         >
             <img

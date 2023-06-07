@@ -10,7 +10,8 @@ export const validate_data = (finalPayload, seterrors) => {
             item[0] === "email" ||
             item[0] === "link_zalo" ||
             item[0] === "address" ||
-            item[0] === "avt"
+            item[0] === "avt" ||
+            item[0] === "number_home"
         ) {
             return;
         }
