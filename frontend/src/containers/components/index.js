@@ -12,3 +12,4 @@ export { default as SelectCategories } from "./SelectCategories";
 export { default as SelectAddress } from "./SelectAddress";
 export { default as TextAreaDescription } from "./TextAreaDescription";
 export { default as SelectDescription } from "./SelectDescription";
+export { default as MapLeaflet } from "./MapLeaflet";

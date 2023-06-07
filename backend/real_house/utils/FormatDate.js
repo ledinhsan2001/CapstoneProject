@@ -10,7 +10,7 @@ export const FormatDate = (number_day) => {
         date_moment = moment(data);
     }
     let day = date_moment.day();
-    day = day === 0 ? "Chủ nhật" : `Thứ ${day}`;
+    day = day === 0 ? "Chủ nhật" : `Thứ ${day + 1}`;
     let date = date_moment.date();
     let month = date_moment.month() + 1;
     let year = date_moment.year();

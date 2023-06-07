@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SelectAddress } from "../components/";
+import { MapLeaflet, SelectAddress } from "../components/";
 import { apiGetProvince, apiGetDistrict, apiGetWard } from "../../services";
 import { useSelector } from "react-redux";
 
@@ -14,12 +14,15 @@ const Address = ({ payload, setpayload, errors, seterrors }) => {
 
     // create and put load re-data all null
     useEffect(() => {
+        // then update or create
         if (payload.province_id === "") {
             setprovince("");
             setdistrict("");
             setward("");
         }
+
         if (data_edit) {
+            // get number_home if have
             let arradd = data_edit.address.split(",");
             let number_home = arradd.length === 4 ? arradd[0] : "";
             payload.number_home = number_home;
@@ -198,9 +201,14 @@ const Address = ({ payload, setpayload, errors, seterrors }) => {
                     }`}
                 />
             </div>
-            <div className="flex my-3 px-3">
-                <div className="flex flex-col">
+            <div className="flex my-3 px-3 w-full">
+                <div className="flex flex-col w-full">
                     <div className="font-bold my-2">Vị trí bản đồ</div>
+                    {payload && (
+                        <div className="mt-3 w-[95%] rounded-md">
+                            <MapLeaflet address={payload?.address} />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
