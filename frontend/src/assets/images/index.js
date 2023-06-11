@@ -22,3 +22,4 @@ export { default as service4 } from "./service4.png";
 export { default as service5 } from "./service5.png";
 export { default as service6 } from "./service6.png";
 export { default as pin } from "./pin.png";
+export { default as ggmap } from "./ggmap.png";

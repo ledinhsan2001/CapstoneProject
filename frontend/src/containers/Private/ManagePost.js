@@ -30,6 +30,10 @@ const ManagePost = () => {
         }
     }, [data_edit, isDeleted]);
 
+    useEffect(() => {
+        setreal_home_user(real_homes_by_user);
+    }, [real_homes_by_user]);
+
     // day_expire have after day_current? n => expired
     const check_expired = (end) =>
         moment(end, "DD/MM/YYYY").isAfter(new Date());
@@ -127,79 +131,89 @@ const ManagePost = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {real_home_user?.map((item) => {
-                            const images = item?.images?.url
-                                ? JSON.parse(item?.images?.url)
-                                : [];
-                            return (
-                                <tr key={item._id} className="w-full h-[80px]">
-                                    <td className="border-[1px] border-gray-400 font-bold text-ellipsis whitespace-pre-line overflow-hidden">
-                                        {`#${GetNummberFromString(item?._id)}`}
-                                    </td>
-                                    <td className="flex border-[1px] border-gray-400 items-center justify-center">
-                                        <img
-                                            className=" h-[80px] w-[100%] object-cover rounded-sm "
-                                            src={images[0]}
-                                            alt="img"
-                                        ></img>
-                                    </td>
-                                    <td className="border-[1px] border-gray-400 text-red-500 max-h-[65px] text-ellipsis text-center text-lg ml-1 items-center whitespace-pre-line overflow-hidden">
-                                        {`${item?.description?.title_description.slice(
-                                            0,
-                                            60
-                                        )}...`}
-                                    </td>
-                                    <td className="border-[1px] border-gray-400 text-[#16c784] text-[20px] font-bold">
-                                        {item?.description?.price}
-                                    </td>
-                                    <td className="border-[1px] border-gray-400">
-                                        {item?.start_date}
-                                    </td>
-                                    <td className="border-[1px] border-gray-400">
-                                        {item?.end_date}
-                                    </td>
-                                    {check_expired(
-                                        item?.end_date.split(" ")[3]
-                                    ) ? (
-                                        <td className="border-[1px] border-gray-400 bg-blue-200">
-                                            Chưa hết hạn
+                        {real_home_user?.length > 0 &&
+                            real_home_user?.map((item) => {
+                                const images = item?.images?.url
+                                    ? JSON.parse(item?.images?.url)
+                                    : [];
+                                return (
+                                    <tr
+                                        key={item._id}
+                                        className="w-full h-[80px]"
+                                    >
+                                        <td className="border-[1px] border-gray-400 font-bold text-ellipsis whitespace-pre-line overflow-hidden">
+                                            {`#${GetNummberFromString(
+                                                item?._id
+                                            )}`}
                                         </td>
-                                    ) : (
-                                        <td className="border-[1px] border-gray-400 bg-red-200">
-                                            Đã hết hạn
+                                        <td className="flex border-[1px] border-gray-400 items-center justify-center">
+                                            <img
+                                                className=" h-[80px] w-[100%] object-cover rounded-sm "
+                                                src={images[0]}
+                                                alt="img"
+                                            ></img>
                                         </td>
-                                    )}
-                                    <td className="border-[1px] border-gray-400 font-bold justify-center">
-                                        <div className="flex justify-center gap-1">
-                                            <button
-                                                className="cursor-pointer py-2 px-1 rounded-md bg-green-500 text-white flex items-center overflow-hidden"
-                                                onClick={() => {
-                                                    dispatch(
-                                                        actions.dataEdit(item)
-                                                    );
-                                                    setisShow(true);
-                                                }}
-                                            >
-                                                <CiEdit
-                                                    color="white"
-                                                    size={24}
-                                                />
-                                                Sửa
-                                            </button>
-                                            <button
-                                                className="cursor-pointer py-2 px-2 rounded-md bg-red-400 text-white flex items-center overflow-hidden"
-                                                onClick={() =>
-                                                    handleDelete(item)
-                                                }
-                                            >
-                                                <MdDeleteOutline size={24} />
-                                                Xóa
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            );
-                        })}
+                                        <td className="border-[1px] border-gray-400 text-red-500 max-h-[65px] text-ellipsis text-center text-lg ml-1 items-center whitespace-pre-line overflow-hidden">
+                                            {`${item?.description?.title_description.slice(
+                                                0,
+                                                60
+                                            )}...`}
+                                        </td>
+                                        <td className="border-[1px] border-gray-400 text-[#16c784] text-[20px] font-bold">
+                                            {item?.description?.price}
+                                        </td>
+                                        <td className="border-[1px] border-gray-400">
+                                            {item?.start_date}
+                                        </td>
+                                        <td className="border-[1px] border-gray-400">
+                                            {item?.end_date}
+                                        </td>
+                                        {check_expired(
+                                            item?.end_date.split(" ")[3]
+                                        ) ? (
+                                            <td className="border-[1px] border-gray-400 bg-blue-200">
+                                                Chưa hết hạn
+                                            </td>
+                                        ) : (
+                                            <td className="border-[1px] border-gray-400 bg-red-200">
+                                                Đã hết hạn
+                                            </td>
+                                        )}
+                                        <td className="border-[1px] border-gray-400 font-bold justify-center">
+                                            <div className="flex justify-center gap-1">
+                                                <button
+                                                    className="cursor-pointer py-2 px-1 rounded-md bg-green-500 text-white flex items-center overflow-hidden"
+                                                    onClick={() => {
+                                                        dispatch(
+                                                            actions.dataEdit(
+                                                                item
+                                                            )
+                                                        );
+                                                        setisShow(true);
+                                                    }}
+                                                >
+                                                    <CiEdit
+                                                        color="white"
+                                                        size={24}
+                                                    />
+                                                    Sửa
+                                                </button>
+                                                <button
+                                                    className="cursor-pointer py-2 px-2 rounded-md bg-red-400 text-white flex items-center overflow-hidden"
+                                                    onClick={() =>
+                                                        handleDelete(item)
+                                                    }
+                                                >
+                                                    <MdDeleteOutline
+                                                        size={24}
+                                                    />
+                                                    Xóa
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                     </tbody>
                 </table>
                 {message && <div className="bg-white">{message}</div>}

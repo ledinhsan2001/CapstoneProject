@@ -23,7 +23,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <div className="p-4 bg-gray-700 justify-center">
+            <div className="p-4 bg-gray-700 justify-center z-2">
                 <Slider {...settings}>
                     <div className="ml-[10%]">
                         <img

@@ -45,6 +45,9 @@ const RealHome = new Schema(
             type: mongoose.Schema.Types.String,
             ref: "Area",
         },
+        order_area: {
+            type: Number,
+        },
         province_id: {
             type: mongoose.Schema.Types.String,
             ref: "Province",

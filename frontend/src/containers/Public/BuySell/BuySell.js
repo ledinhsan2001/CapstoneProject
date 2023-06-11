@@ -69,13 +69,13 @@ const BuySell = () => {
                             data_link={prices}
                             isDouble="ok"
                             price="price"
-                            type="gia"
+                            type="price_id"
                         />
                         <ItemSidebarMain
                             title="Xem theo diện tích"
                             data_link={areas}
                             isDouble="ok"
-                            type="dien_tich"
+                            type="area_id"
                         />
                     </div>
                 </div>

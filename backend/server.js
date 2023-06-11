@@ -22,6 +22,7 @@ const app = express();
 // });
 // console.log("done");
 //connect db
+
 db.connect();
 
 app.use(cors());

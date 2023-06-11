@@ -1,5 +1,4 @@
 import React, { useEffect, useState, memo } from "react";
-import { Button } from "../components/Button";
 import { Item } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { realHomeLimit } from "../../store/actions/realHome";
@@ -16,6 +15,7 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
     const navigate = useNavigate();
     const [params] = useSearchParams();
     const [currentPage, setCurrentPage] = useState(0);
+    const [sortActive, setsortActive] = useState(0);
     const dispatch = useDispatch();
 
     //useSelector state.real_homes chọc đúng state real_homeReducer
@@ -26,11 +26,21 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
         let page_value = params.get("page");
         let price = params.get("price_id");
         let area = params.get("area_id");
+        // let province = params.get("province_id");
+
         let page = page_value ? +page_value - 1 : 0;
         let code = price ? price : area ? area : undefined;
         let type = price ? "price_id" : area ? "area_id" : undefined;
+
+        let sort = params.get("sort_id");
+        let sort_code = sort ? sort : undefined;
+        let sort_type = sort ? "sort_id" : undefined;
+
         if (arr_search) {
             arr_search["page"] = page;
+            if (sort) {
+                arr_search["sort_id"] = sort;
+            }
         }
         arr_search
             ? dispatch(realHomeLimit(arr_search))
@@ -40,20 +50,41 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
                       transaction_type_id,
                       real_home_type_id,
                       [type]: code,
+                      [sort_type]: sort_code,
                   })
               );
         setCurrentPage(+page);
-    }, [params, real_home_type_id, transaction_type_id, arr_search]);
+    }, [params, real_home_type_id, transaction_type_id, arr_search, dispatch]);
 
     function handlePageClick(e) {
         let price = params.get("price_id");
         let area = params.get("area_id");
+        // let province = params.get("province_id");
 
         let code = price ? price : area ? area : undefined;
         let type = price ? "price_id" : area ? "area_id" : undefined;
+
+        // if have sort
+        let sort = params.get("sort_id");
+        let sort_code = sort ? sort : undefined;
+        let sort_type = sort ? "sort_id" : undefined;
+
         if (arr_search) {
             arr_search["page"] = e.selected + 1;
+            if (sort) {
+                arr_search["sort_id"] = sort;
+            }
         }
+
+        let objparams = {};
+        if (type) {
+            objparams[type] = code;
+        }
+        if (sort) {
+            objparams[sort_type] = sort_code;
+        }
+        objparams["page"] = e.selected + 1;
+
         arr_search
             ? navigate({
                   pathname: location.pathname,
@@ -62,18 +93,54 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
             : type
             ? navigate({
                   pathname: location.pathname,
-                  search: createSearchParams({
-                      [type]: code,
-                      page: e.selected + 1,
-                  }).toString(),
+                  search: createSearchParams(objparams).toString(),
               })
             : navigate({
                   pathname: location.pathname,
-                  search: createSearchParams({
-                      page: e.selected + 1,
-                  }).toString(),
+                  search: createSearchParams(objparams).toString(),
               });
     }
+
+    const handleSort = (value) => {
+        setsortActive(value);
+
+        let price = params.get("price_id");
+        let area = params.get("area_id");
+        // let province = params.get("province_id");
+
+        let code = price ? price : area ? area : undefined;
+        let type = price ? "price_id" : area ? "area_id" : undefined;
+
+        let sort_code = value;
+        let sort_type = "sort_id";
+
+        if (arr_search) {
+            arr_search["page"] = 1;
+            arr_search[sort_type] = sort_code;
+        }
+
+        let objparams = {};
+        if (type) {
+            objparams[type] = code;
+        }
+        objparams[sort_type] = sort_code;
+        objparams["page"] = 1;
+
+        arr_search
+            ? navigate({
+                  pathname: location.pathname,
+                  search: createSearchParams(arr_search).toString(),
+              })
+            : type
+            ? navigate({
+                  pathname: location.pathname,
+                  search: createSearchParams(objparams).toString(),
+              })
+            : navigate({
+                  pathname: location.pathname,
+                  search: createSearchParams(objparams).toString(),
+              });
+    };
 
     return (
         <div className="main w-[100%]">
@@ -90,10 +157,46 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
 
                 <div className="btnSort flex items-center">
                     <span>Sắp xếp:</span>
-                    <Button text={"Mặc định"} />
-                    <Button text={"Tin mới"} />
-                    <Button text={"Giá cao"} />
-                    <Button text={"Giá thấp"} />
+                    <span
+                        className={`mx-1 my-1 p-1 rounded-md ${
+                            sortActive === 0
+                                ? `bg-blue-700 text-white`
+                                : `bg-gray-300`
+                        } hover:bg-blue-700 hover:text-white cursor-pointer`}
+                        onClick={() => handleSort(0)}
+                    >
+                        Mặc định
+                    </span>
+                    <span
+                        className={`mx-1 my-1 p-1 rounded-md ${
+                            sortActive === 1
+                                ? `bg-blue-700 text-white`
+                                : `bg-gray-300`
+                        } hover:bg-blue-700 hover:text-white cursor-pointer`}
+                        onClick={() => handleSort(1)}
+                    >
+                        Tin mới
+                    </span>
+                    <span
+                        className={`mx-1 my-1 p-1 rounded-md ${
+                            sortActive === 2
+                                ? `bg-blue-700 text-white`
+                                : `bg-gray-300`
+                        } hover:bg-blue-700 hover:text-white cursor-pointer`}
+                        onClick={() => handleSort(2)}
+                    >
+                        Diện tích tăng
+                    </span>
+                    <span
+                        className={`mx-1 my-1 p-1 rounded-md ${
+                            sortActive === 3
+                                ? `bg-blue-700 text-white`
+                                : `bg-gray-300`
+                        } hover:bg-blue-700 hover:text-white cursor-pointer`}
+                        onClick={() => handleSort(3)}
+                    >
+                        Diện tích giảm
+                    </span>
                 </div>
             </div>
             <div className="items">

@@ -101,7 +101,10 @@ const SelectForm = ({
         let min = range1 <= range2 ? range1 : range2;
         let max = range1 <= range2 ? range2 : range1;
         //convert percent to value max min
-        let range_minmax = [FormatPercent(min), FormatPercent(max)];
+        let range_minmax =
+            range1 === 100 && range2 === 100
+                ? [FormatPercent(min), 999]
+                : [FormatPercent(min), FormatPercent(max)];
         let arrType =
             name === "price"
                 ? rental
@@ -268,7 +271,7 @@ const SelectForm = ({
                             </div>
                             <div className="mt-[50px] border-t border-solid border-gray-400 flex justify-between h">
                                 <button
-                                    className="m-2"
+                                    className="m-2 p-2 w-[100px] bg-green-300 hover:bg-green-200 rounded-lg"
                                     onClick={() => {
                                         setRange1(0);
                                         setRange2(0);

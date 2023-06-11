@@ -9,6 +9,7 @@ export const path = {
     BLOG: "blog",
     DETAIL_REALHOMES__TITLE_ID: "chi-tiet/:id/:slug",
     SEARCH: "tim-kiem",
+    RESET_PASSWORD: "quen-mat-khau",
 
     PRIVATE: "/rieng-tu/*",
     CREATE_POST: "dang-tin",

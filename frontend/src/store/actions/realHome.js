@@ -51,7 +51,7 @@ export const realHomeLimit = (payload) => async (dispatch) => {
         dispatch({
             type: actionTypes.GET_RHS_LIMIT,
             real_homes: [],
-            message: error.response.data.message,
+            message: error?.response?.data?.message,
         });
     }
 };
@@ -100,7 +100,7 @@ export const newPost = () => async (dispatch) => {
         dispatch({
             type: actionTypes.GET_NEW_POST,
             new_posts: [],
-            message: error.response.data.message,
+            message: error?.response?.data?.message,
         });
     }
 };

@@ -30,6 +30,14 @@ const UserSchema = new Schema(
                 ref: "Role",
             },
         ],
+        OTP: {
+            type: String,
+            default: "",
+        },
+        active: {
+            type: String,
+            default: false,
+        },
     },
     {
         //auto createdAt, updatedAt

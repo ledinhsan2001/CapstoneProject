@@ -44,7 +44,7 @@ const Description = ({ payload, setpayload, errors, seterrors }) => {
                         name="title_description"
                     />
                 </div>
-                <div className="flex my-3 px-3">
+                <div className="flex-col my-3 px-3 gap-5">
                     <TextAreaDescription
                         title={"Nội dung mô tả"}
                         obliateTitle="Nhập ít nhất 50 ký tự"
