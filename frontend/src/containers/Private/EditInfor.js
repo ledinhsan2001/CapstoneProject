@@ -9,11 +9,13 @@ import { RotatingLines } from "react-loader-spinner";
 import Swal from "sweetalert2";
 import * as actions from "../../store/actions";
 import { validate_data } from "../../utils/validate_data";
+import ChangePass from "./ChangePass";
 
 const EditInfor = () => {
     const dispatch = useDispatch();
     const { user_data } = useSelector((state) => state.user);
     const [isLoading, setisLoading] = useState(false);
+    const [showChangePass, setshowChangePass] = useState(false);
     const [errors, seterrors] = useState([]);
     const [payload, setpayload] = useState({
         avt: user_data?.avt || "",
@@ -64,6 +66,10 @@ const EditInfor = () => {
             });
         };
         setisLoading(false);
+    };
+
+    const handleChangepass = () => {
+        setshowChangePass(true);
     };
 
     return (
@@ -157,8 +163,13 @@ const EditInfor = () => {
                                 Mật khẩu
                             </p>
                             <div className="flex flex-col w-[80%]">
-                                <p className="text-start text-lg mt-2 cursor-pointer mx-2 text-blue-700 hover:text-blue-400">
-                                    <i>
+                                <p className="text-start text-lg mt-2 mx-2 text-blue-700">
+                                    <i
+                                        className="cursor-pointer hover:text-blue-400"
+                                        onClick={() => {
+                                            handleChangepass();
+                                        }}
+                                    >
                                         <u>Đổi mật khẩu</u>
                                     </i>
                                 </p>
@@ -183,6 +194,9 @@ const EditInfor = () => {
                         </div>
                     </div>
                 </div>
+                {showChangePass && (
+                    <ChangePass setshowChangePass={setshowChangePass} />
+                )}
             </div>
         </div>
     );

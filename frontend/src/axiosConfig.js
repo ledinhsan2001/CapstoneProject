@@ -7,12 +7,12 @@ const instance = axios.create({
 //Chặn và xử lý request trước khi gửi lên server
 instance.interceptors.request.use(
     function (config) {
-        const isLoggedIn = window.localStorage.getItem("isLoggedIn");
-        const refreshToken = window.localStorage.getItem("refreshToken");
-        const token = window.localStorage.getItem("token");
-        // const token = localStorage.getItem("persist:auth");
+        let parse_obj = JSON.parse(window.localStorage.getItem("persist:auth"));
+        const accessToken = parse_obj.accessToken;
 
-        config.headers.authorization = `Bearer ${token}`;
+        config.headers.authorization = accessToken
+            ? `Bearer ${accessToken}`
+            : null;
         // Do something before request is sent
         return config;
     },

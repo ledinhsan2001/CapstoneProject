@@ -4,6 +4,7 @@ const catchAsync = require("../middlewares/catchAsync");
 const { Description } = require("../models/description");
 const { Image } = require("../models/image");
 const RealHome = require("../models/realHome");
+const Area = require("../models/area");
 const realHomeType = require("../models/realHomeType");
 const { TransactionType } = require("../models/transactionType");
 const { User } = require("../models/user");
@@ -98,8 +99,14 @@ export const getAllByUser = catchAsync(async (req, res) => {
 });
 
 export const getAllLimit = catchAsync(async (req, res) => {
-    const { page, transaction_type_id, real_home_type_id, price_id, area_id } =
-        req.query;
+    const {
+        page,
+        transaction_type_id,
+        real_home_type_id,
+        price_id,
+        area_id,
+        sort_id,
+    } = req.query;
 
     //search is format arr[[1,2,3]] = object
     let arr_price;
@@ -112,6 +119,23 @@ export const getAllLimit = catchAsync(async (req, res) => {
         typeof area_id === "object"
             ? (arr_area = area_id[0])
             : (arr_area = [area_id]);
+
+    let sort = sort_id;
+    let objsort = {};
+    if (sort) {
+        if (+sort === 0) {
+            objsort["_id"] = 1;
+        }
+        if (+sort === 1) {
+            objsort["createdAt"] = -1;
+        }
+        if (+sort === 2) {
+            objsort["description.area"] = 1;
+        }
+        if (+sort === 3) {
+            objsort["description.area"] = -1;
+        }
+    }
 
     let page_number = parseInt(page);
     let limit = process.env.LIMIT;
@@ -133,7 +157,11 @@ export const getAllLimit = catchAsync(async (req, res) => {
     }
 
     // console.log(clause_where);
-    typeRHs = await RealHome.find(clause_where, { __v: 0 });
+    if (sort) {
+        typeRHs = await RealHome.find(clause_where, { __v: 0 }).sort(objsort);
+    } else {
+        typeRHs = await RealHome.find(clause_where, { __v: 0 });
+    }
 
     // const limit_data = page_number * limit;
     // .skip(limit_data)
@@ -146,16 +174,6 @@ export const getAllLimit = catchAsync(async (req, res) => {
             lastIndex = typeRHs.length;
         }
         results.data = typeRHs.slice(startIndex, lastIndex);
-        // if (startIndex > 0) {
-        //     results.previous = {
-        //         page: page_number - 1,
-        //     };
-        // }
-        // if (lastIndex < typeRHs.length) {
-        //     results.next = {
-        //         page: page_number + 1,
-        //     };
-        // }
         results.total_data = typeRHs.length;
         results.page_count = Math.ceil(typeRHs.length / limit);
         res.status(200).json({ success: true, data: results });
@@ -168,9 +186,29 @@ export const getAllLimit = catchAsync(async (req, res) => {
 });
 
 export const getAll = async (req, res) => {
-    const typeRHs = await RealHome.find({}, { __v: 0 });
+    const typeRHs = await RealHome.aggregate([
+        // {
+        //     $lookup: {
+        //         from: "Area",
+        //         localField: "area_id",
+        //         foreignField: "_id",
+        //         as: "area_order",
+        //     },
+        // },
+        // {
+        //     $sort: {
+        //         "description.area": 1,
+        //     },
+        // },
+        // {
+        //     $group: {
+        //         _id: "$area_id",
+        //     },
+        // },
+        // { $unwind: "$RealHome" },
+    ]);
     if (typeRHs.length) {
-        res.status(200).json({ success: true, data: data });
+        res.status(200).json({ success: true, data: typeRHs });
     } else {
         throw new ApiError(400, "Danh sách kiểu bất động sản trống.");
     }
@@ -217,6 +255,7 @@ export const create = async (req, res) => {
         });
         let start_date = FormatDate();
 
+        let area = await Area.findOne({ _id: area_id });
         //then integrated payment will change enddate
         let end_date = FormatDate(7);
         const real_home = await RealHome.create({
@@ -230,6 +269,7 @@ export const create = async (req, res) => {
             description: obj_description,
             price_id,
             area_id,
+            order_area: area.order,
             province_id,
         });
 

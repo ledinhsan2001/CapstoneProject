@@ -7,7 +7,6 @@ Import persistGate into file main bọc file App/ => Giúp delay render UI cho t
 npm i redux-thunk: xử lý async. axios: call api. react-router-dom --save -dev
 npm i react-icons --save -dev
 
-usenavigate dùng để điều hướng
 useCallback giữ cho một hàm không được tạo lại lần nữa, dựa trên mảng các phần phụ thuộc.
 
 npm i react-paginate --save -dev
@@ -16,3 +15,4 @@ npm install react-loader-spinner --save   loading
 npm install react-slick slick-carousel --save -dev  slick image
 npm i leaflet react-leaflet --save -dev  gg maps
 npm i leaflet-geosearch --save -dev   input addres =>  geography lat,long 
+npm install react-quilljs quill    format textarea

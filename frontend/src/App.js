@@ -21,6 +21,7 @@ import {
     ManagePost,
     EditInfor,
 } from "./containers/Private";
+import ResetPassword from "./containers/Public/Account/ResetPassword";
 
 function App() {
     return (
@@ -29,6 +30,10 @@ function App() {
                 <div className="auth-inner flex">
                     <Routes>
                         <Route path={path.LOGIN} element={<Login />} />
+                        <Route
+                            path={path.RESET_PASSWORD}
+                            element={<ResetPassword />}
+                        />
                         <Route path={path.REGISTER} element={<Register />} />
                         <Route path={path.HOME} element={<Home />}>
                             <Route path="*" element={<HomePage />} />

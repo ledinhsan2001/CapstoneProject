@@ -1,5 +1,8 @@
 const actionTypes = {
+    LOGIN_SUCCESS: "LOGIN_SUCCESS",
+    LOGIN_FAIL: "LOGIN_FAIL",
     LOGOUT: "LOGOUT",
+    CHANGE_PASS: "CHANGE_PASS",
 
     GET_RHS: "GET_RHS",
     GET_RHS_LIMIT: "GET_RHS_LIMIT",

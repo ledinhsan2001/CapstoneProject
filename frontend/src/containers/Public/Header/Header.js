@@ -20,7 +20,9 @@ const { MdPostAdd, AiOutlineHeart, RiUserSettingsLine, RiLogoutCircleRLine } =
     icons;
 
 const Header = () => {
-    const isLoggedIn = window.localStorage.getItem("isLoggedIn");
+    const { isLoggedIn, message, accessToken, refreshToken } = useSelector(
+        (state) => state.auth
+    );
     const { transaction_types } = useSelector((state) => state.real_home);
     const { user_data } = useSelector((state) => state.user);
     const [Show, setShow] = useState(false);
@@ -31,22 +33,19 @@ const Header = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        isLoggedIn && dispatch(actions.actionUser());
-        if (!user_data) {
-            expired();
+        if (isLoggedIn) {
+            dispatch(actions.actionUser());
+            if (!user_data) {
+                window.localStorage.clear();
+                navigate(`/${path.LOGIN}`);
+            }
         }
-
         dispatch(actions.actionTransactionType());
         headerRef.current.scrollIntoView({
             behavior: "smooth",
             block: "start",
         });
     }, [dispatch, isLoggedIn]);
-
-    const expired = () => {
-        window.localStorage.clear();
-        navigate(`/${path.LOGIN}`);
-    };
 
     const logOut = (e) => {
         e.preventDefault();
@@ -152,11 +151,13 @@ const Header = () => {
                             >
                                 <div className="cursor-pointer">
                                     <span className="animate-ping absolute inline-flex h-[6px] w-[6px] rounded-full bg-green-500 opacity-100 ml-[16px] mb-[40px]"></span>
-                                    <img
-                                        src={user_data?.avt || mdi_user}
-                                        alt="avatar"
-                                        className="rounded-full h-[50px] w-[50px]"
-                                    ></img>
+                                    {user_data && (
+                                        <img
+                                            src={user_data?.avt || mdi_user}
+                                            alt="avatar"
+                                            className="rounded-full h-[50px] w-[50px]"
+                                        ></img>
+                                    )}
                                 </div>
                                 {Show && (
                                     <div
@@ -165,12 +166,12 @@ const Header = () => {
                                         id="ListItem"
                                         className="absolute bg-white border-2 right-0 top-full shadow-md rounded-md p-2 w-[280px] h-[370px]"
                                     >
-                                        <div className="flex cursor-pointer">
+                                        <div className="flex cursor-pointer z-100">
                                             <div className="flex rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[70px] w-[70px] mb-2 mx-2 z-1000">
                                                 <span className="animate-ping absolute inline-flex h-[8px] w-[8px] rounded-full bg-green-500 opacity-100 ml-[55px] mb-[50px]"></span>
                                                 <img
                                                     src={
-                                                        user_data.avt ||
+                                                        user_data?.avt ||
                                                         mdi_user
                                                     }
                                                     alt="avatar"

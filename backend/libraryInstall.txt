@@ -4,3 +4,4 @@ npm i nodemon express mongoose cors jsonwebtoken bcryptjs routes rand-token dote
 nodemon --exec babel-node: dịch các import export trong 1 file. các loại version của js.
 npm i -D @babel/core @babel/node @babel/preset-env      => -D môi trường dev
 npm i moment --save -dev
+npm i twilio --save -dev

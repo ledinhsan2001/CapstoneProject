@@ -12,7 +12,6 @@ const markerIcon = new L.Icon({
 });
 
 const MapLeaflet = ({ address }) => {
-    console.log(address);
     const [coordss, setcoordss] = useState(null);
 
     useEffect(() => {
@@ -59,7 +58,6 @@ const MapLeaflet = ({ address }) => {
         }
     }, [address]);
 
-    console.log(coordss);
     return (
         <div>
             {coordss && (

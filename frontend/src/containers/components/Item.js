@@ -130,7 +130,12 @@ const Item = ({
                     {content}
                 </p>
                 <div className="contact flex justify-between">
-                    <div className="overflow-hidden text-ellipsis whitespace-nowrap flex">
+                    <Link
+                        to={`/chi-tiet/${_id}/${formatUniToString(
+                            shortDescription
+                        )}`}
+                        className="overflow-hidden text-ellipsis whitespace-nowrap flex"
+                    >
                         <img
                             className="m-2 rounded-[20px] object-cover"
                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoZinWG8a5dwB2QOpCXxdOcn8G3TSVYkZ7VQ&usqp=CAU"
@@ -139,7 +144,7 @@ const Item = ({
                             height={40}
                         ></img>
                         <p className="mt-[15px]">{`${user.first_name} ${user.last_name}`}</p>
-                    </div>
+                    </Link>
                     <div className="flex mt-1 overflow-hidden text-ellipsis whitespace-nowrap">
                         <button
                             className="bg-[#4397C7] text-white rounded-4 w-[150px] h-[45px] hover:bg-blue-500 hover:text-white items-center justify-center flex overflow-hidden text-ellipsis whitespace-nowrap"
@@ -151,6 +156,7 @@ const Item = ({
                         <a
                             className="bg-blue-50 text-blue-500 rounded-4 hover:bg-blue-500 hover:text-white w-[80px] h-[45px] border-[1px] border-solid border-blue-500 overflow-hidden text-ellipsis whitespace-nowrap items-center flex justify-center"
                             href={`http://zalo.me/${user.phone}`}
+                            target="_blank"
                         >
                             zalo
                         </a>

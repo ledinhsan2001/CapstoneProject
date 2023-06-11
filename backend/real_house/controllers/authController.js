@@ -7,9 +7,10 @@ const catchAsync = require("../middlewares/catchAsync");
 require("dotenv").config();
 
 const loginController = async (req, res) => {
-    const { phone, password } = req.body;
-    const user = await User.findOne({ phone: phone });
-    if (user) {
+    const { phone1, password } = req.body;
+    const user = await User.findOne({ phone: phone1 });
+    // case Registered but have not verify phone (active===false).
+    if (user && user.active !== false) {
         var passwordIsValid = bcrypt.compareSync(password, user.password);
         if (passwordIsValid) {
             // tao token với thông tin là id
@@ -24,14 +25,16 @@ const loginController = async (req, res) => {
 
             if (!accessToken) {
                 return res.status(401).send({
-                    error: "Đăng nhập không thành công, vui lòng thử lại.",
+                    success: false,
+                    message: "Đăng nhập không thành công, vui lòng thử lại.",
                 });
             }
 
             const refreshToken = randToken.generate(50); // tạo 1 refresh token ngẫu nhiên
             if (!refreshToken) {
                 return res.status(401).send({
-                    error: "Đăng nhập không thành công, vui lòng thử lại.",
+                    success: false,
+                    message: "Đăng nhập không thành công, vui lòng thử lại.",
                 });
             }
 
@@ -44,6 +47,7 @@ const loginController = async (req, res) => {
                 const roleId = user.roles[0];
                 const nameRole = await Role.findById({ _id: roleId });
                 return res.status(200).json({
+                    success: true,
                     message: "Đăng nhập thành công.",
                     id: user._id,
                     first_name: user.first_name,
@@ -56,22 +60,32 @@ const loginController = async (req, res) => {
             } else {
                 return res.status(400).json({
                     accessToken: null,
-                    error: "Cập nhật refresh token lỗi!",
+                    success: false,
+                    message: "Cập nhật refresh token lỗi!",
                 });
             }
         } else {
-            return res
-                .status(400)
-                .json({ accessToken: null, error: "Mật khẩu không đúng!" });
+            return res.status(400).json({
+                accessToken: null,
+                success: false,
+                message: "Mật khẩu không đúng!",
+            });
         }
     } else {
-        return res.status(400).json({ error: "Tài khoản không tồn tại." });
+        return res
+            .status(400)
+            .json({ success: false, message: "Tài khoản không tồn tại." });
     }
 };
 
 const registerController = catchAsync(async (req, res) => {
-    const { first_name, last_name, phone, password } = req.body;
+    const { first_name, last_name, phone, password, repassword } = req.body;
     const exist_phone = await User.findOne({ phone: phone });
+    if (password !== repassword) {
+        return res
+            .status(400)
+            .json({ success: false, message: "Mật khẩu nhập lại không khớp!" });
+    }
     if (!exist_phone) {
         const user = new User({
             first_name: first_name,
@@ -83,20 +97,44 @@ const registerController = catchAsync(async (req, res) => {
         if (role) {
             user.roles = [role];
         }
-        const success = await user.save().then((user) => {
-            user.password = undefined;
-            res.status(201).send({
-                message: "Đăng ký tài khoản thành công!",
-                data: user,
+        try {
+            const accountSid = process.env.TWILIO_ACCOUNT_SID;
+            const authToken = process.env.TWILIO_AUTH_TOKEN;
+            const client = require("twilio")(accountSid, authToken);
+
+            let OTP = "";
+            for (let i = 0; i < 4; i++) {
+                OTP += Math.floor(Math.random() * 10);
+            }
+
+            //    send OTP
+            await client.messages.create({
+                body: `Mã OTP của bạn là: ${OTP}`,
+                from: process.env.TWILIO_PHONE_NUMBER,
+                to: `+84${phone}`,
             });
-        });
-        if (!success) {
-            return res.status(400).json({ error: "Lỗi đăng ký tài khoản. " });
-            // throw new ApiError(500, "Lỗi đăng ký tài khoản.");
+
+            // save otp in db
+            console.log("ok1");
+            user.OTP = OTP;
+            await user.save();
+            console.log("ok2");
+
+            return res.status(201).json({
+                success: true,
+                message: `Mã OTP đã gửi đến: (+84) ${phone}`,
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(400).json({
+                success: false,
+                message: "Gửi mã OTP thất bại. Vui lòng thử lại!",
+            });
         }
     } else {
-        // throw new ApiError(500, "tài khoản này đã tồn tại!");
-        return res.status(400).json({ error: "tài khoản này đã tồn tại!" });
+        return res
+            .status(400)
+            .json({ success: false, message: "Tài khoản này đã tồn tại!" });
     }
 });
 
@@ -156,9 +194,144 @@ const refreshTokenController = async (req, res) => {
     });
 };
 
+const changePass = async (req, res) => {
+    const id = req.userId;
+    const { oldPass, newPass, rePass } = req.body;
+    const user_exist = await User.findById({ _id: id });
+    if (user_exist) {
+        const ispass = bcrypt.compareSync(oldPass, user_exist.password);
+        if (ispass) {
+            if (newPass === rePass) {
+                const user = await User.findOneAndUpdate(
+                    { _id: id },
+                    { password: bcrypt.hashSync(newPass, 8) }
+                );
+                if (user) {
+                    return res.status(200).json({
+                        success: true,
+                        message: "Bạn đã cập nhật mật khẩu thành công.",
+                    });
+                } else {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Cập nhật mật khẩu không thành công.",
+                    });
+                }
+            } else {
+                return res.status(400).json({
+                    success: false,
+                    message: "Mật khẩu nhập lại không khớp!",
+                });
+            }
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: "Mật khẩu không chính xác!",
+            });
+        }
+    } else {
+        return res.status(400).json({
+            success: false,
+            message: "Không tìm thấy tài khoản.",
+        });
+    }
+};
+
+//case forgot password
+const sendOTP = async (req, res) => {
+    const { phone } = req.body;
+    const exist_phone = await User.findOne({ phone: phone });
+    if (exist_phone) {
+        try {
+            const accountSid = process.env.TWILIO_ACCOUNT_SID;
+            const authToken = process.env.TWILIO_AUTH_TOKEN;
+            const client = require("twilio")(accountSid, authToken);
+
+            let OTP = "";
+            for (let i = 0; i < 4; i++) {
+                OTP += Math.floor(Math.random() * 10);
+            }
+
+            //    send OTP
+            await client.messages.create({
+                body: `Mã OTP của bạn là: ${OTP}`,
+                from: process.env.TWILIO_PHONE_NUMBER,
+                to: `+84${phone}`,
+            });
+            const update = await User.findOneAndUpdate(
+                { phone: phone },
+                { OTP: OTP }
+            );
+            if (update) {
+                return res.status(201).send({
+                    success: true,
+                    message: `Mã OTP đã gửi đến: (+84) ${phone}`,
+                });
+            } else {
+                return res
+                    .status(400)
+                    .json({ success: false, message: "Cập nhật OTP thất bại" });
+            }
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Gửi mã OTP thất bại. Vui lòng thử lại!",
+            });
+        }
+    } else {
+        return res
+            .status(400)
+            .json({ success: false, message: "Số điện thoại không tồn tại" });
+    }
+};
+
+// Case created account but have not verify then can forgot password to verify
+// verify register OTP
+const verifyOTP = async (req, res) => {
+    const { phone, OTP, newpassword } = req.body;
+    const exist_phone = await User.findOne({ phone: phone });
+    if (exist_phone) {
+        if (exist_phone.OTP === OTP) {
+            let clausewhere = {};
+            clausewhere["OTP"] = "";
+            if (newpassword) {
+                clausewhere["password"] = bcrypt.hashSync(newpassword, 8);
+            }
+            const update = await User.findOneAndUpdate(
+                { phone: phone },
+                clausewhere
+            );
+            if (update) {
+                return res.status(200).json({
+                    success: true,
+                    message: newpassword
+                        ? `Mã OTP chính xác. Bạn đã đổi mật khẩu thành công.`
+                        : `Mã OTP chính xác. Bạn đã tạo tài khoản thành công!`,
+                });
+            } else {
+                return res
+                    .status(400)
+                    .json({ success: false, message: "Cập nhật OTP thất bại" });
+            }
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: "Mã OTP chưa chính xác. Vui lòng thử lại!",
+            });
+        }
+    } else {
+        return res
+            .status(400)
+            .json({ success: false, message: "Số điện thoại không tồn tại" });
+    }
+};
+
 const authController = {
     loginController,
     registerController,
     refreshTokenController,
+    changePass,
+    sendOTP,
+    verifyOTP,
 };
 module.exports = authController;

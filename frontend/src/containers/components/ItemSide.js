@@ -8,7 +8,7 @@ const ItemSide = ({ id, title, price, img, upAt }) => {
     return (
         <Link
             to={`/chi-tiet/${id}/${formatUniToString(title)}`}
-            className="w-full flex items-center gap-1 border-b border-b-gray-300 pb-2"
+            className="w-full flex items-center gap-1 border-b border-b-gray-300 pb-2 hover:font-bold"
         >
             <img
                 className="w-[80px] h-[80px] object-cover flex-none rounded-md"
@@ -20,9 +20,7 @@ const ItemSide = ({ id, title, price, img, upAt }) => {
                     {`${title?.slice(0, 46)}...`}
                 </h4>
                 <div className="flex mt-1 justify-between">
-                    <span className="text-[#16c784] text-[15px] font-bold">
-                        {price}
-                    </span>
+                    <span className="text-[#16c784] text-[16px]">{price}</span>
                     <span className="text-[13px] text-gray-400">
                         {moment(upAt).fromNow()}
                     </span>

@@ -114,8 +114,9 @@ const CreatePost = ({ edit }) => {
             user_post: user_data._id,
         };
         let count = validate_data(finalPayload, seterrors);
+        console.log(finalPayload);
         if (count !== 0) {
-            Swal.fire("Lỗi!", "Thêm bài viết mới không thành công!", "error");
+            Swal.fire("Lỗi!", "Bài viết có lỗi!", "error");
         } else {
             if (data_edit) {
                 finalPayload = {

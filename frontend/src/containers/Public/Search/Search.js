@@ -102,7 +102,6 @@ const Search = () => {
                 title_search += `${obj_search[i]}, `;
             }
         }
-
         navigate(
             {
                 pathname: `/${path.SEARCH}`,

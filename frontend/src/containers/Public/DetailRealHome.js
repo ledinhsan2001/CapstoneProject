@@ -11,9 +11,10 @@ import icons from "../../utils/icons";
 import moment from "moment";
 import "moment/locale/vi";
 import { GetNummberFromString, path } from "../../utils/constant";
-import { mdi_user } from "../../assets/images";
+import { mdi_user, ggmap } from "../../assets/images";
 import Swal from "sweetalert2";
 import { MapLeaflet, NewPost } from "../components";
+import { TextEditor } from "../components/TextEditor";
 
 const {
     FaStar,
@@ -64,6 +65,14 @@ const DetailRealHome = () => {
         return province;
     };
 
+    const handleScrollMap = () => {
+        const element = document.getElementById("map");
+        if (element) {
+            // 👇 Will scroll smoothly to the top of the next section
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     return (
         <div className="bg-white">
             <div className="mx-[10%] ">
@@ -77,12 +86,26 @@ const DetailRealHome = () => {
                             />
                             {real_home?.description?.title_description}
                         </div>
-                        <div className="text-ellipsis text-left items-center text-[17px]  whitespace-pre-line overflow-hidden">
-                            <MdOutlineLocationOn
-                                size={24}
-                                className="m-1 inline-block"
-                            />
-                            {real_home?.address}
+                        <div className="text-ellipsis text-left items-center text-[17px]  whitespace-pre-line overflow-hidden flex">
+                            <div>
+                                <MdOutlineLocationOn
+                                    size={24}
+                                    className="m-1 inline-block"
+                                />
+                                {real_home?.address}
+                            </div>
+                            <div
+                                className="flex items-center text-blue-500 underline hover:underline-offset-2 hover:font-bold cursor-pointer"
+                                onClick={() => handleScrollMap()}
+                            >
+                                <img
+                                    src={ggmap}
+                                    width={35}
+                                    height={35}
+                                    className="ml-10 inline-block"
+                                />
+                                Xem bản đồ
+                            </div>
                         </div>
                         <div className="flex pt-1 items-center whitespace-pre-line overflow-hidden">
                             <div className="flex w-[69%] justify-evenly">
@@ -168,18 +191,28 @@ const DetailRealHome = () => {
                                     {real_home?.description?.short_description}
                                 </p>
                             </div>
-                            <div className="my-4">
-                                <p className="font-bold text-2xl  mb-3">
+                            <div className="my-4 pb-3">
+                                <p className="font-bold text-2xl mb-3">
                                     <u>Thông tin mô tả</u>
                                 </p>
-                                <p className="bg-[#F5F5F5] my-1 p-2 flex text-justify text-lg">
+                                {/* <p className="bg-[#F5F5F5] my-1 p-2 flex text-justify text-lg">
                                     {
                                         real_home?.description
-                                            ?.content_description
+                                            ?.content_description 
                                     }
-                                </p>
+                                </p> */}
+                                {real_home?.description
+                                    ?.content_description && (
+                                    <TextEditor
+                                        value={
+                                            real_home?.description
+                                                ?.content_description
+                                        }
+                                        detail
+                                    />
+                                )}
                             </div>
-                            <div className="my-4 ">
+                            <div className="my-4 " id="map">
                                 <p className="font-bold text-2xl mb-2">
                                     <u>Vị trí trên bản đồ</u>
                                 </p>
@@ -300,6 +333,7 @@ const DetailRealHome = () => {
                                     <a
                                         className="bg-blue-50 text-blue-500 rounded-4 hover:bg-blue-500 hover:text-white w-[80px] h-[45px] border-[1px] border-solid border-blue-500 overflow-hidden text-ellipsis whitespace-nowrap items-center flex justify-center"
                                         href={`http://zalo.me/${real_home?.user_post?.phone}`}
+                                        target="_blank"
                                     >
                                         zalo
                                     </a>

@@ -2,6 +2,7 @@ export const validate_data = (finalPayload, seterrors) => {
     // item[0], item[1] => {price: "3tỷ"}
     let count = 0;
     const arrpayload = Object.entries(finalPayload);
+
     arrpayload.forEach((item) => {
         if (
             item[0] === "short_description" ||
@@ -21,7 +22,54 @@ export const validate_data = (finalPayload, seterrors) => {
                     ...prev,
                     {
                         name: item[0],
-                        message: "Thôn tin này không được bỏ trống!",
+                        message: "Vui lòng nhập thông tin!",
+                    },
+                ]);
+                count++;
+                return;
+            }
+        }
+        if (item[0] === "phone") {
+            const vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+            if (item[1]) {
+                if (!vnf_regex.test(item[1])) {
+                    seterrors((prev) => [
+                        ...prev,
+                        {
+                            name: item[0],
+                            message: "Chưa đúng định dạng số điện thoại!",
+                        },
+                    ]);
+                    count++;
+                    return;
+                }
+            }
+            if (!item[1]) {
+                seterrors((prev) => [
+                    ...prev,
+                    {
+                        name: item[0],
+                        message: "Vui lòng nhập thông tin!",
+                    },
+                ]);
+                count++;
+                return;
+            }
+        }
+        if (
+            item[0] === "oldpassword" ||
+            item[0] === "newpassword" ||
+            item[0] === "repassword" ||
+            item[0] === "password" ||
+            item[0] === "otp" ||
+            item[0] === "phone1"
+        ) {
+            if (!item[1]) {
+                seterrors((prev) => [
+                    ...prev,
+                    {
+                        name: item[0],
+                        message: "Vui lòng nhập thông tin!",
                     },
                 ]);
                 count++;
