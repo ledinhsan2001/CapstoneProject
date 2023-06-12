@@ -9,7 +9,10 @@ const getUser = catchAsync(async (req, res) => {
     if (user) {
         res.status(200).json({ success: true, data: user });
     } else {
-        res.status(400).json({ message: "user không tồn tại." });
+        res.status(400).json({
+            success: false,
+            message: "Tài khoản không tồn tại.",
+        });
     }
 });
 

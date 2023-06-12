@@ -211,6 +211,7 @@ const CreatePost = ({ edit }) => {
                         setpayload={setpayload}
                         errors={errors}
                         seterrors={seterrors}
+                        edit={edit ? edit : undefined}
                     />
                     <Images
                         payload={payload}

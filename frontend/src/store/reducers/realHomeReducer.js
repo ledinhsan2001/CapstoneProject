@@ -19,6 +19,7 @@ const realHomeReducer = (state = initState, action) => {
                 real_homes: action.real_homes || [],
                 message: action.message || "",
                 page_count: action.page_count || 0,
+                total_data: action.total_data || 0,
             };
         case actionTypes.GET_RHS_BY_USER:
             return {
@@ -26,6 +27,7 @@ const realHomeReducer = (state = initState, action) => {
                 real_homes_by_user: action.real_homes_by_user || [],
                 message: action.message || "",
                 page_count: action.page_count || 0,
+                total_data: action.total_data || 0,
             };
         case actionTypes.GET_NEW_POST:
             return {
@@ -64,6 +66,13 @@ const realHomeReducer = (state = initState, action) => {
                 ...state,
                 transaction_types: action.transaction_types || [],
                 message: action.message || "",
+            };
+        case actionTypes.GET_SAVE_POST:
+            return {
+                ...state,
+                saved_post: action.saved_post || [],
+                total_post: action.total_post || 0,
+                message: action.message,
             };
         default:
             return state;

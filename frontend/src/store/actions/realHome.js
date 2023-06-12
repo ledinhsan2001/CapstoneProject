@@ -7,6 +7,7 @@ import {
     apiGetRealHomeTypeR,
     apiGetTransactionType,
     apiGetAllRHByUser,
+    apiGetSavePost,
 } from "../../services/index";
 
 // ----------------------------------------------------------
@@ -40,6 +41,7 @@ export const realHomeLimit = (payload) => async (dispatch) => {
                 type: actionTypes.GET_RHS_LIMIT,
                 real_homes: response.data.data.data,
                 page_count: response.data.data.page_count,
+                total_data: response.data.data.total_data,
             });
         } else {
             dispatch({
@@ -64,6 +66,7 @@ export const realHomeByUser = (page) => async (dispatch) => {
                 type: actionTypes.GET_RHS_BY_USER,
                 real_homes_by_user: response.data.data.data,
                 page_count: response.data.data.page_count,
+                total_data: response.data.data.total_data,
             });
         } else {
             dispatch({
@@ -174,6 +177,36 @@ export const actionTransactionType = () => async (dispatch) => {
         dispatch({
             type: actionTypes.GET_TRANSACTION_TYPES,
             transaction_types: null,
+        });
+    }
+};
+
+// ----------------------------------------------------------
+
+export const actionGetSavePost = () => async (dispatch) => {
+    try {
+        const response = await apiGetSavePost();
+        if (response?.data.success === true) {
+            dispatch({
+                type: actionTypes.GET_SAVE_POST,
+                saved_post: response.data.data,
+                total_post: response.data.total_post,
+                message: response.data.message,
+            });
+        } else {
+            dispatch({
+                type: actionTypes.GET_SAVE_POST,
+                message: response.data.message,
+                saved_post: null,
+                total_post: 0,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_SAVE_POST,
+            message: error.response.data.message,
+            saved_post: null,
+            total_post: 0,
         });
     }
 };

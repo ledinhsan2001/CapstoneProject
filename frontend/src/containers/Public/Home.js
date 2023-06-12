@@ -13,9 +13,7 @@ import { path } from "../../utils/constant";
 const Home = () => {
     const dispatch = useDispatch();
     const location = useLocation();
-    const { isLoggedIn, token, refreshToken, message } = useSelector(
-        (state) => state.auth
-    );
+
     useEffect(() => {
         dispatch(actions.actionPrices());
         dispatch(actions.actionAreas());

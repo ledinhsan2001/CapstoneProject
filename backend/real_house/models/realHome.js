@@ -4,7 +4,7 @@ const { Image, ImageSchema } = require("./image");
 const { User, UserSchema } = require("./user");
 
 const Schema = mongoose.Schema;
-const RealHome = new Schema(
+const RealHomeSchema = new Schema(
     {
         user_post: UserSchema,
         address: {
@@ -63,4 +63,8 @@ const RealHome = new Schema(
     }
 );
 
-module.exports = mongoose.model("RealHome", RealHome);
+const RealHome = mongoose.model("RealHome", RealHomeSchema);
+module.exports = {
+    RealHomeSchema,
+    RealHome,
+};

@@ -1,3 +1,5 @@
+import savePostRouter from "./savePostRouter";
+
 const authRouter = require("./auth");
 const authJwt = require("../middlewares/authJWT");
 const userRouter = require("./user");
@@ -26,6 +28,7 @@ const initRoute = (app) => {
 
     app.use("/api/service", serviceRouter);
     app.use("/api/real-home", realHomeRouter);
+    app.use("/api/save-post", savePostRouter);
 
     app.use(catchError);
 

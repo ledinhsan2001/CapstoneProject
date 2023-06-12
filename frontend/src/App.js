@@ -20,6 +20,7 @@ import {
     CreatePost,
     ManagePost,
     EditInfor,
+    SavePost,
 } from "./containers/Private";
 import ResetPassword from "./containers/Public/Account/ResetPassword";
 
@@ -186,7 +187,7 @@ function App() {
                             />
                             <Route
                                 path={path.SAVED_POST}
-                                element={<CreatePost />}
+                                element={<SavePost />}
                             />
                         </Route>
                     </Routes>

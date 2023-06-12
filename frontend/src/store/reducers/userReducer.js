@@ -13,15 +13,6 @@ const userReducer = (state = initState, action) => {
                 user_data: action.user_data || null,
                 message: action.message || "",
             };
-        // case actionTypes.LOGOUT:
-        //     return {
-        //         ...state,
-        //         isLoggedIn: false,
-        //         refreshToken: null,
-        //         token: null,
-        //         msg: "",
-        //         user_data: null,
-        //     };
         default:
             return state;
     }

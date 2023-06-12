@@ -195,22 +195,18 @@ const DetailRealHome = () => {
                                 <p className="font-bold text-2xl mb-3">
                                     <u>Thông tin mô tả</u>
                                 </p>
-                                {/* <p className="bg-[#F5F5F5] my-1 p-2 flex text-justify text-lg">
-                                    {
-                                        real_home?.description
-                                            ?.content_description 
-                                    }
-                                </p> */}
-                                {real_home?.description
-                                    ?.content_description && (
-                                    <TextEditor
-                                        value={
-                                            real_home?.description
-                                                ?.content_description
-                                        }
-                                        detail
-                                    />
-                                )}
+                                <p className="bg-[#F5F5F5]">
+                                    {real_home?.description
+                                        ?.content_description && (
+                                        <TextEditor
+                                            value={
+                                                real_home?.description
+                                                    ?.content_description
+                                            }
+                                            detail
+                                        />
+                                    )}
+                                </p>
                             </div>
                             <div className="my-4 " id="map">
                                 <p className="font-bold text-2xl mb-2">

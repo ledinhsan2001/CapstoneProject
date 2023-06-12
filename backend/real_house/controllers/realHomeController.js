@@ -3,7 +3,7 @@ import "moment/locale/vi";
 const catchAsync = require("../middlewares/catchAsync");
 const { Description } = require("../models/description");
 const { Image } = require("../models/image");
-const RealHome = require("../models/realHome");
+const { RealHome } = require("../models/realHome");
 const Area = require("../models/area");
 const realHomeType = require("../models/realHomeType");
 const { TransactionType } = require("../models/transactionType");
@@ -410,11 +410,11 @@ export const put = catchAsync(async (req, res) => {
 export const drop = async (req, res) => {
     const { _id, description_id, images_id } = req.body;
     try {
-        const image = await Image.findOneAndDelete({ _id: images_id });
-        const description = await Description.findOneAndDelete({
+        await Image.findOneAndDelete({ _id: images_id });
+        await Description.findOneAndDelete({
             _id: description_id,
         });
-        const real_home = await RealHome.findOneAndDelete({ _id: _id });
+        await RealHome.findOneAndDelete({ _id: _id });
 
         return res.status(200).json({
             success: true,

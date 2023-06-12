@@ -7,3 +7,8 @@ export const login = (response) => async (dispatch) => {
         message: response.data.message,
     });
 };
+export const logout = () => async (dispatch) => {
+    dispatch({
+        type: actionTypes.LOG_OUT,
+    });
+};

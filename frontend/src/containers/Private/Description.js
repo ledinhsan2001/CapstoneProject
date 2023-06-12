@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TextAreaDescription, SelectDescription } from "../components";
 
-const Description = ({ payload, setpayload, errors, seterrors }) => {
+const Description = ({ payload, setpayload, errors, seterrors, edit }) => {
     const [checked, setchecked] = useState(false);
 
     const isChecked = () => {
@@ -58,6 +58,7 @@ const Description = ({ payload, setpayload, errors, seterrors }) => {
                         errors={errors}
                         seterrors={seterrors}
                         name="content_description"
+                        edit={edit ? edit : undefined}
                     />
                 </div>
                 <div className="flex my-3 px-3 gap-5">

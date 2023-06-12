@@ -51,7 +51,7 @@ const Register = () => {
                         <img
                             src={imgLogin}
                             aria-label="img Register"
-                            width="520"
+                            width="580"
                             height="100%"
                         ></img>
                     </div>
@@ -86,7 +86,7 @@ const Register = () => {
                                 />
                             </Link>
                         </div>
-                        <div className="flex flex-col gap-4 w-[90%] ml-[12%]">
+                        <div className="flex flex-col gap-2 w-[60%]">
                             <InputRegister
                                 text="Họ"
                                 text1="Tên"
@@ -132,7 +132,7 @@ const Register = () => {
                             />
                         </div>
                         {loadding ? (
-                            <div className="flex items-center justify-center w-[100%]">
+                            <div className="flex items-center justify-center w-[60%]">
                                 <ProgressBar
                                     height="120"
                                     width="120"
@@ -144,7 +144,7 @@ const Register = () => {
                                 />
                             </div>
                         ) : (
-                            <div className="flex items-center justify-center mt-4 mb-3 w-[76%]">
+                            <div className="flex items-center justify-center mt-10 mb-3 w-[60%]">
                                 <button
                                     className="bg-[#044890] py-1 w-full text-white rounded-[15px] font-['Irish_Grover'] text-xl cursor-pointer hover:font-bold hover:bg-blue-400"
                                     type="button"

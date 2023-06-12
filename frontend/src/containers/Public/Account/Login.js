@@ -32,13 +32,9 @@ const Login = () => {
         } else {
             try {
                 const response = await apiLogin(payload);
-                if (response?.data?.success === true) {
+                if (response.data.success === true) {
                     dispatch(login(response));
-                    Swal.fire(
-                        "Thành công!",
-                        response?.data?.message,
-                        "success"
-                    );
+                    Swal.fire("Thành công!", response.data.message, "success");
                     navigate(`/`);
                 } else {
                     Swal.fire("Lỗi!", response?.data?.message, "error");
@@ -97,7 +93,7 @@ const Login = () => {
                                 />
                             </Link>
                         </div>
-                        <div className="flex flex-col gap-4 w-[90%] ml-[12%] mt-4">
+                        <div className="flex flex-col gap-2 w-[60%] mt-4">
                             <InputRegister
                                 text="Số điện thoại"
                                 placeholder="Nhập số điện thoại"
@@ -118,7 +114,7 @@ const Login = () => {
                                 password
                             />
                         </div>
-                        <div className="flex items-center justify-center mt-4 mb-3 w-[76%]">
+                        <div className="flex items-center justify-center mt-10 mb-3 w-[60%]">
                             <button
                                 className="bg-[#044890] py-1 w-full text-white rounded-[15px] font-['Irish_Grover'] text-xl cursor-pointer hover:font-bold hover:bg-blue-400"
                                 type="submit"

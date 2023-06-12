@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { formatUniToString, path } from "../../../utils/constant";
@@ -15,6 +15,7 @@ import {
 import { useRef } from "react";
 import * as actions from "../../../store/actions";
 import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../store/actions/auth";
 
 const { MdPostAdd, AiOutlineHeart, RiUserSettingsLine, RiLogoutCircleRLine } =
     icons;
@@ -26,6 +27,7 @@ const Header = () => {
     const { transaction_types } = useSelector((state) => state.real_home);
     const { user_data } = useSelector((state) => state.user);
     const [Show, setShow] = useState(false);
+    const [searchParams] = useSearchParams();
 
     const dispatch = useDispatch();
     // var query = window.location.search.substring(1);
@@ -33,23 +35,33 @@ const Header = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isLoggedIn) {
-            dispatch(actions.actionUser());
-            if (!user_data) {
-                window.localStorage.clear();
-                navigate(`/${path.LOGIN}`);
-            }
+        setTimeout(() => {
+            isLoggedIn && dispatch(actions.actionUser());
+        }, 2000);
+        if (isLoggedIn && !user_data) {
+            dispatch(logout());
+            navigate(`/${path.LOGIN}`);
         }
+    }, [isLoggedIn]);
+
+    useEffect(() => {
+        // sell rental header
         dispatch(actions.actionTransactionType());
+
+        //dispatch hear to list use
+        dispatch(actions.actionGetSavePost());
+    }, [dispatch]);
+
+    useEffect(() => {
         headerRef.current.scrollIntoView({
             behavior: "smooth",
             block: "start",
         });
-    }, [dispatch, isLoggedIn]);
+    }, [searchParams.get("page")]);
 
     const logOut = (e) => {
         e.preventDefault();
-        window.localStorage.clear();
+        dispatch(logout());
         navigate(`/${path.LOGIN}`);
     };
 
@@ -145,7 +157,7 @@ const Header = () => {
                             className="m-2 flex hover:drop-shadow-2xl"
                         >
                             <div
-                                className="TagUserNav rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[50px] w-[50px] relative hover:translate-y-2 z-1000"
+                                className="TagUserNav rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[50px] w-[50px] relative hover:translate-y-2 z-1000 cursor-pointer"
                                 onMouseOver={overListItem}
                                 onMouseLeave={leaveListItem}
                             >
