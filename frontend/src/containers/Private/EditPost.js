@@ -15,7 +15,7 @@ const EditPost = ({ setisShow }) => {
             }}
         >
             <div>
-                <CreatePost edit="true" setisShow={setisShow} />
+                <CreatePost edit setisShow={setisShow} />
             </div>
         </div>
     );

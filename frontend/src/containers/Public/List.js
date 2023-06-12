@@ -17,11 +17,17 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
     const [currentPage, setCurrentPage] = useState(0);
     const [sortActive, setsortActive] = useState(0);
     const dispatch = useDispatch();
-
     //useSelector state.real_homes chọc đúng state real_homeReducer
-    const { real_homes, page_count, message } = useSelector(
-        (state) => state.real_home
-    );
+    const { real_homes, page_count, message, total_data, saved_post } =
+        useSelector((state) => state.real_home);
+    const [arrSavedPostId, setarrSavedPostId] = useState([]);
+
+    useEffect(() => {
+        let arr = [];
+        saved_post?.map((item) => arr.push(item?.real_home?._id));
+        setarrSavedPostId(arr);
+    }, [saved_post]);
+
     useEffect(() => {
         let page_value = params.get("page");
         let price = params.get("price_id");
@@ -145,15 +151,9 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
     return (
         <div className="main w-[100%]">
             <div className="titleSort">
-                {transaction_type_id === "645b56517cc26519dbcaad34" ? (
-                    <h6 className="titleh6 text-left mb-1">
-                        137.022 tin mua bán nhà đất ở toàn quốc
-                    </h6>
-                ) : (
-                    <h6 className="titleh6 text-left mb-1">
-                        26.146 tin cho thuê nhà đất ở toàn quốc
-                    </h6>
-                )}
+                <h6 className="titleh6 text-left mb-1">
+                    <b>{total_data}</b> tin cho thuê nhà đất ở toàn quốc
+                </h6>
 
                 <div className="btnSort flex items-center">
                     <span>Sắp xếp:</span>
@@ -201,7 +201,8 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
             </div>
             <div className="items">
                 {message && <div className="bg-white">{message}</div>}
-                {real_homes.length > 0 &&
+                {arrSavedPostId.length > 0 &&
+                    real_homes.length > 0 &&
                     real_homes.map((item) => {
                         return (
                             <Item
@@ -218,6 +219,11 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
                                 content={item?.description.content_description}
                                 user={item?.user_post}
                                 _id={item?._id}
+                                active={
+                                    arrSavedPostId.includes(item._id)
+                                        ? "active"
+                                        : ""
+                                }
                             />
                         );
                     })}

@@ -25,6 +25,15 @@ const authReducer = (state = initState, action) => {
                 accessToken: null,
                 refreshToken: null,
             };
+        case actionTypes.LOG_OUT:
+            return {
+                ...state,
+                isLoggedIn: false,
+                message: "Đăng xuất thành công",
+                accessToken: null,
+                refreshToken: null,
+                user_data: null,
+            };
         default:
             return state;
     }

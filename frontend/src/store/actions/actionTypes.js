@@ -1,7 +1,7 @@
 const actionTypes = {
     LOGIN_SUCCESS: "LOGIN_SUCCESS",
     LOGIN_FAIL: "LOGIN_FAIL",
-    LOGOUT: "LOGOUT",
+    LOG_OUT: "LOG_OUT",
     CHANGE_PASS: "CHANGE_PASS",
 
     GET_RHS: "GET_RHS",
@@ -19,6 +19,7 @@ const actionTypes = {
 
     // USER
     GET_USER: "GET_USER",
+    GET_SAVE_POST: "GET_SAVE_POST",
     GET_DETAIL_POST: "GET_DETAIL_POST",
     RH_EDIT: "RH_EDIT",
     DEL_DATA_EDIT: "DEL_DATA_EDIT",

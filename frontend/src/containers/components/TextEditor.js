@@ -4,10 +4,15 @@ import "quill/dist/quill.snow.css"; // Add css for snow theme
 import React, { useEffect } from "react";
 import { useQuill } from "react-quilljs";
 
-export const TextEditor = ({ placeHolder, value, setValue, name, detail }) => {
+export const TextEditor = ({
+    placeHolder,
+    value,
+    setValue,
+    name,
+    detail,
+    edit,
+}) => {
     let theme = "snow";
-    // const theme = "bubble";
-
     const modules = {
         toolbar: detail
             ? []
@@ -46,13 +51,21 @@ export const TextEditor = ({ placeHolder, value, setValue, name, detail }) => {
 
     // getText format
     useEffect(() => {
-        if (quill && value) {
-            quill.clipboard.dangerouslyPasteHTML(value);
+        if (quill && detail) {
+            value && quill.clipboard.dangerouslyPasteHTML(value);
+            detail && quill.disable();
+            let tagText = document.querySelector("div > .ql-editor");
+            tagText.style.fontSize = "18px";
+        }
+        if (quill && edit) {
+            value && quill.clipboard.dangerouslyPasteHTML(value);
+            let tagText = document.querySelector("div > .ql-editor");
+            tagText.style.fontSize = "18px";
         }
     }, [quill, value]);
 
     useEffect(() => {
-        if (quill && !detail) {
+        if (quill && !detail && edit) {
             quill.on("text-change", (delta, oldDelta, source) => {
                 // console.log(quill.getText()); // Get text only
                 // console.log(quill.getContents()); // Get delta contents
@@ -67,14 +80,28 @@ export const TextEditor = ({ placeHolder, value, setValue, name, detail }) => {
     }, [quill, name]);
 
     return (
-        <div
-            className={
-                detail
-                    ? `w-full h-[80%] border-[1px] border-lightgray border-solid bg-[#F5F5F5]`
-                    : `w-full h-[80%] border-[1px] border-lightgray border-solid`
-            }
-        >
-            <div ref={quillRef} className="text-lg" />
-        </div>
+        <>
+            {detail ? (
+                <div
+                    className={`w-full h-[80%] border-[1px] border-lightgray border-solid bg-[#F5F5F5]`}
+                >
+                    {" "}
+                    <div ref={quillRef} />
+                </div>
+            ) : edit ? (
+                <div
+                    className={`w-full h-[80%] border-[1px] border-lightgray border-solid`}
+                >
+                    {" "}
+                    <div ref={quillRef} />
+                </div>
+            ) : (
+                <div
+                    className={`w-full h-[80%] border-[1px] border-lightgray border-solid`}
+                >
+                    <div ref={quillRef} />
+                </div>
+            )}
+        </>
     );
 };

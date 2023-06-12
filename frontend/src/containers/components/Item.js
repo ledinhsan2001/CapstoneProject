@@ -1,8 +1,12 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import "./Item.css";
 import icons from "../../utils/icons";
 import { formatUniToString } from "../../utils/constant";
 import { Link } from "react-router-dom";
+import { apiDelSavePost, apiSavePost } from "../../services";
+import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { actionGetSavePost } from "../../store/actions";
 
 const {
     FaStar,
@@ -26,21 +30,53 @@ const Item = ({
     content,
     user,
     _id,
+    active,
 }) => {
-    const [isHoverHeart, setIsHoverHeart] = useState(false);
+    const dispatch = useDispatch();
+    const [isHoverHeart, setIsHoverHeart] = useState(active ? true : false);
 
-    const activeHeart = () => {
-        setIsHoverHeart(!isHoverHeart);
+    const callNotSave = async () => {
+        try {
+            const response = await apiDelSavePost(_id);
+            setIsHoverHeart(false);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: response.data.message,
+                showConfirmButton: false,
+                timer: 500,
+            });
+        } catch (error) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: error.response.data.message,
+                showConfirmButton: false,
+                timer: 500,
+            });
+        }
     };
 
+    const callSave = async () => {
+        const response = await apiSavePost(_id);
+        setIsHoverHeart(true);
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: response.data.message,
+            showConfirmButton: false,
+            timer: 500,
+        });
+    };
+
+    useEffect(() => {
+        dispatch(actionGetSavePost());
+    }, [isHoverHeart]);
+
     const data = address.split(",");
-    let Address;
-    if (data.length === 4) {
-        Address = data[2] + "," + data[3];
-    }
-    if (data.length === 3) {
-        Address = data[1] + "," + data[2];
-    }
+    let province = data.pop();
+    let district = data.pop();
+    let Address = `${district},${province}`;
 
     return (
         <div className="flex w-[100%] border-t-[2px] border-solid border-orange-400 pt-[10px] pb-[20px] bg-white">
@@ -61,7 +97,14 @@ const Item = ({
                 </span>
                 <span
                     className="img-heart d-flex"
-                    onClick={() => activeHeart(true)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        if (isHoverHeart) {
+                            callNotSave();
+                        } else {
+                            callSave();
+                        }
+                    }}
                 >
                     {isHoverHeart ? (
                         <RiHeartFill
@@ -145,7 +188,7 @@ const Item = ({
                         ></img>
                         <p className="mt-[15px]">{`${user.first_name} ${user.last_name}`}</p>
                     </Link>
-                    <div className="flex mt-1 overflow-hidden text-ellipsis whitespace-nowrap">
+                    <div className="flex mt-1 overflow-hidden text-ellipsis whitespace-nowrap mr-1">
                         <button
                             className="bg-[#4397C7] text-white rounded-4 w-[150px] h-[45px] hover:bg-blue-500 hover:text-white items-center justify-center flex overflow-hidden text-ellipsis whitespace-nowrap"
                             type="button"
@@ -157,6 +200,7 @@ const Item = ({
                             className="bg-blue-50 text-blue-500 rounded-4 hover:bg-blue-500 hover:text-white w-[80px] h-[45px] border-[1px] border-solid border-blue-500 overflow-hidden text-ellipsis whitespace-nowrap items-center flex justify-center"
                             href={`http://zalo.me/${user.phone}`}
                             target="_blank"
+                            rel="noreferrer"
                         >
                             zalo
                         </a>

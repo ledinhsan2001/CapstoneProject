@@ -64,7 +64,7 @@ const ResetPassword = () => {
                                 ĐẶT LẠI MẬT KHẨU
                             </h3>
                         </div>
-                        <div className="flex flex-col gap-4 w-[90%] ml-[12%] mt-4">
+                        <div className="flex flex-col gap-2 w-[60%] mt-4">
                             <InputRegister
                                 text="Số điện thoại"
                                 placeholder="Nhập số điện thoại"
@@ -96,7 +96,7 @@ const ResetPassword = () => {
                             />
                         </div>
                         {loading ? (
-                            <div className="flex items-center justify-center mb-3 w-[100%]">
+                            <div className="flex items-center justify-center mb-3 w-[60%]">
                                 <ProgressBar
                                     height="120"
                                     width="150"
@@ -108,7 +108,7 @@ const ResetPassword = () => {
                                 />
                             </div>
                         ) : (
-                            <div className="flex items-center justify-center mt-4 mb-3 w-[76%]">
+                            <div className="flex items-center justify-center mt-10 mb-3 w-[60%]">
                                 <button
                                     className="bg-[#044890] py-1 w-full text-white rounded-[15px] font-['Irish_Grover'] text-xl cursor-pointer hover:font-bold hover:bg-blue-400"
                                     type="submit"

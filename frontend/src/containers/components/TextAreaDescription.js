@@ -12,6 +12,8 @@ const TextAreaDescription = ({
     errors,
     seterrors,
     name,
+    detail,
+    edit,
 }) => {
     const MessageErr = () => {
         let mess = errors.find((item) => item.name === name);
@@ -45,7 +47,7 @@ const TextAreaDescription = ({
             )}
             {type === "content_description" && (
                 <div
-                    className={`flex justify-between w-[95%] p-4 min-h-[300px] max-h-[700px]
+                    className={`flex justify-between w-[95%] min-h-[300px] max-h-[700px]
                     } rounded-xl bg-blue-100 border-solid border-1 border-black hover:bg-white hover:border-solid hover:border-2 hover:border-blue-300 cursor-pointer resize-y outline-none overflow-auto`}
                     onFocus={() => seterrors([])}
                 >
@@ -54,6 +56,8 @@ const TextAreaDescription = ({
                         value={value}
                         setValue={setValue}
                         name={name}
+                        detail={detail}
+                        edit={edit}
                     />
                 </div>
             )}

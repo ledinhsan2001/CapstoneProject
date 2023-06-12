@@ -4,7 +4,8 @@ import React, { memo, useEffect, useState } from "react";
 import { path } from "../../utils/constant";
 import icons from "../../utils/icons";
 import { mdi_user, pushnew_black } from "../../assets/images";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/actions/auth";
 
 const {
     MdPostAdd,
@@ -17,13 +18,25 @@ const {
 
 const SideBar = () => {
     const { user_data } = useSelector((state) => state.user);
+    const { isLoggedIn, message, accessToken, refreshToken } = useSelector(
+        (state) => state.auth
+    );
     const [active, setactive] = useState("dang-tin");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        if (!user_data) {
-            expired();
+        if (!isLoggedIn) {
+            navigate(`/${path.LOGIN}`);
         }
-    });
+    }, [isLoggedIn]);
+
+    // useEffect(() => {
+    //     if (!user_data) {
+    //         dispatch(logout());
+    //         navigate(`/${path.LOGIN}`);
+    //     }
+    // }, []);
 
     useEffect(() => {
         let url = window.location.pathname;
@@ -31,14 +44,9 @@ const SideBar = () => {
         setactive(pathname);
     }, [window.location.pathname]);
 
-    const expired = () => {
-        window.localStorage.clear();
-        navigate(`/${path.LOGIN}`);
-    };
-
     const logOut = (e) => {
         e.preventDefault();
-        window.localStorage.clear();
+        dispatch(logout());
         navigate(`/${path.LOGIN}`);
     };
 
@@ -54,7 +62,7 @@ const SideBar = () => {
                 <div className="flex rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[60px] w-[60px] pt-1 mb-2">
                     <span className="animate-ping absolute inline-flex h-[8px] w-[8px] rounded-full bg-green-500 opacity-100 ml-[50px] mb-[40px]"></span>
                     <img
-                        src={user_data.avt || mdi_user}
+                        src={user_data?.avt || mdi_user}
                         alt="mdi_user"
                         className="h-[65px] w-[70px] rounded-full"
                     ></img>
@@ -66,7 +74,7 @@ const SideBar = () => {
                     <h3 className="text-black text-lg">
                         <b>
                             {user_data
-                                ? `${user_data.first_name} ${user_data.last_name}`
+                                ? `${user_data?.first_name} ${user_data?.last_name}`
                                 : ""}
                         </b>
                     </h3>

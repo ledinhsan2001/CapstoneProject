@@ -182,3 +182,44 @@ export const apiDeleteRealHome = ({ ...payload }) =>
             reject(error);
         }
     });
+
+// save_post
+export const apiGetSavePost = () =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "get",
+                url: "/api/save-post/",
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
+
+export const apiSavePost = (real_home_id) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "post",
+                url: "/api/save-post/create",
+                data: { real_home_id },
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
+export const apiDelSavePost = (real_home_id) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "delete",
+                url: "/api/save-post/delete",
+                params: { real_home_id },
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });

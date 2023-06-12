@@ -17,7 +17,7 @@ const ManagePost = () => {
     const dispatch = useDispatch();
     const [params] = useSearchParams();
     const [real_home_user, setreal_home_user] = useState([]);
-    const { real_homes_by_user, message, data_edit } = useSelector(
+    const { real_homes_by_user, message, data_edit, total_data } = useSelector(
         (state) => state.real_home
     );
 
@@ -86,22 +86,36 @@ const ManagePost = () => {
                 <div className="text-left text-black font-bold text-4xl pb-4">
                     Quản lý tin đăng
                 </div>
-                <div className="my-2 flex items-center text-right">
-                    <p className="mr-4">Lọc trạng thái</p>
-                    <select
-                        className=" h-[40px] w-[150px] px-2 rounded-xl border-solid border-1 border-black hover:bg-white hover:text-black hover:border-solid hover:border-2 hover:border-blue-300 cursor-pointer"
-                        onChange={(e) => handleFilter(+e.target.value)}
-                    >
-                        <option className="text-gray-500 font-bold" value={0}>
-                            Tất cả
-                        </option>
-                        <option className="text-gray-500 font-bold" value={1}>
-                            Đã hết hạn
-                        </option>
-                        <option className="text-gray-500 font-bold" value={2}>
-                            Chưa hết hạn
-                        </option>
-                    </select>
+                <div className="my-2 flex justify-between items-center">
+                    <h6 className="titleh6 text-left">
+                        <b>{total_data}</b> tin bất động sản của bạn.
+                    </h6>
+                    <div className=" flex items-center text-left">
+                        <p className="mr-4">Lọc trạng thái</p>
+                        <select
+                            className=" h-[40px] w-[150px] px-2 rounded-xl border-solid border-1 border-black hover:bg-white hover:text-black hover:border-solid hover:border-2 hover:border-blue-300 cursor-pointer"
+                            onChange={(e) => handleFilter(+e.target.value)}
+                        >
+                            <option
+                                className="text-gray-500 font-bold"
+                                value={0}
+                            >
+                                Tất cả
+                            </option>
+                            <option
+                                className="text-gray-500 font-bold"
+                                value={1}
+                            >
+                                Đã hết hạn
+                            </option>
+                            <option
+                                className="text-gray-500 font-bold"
+                                value={2}
+                            >
+                                Chưa hết hạn
+                            </option>
+                        </select>
+                    </div>
                 </div>
                 <table className="table-fixed border-[2px] border-gray-600 border-separate bg-white w-full">
                     <thead className="text-lg bg-gray-500 text-white">

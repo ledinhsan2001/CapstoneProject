@@ -6,7 +6,8 @@ import { Header } from "../Public";
 import { Contact } from "../components";
 
 const Private = () => {
-    const isLoggedIn = window.localStorage.getItem("isLoggedIn");
+    let parse_obj = JSON.parse(window.localStorage.getItem("persist:auth"));
+    const isLoggedIn = parse_obj.isLoggedIn;
     // replace xoa lịch sử không cho back web
     if (!isLoggedIn) {
         return <Navigate to={`/${path.LOGIN}`} replace={true} />;

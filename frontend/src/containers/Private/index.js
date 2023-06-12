@@ -8,3 +8,4 @@ export { default as ManagePost } from "./ManagePost";
 export { default as EditPost } from "./EditPost";
 export { default as EditInfor } from "./EditInfor";
 export { default as ChangePass } from "./ChangePass";
+export { default as SavePost } from "./SavePost";

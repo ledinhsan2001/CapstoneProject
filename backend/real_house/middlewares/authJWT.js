@@ -8,11 +8,15 @@ require("dotenv").config();
 const verifyToken = (req, res, next) => {
     let token = req.headers?.authorization?.split(" ")[1];
     if (!token) {
-        return res.status(403).send({ error: "Không có token được cung cấp!" });
+        return res
+            .status(403)
+            .send({ success: false, message: "Không có token được cung cấp!" });
     }
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
         if (err) {
-            return res.status(401).send({ error: "Unauthorized!" });
+            return res
+                .status(401)
+                .send({ success: false, message: "Không có quyền truy cập!" });
         }
         //so Date.now() > exp 3 số nên * 1000 để so sánh
         var exp = decoded.exp * 1000;
