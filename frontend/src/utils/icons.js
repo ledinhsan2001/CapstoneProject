@@ -3,6 +3,7 @@ import { BsSearch } from "react-icons/bs";
 import { BsTrash } from "react-icons/bs";
 import { TbReportMoney } from "react-icons/tb";
 import { TbHomeDollar } from "react-icons/tb";
+import { TbMessageCircle2 } from "react-icons/tb";
 import { BiMap } from "react-icons/bi";
 import { BiStar } from "react-icons/bi";
 import { BiBuildingHouse } from "react-icons/bi";
@@ -64,6 +65,7 @@ const icons = {
     CiEdit,
     GiMoneyStack,
     AiOutlineClockCircle,
+    TbMessageCircle2,
 };
 
 export default icons;

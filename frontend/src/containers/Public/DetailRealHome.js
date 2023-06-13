@@ -287,7 +287,10 @@ const DetailRealHome = () => {
                         </div>
                         <div className="flex flex-col w-[24%]">
                             <div className=" flex flex-col border-[1px] border-solid border-gray-400 shadow-lg shadow-cyan-500/50 rounded-[20px] h-[420px]">
-                                <div className="flex cursor-pointer px-4 pt-3 pb-2">
+                                <Link
+                                    to={`/trang-ca-nhan/${real_home?.user_post?._id}`}
+                                    className="flex cursor-pointer px-4 pt-3 pb-2"
+                                >
                                     <div className="flex rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[60px] w-[60px] pt-1 mb-2">
                                         <span className="animate-ping absolute inline-flex h-[8px] w-[8px] rounded-full bg-green-500 opacity-100 ml-[50px] mb-[40px]"></span>
                                         <img
@@ -299,10 +302,7 @@ const DetailRealHome = () => {
                                             className="h-[65px] w-[70px] rounded-full"
                                         ></img>
                                     </div>
-                                    <Link
-                                        to={`/rieng-tu/${path.INFOR}`}
-                                        className="flex flex-col mx-3 my-2"
-                                    >
+                                    <div className="flex flex-col mx-3 my-2">
                                         <h3 className="text-black text-lg">
                                             <b>
                                                 {real_home
@@ -313,8 +313,8 @@ const DetailRealHome = () => {
                                         <h3 className="text-blue-500 text-md hover:font-bold">
                                             Trang cá nhân
                                         </h3>
-                                    </Link>
-                                </div>
+                                    </div>
+                                </Link>
                                 <div className="flex mt-1 overflow-hidden text-ellipsis whitespace-nowrap px-4 gap-4 pb-3 border-b-[2px]">
                                     <button
                                         className="bg-[#4397C7] text-white rounded-4 w-[150px] h-[45px] hover:bg-blue-500 hover:text-white items-center justify-center flex overflow-hidden text-ellipsis whitespace-nowrap ml-[15px]"
@@ -366,7 +366,6 @@ const DetailRealHome = () => {
                                         Gửi yêu cầu
                                     </button>
                                 </div>
-                                <div></div>
                             </div>
                             <div className="h-fit mt-6">
                                 <NewPost />

@@ -28,6 +28,20 @@ export const apiGetLimitRealHome = (query) =>
         }
     });
 
+export const apiGetAllRHPublicByUser = (_id) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "get",
+                url: `/api/real-home/all-public`,
+                params: { _id },
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
+
 export const apiGetAllRHByUser = (page) =>
     new Promise(async (resolve, reject) => {
         try {

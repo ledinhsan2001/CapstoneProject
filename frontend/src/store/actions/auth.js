@@ -1,6 +1,7 @@
 import actionTypes from "./actionTypes";
 
 export const login = (response) => async (dispatch) => {
+    console.log(response);
     dispatch({
         type: actionTypes.LOGIN_SUCCESS,
         data: response.data,

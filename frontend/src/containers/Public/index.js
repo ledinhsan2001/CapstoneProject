@@ -14,3 +14,4 @@ export { default as List } from "./List";
 export { default as DetailRealHome } from "./DetailRealHome";
 export { default as DataSearch } from "./DataSearch/DataSearch";
 export { default as HomePage } from "./HomePage";
+export { default as PersonalPage } from "./PersonalPage";

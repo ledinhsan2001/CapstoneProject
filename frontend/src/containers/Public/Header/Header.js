@@ -74,7 +74,7 @@ const Header = () => {
 
     return (
         <div ref={headerRef} className="w-full">
-            <header className="flex items-center justify-evenly mb-1 h-[100px] bg-white w-full">
+            <header className="flex items-center justify-evenly mb-1 h-[100px] bg-white">
                 <div className="col-md-2 ml-[30px]">
                     <div className="w-[170px] h-[100px]">
                         <Link to={"/"}>
@@ -152,16 +152,16 @@ const Header = () => {
                                 Yêu thích
                             </div>
                         </Link>
-                        <div
-                            // to={"/trang-ca-nhan"}
-                            className="m-2 flex hover:drop-shadow-2xl"
-                        >
+                        <div className="m-2 flex hover:drop-shadow-2xl">
                             <div
                                 className="TagUserNav rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[50px] w-[50px] relative hover:translate-y-2 z-1000 cursor-pointer"
                                 onMouseOver={overListItem}
                                 onMouseLeave={leaveListItem}
                             >
-                                <div className="cursor-pointer">
+                                <Link
+                                    to={`/trang-ca-nhan/${user_data?._id}`}
+                                    className="cursor-pointer"
+                                >
                                     <span className="animate-ping absolute inline-flex h-[6px] w-[6px] rounded-full bg-green-500 opacity-100 ml-[16px] mb-[40px]"></span>
                                     {user_data && (
                                         <img
@@ -170,7 +170,7 @@ const Header = () => {
                                             className="rounded-full h-[50px] w-[50px]"
                                         ></img>
                                     )}
-                                </div>
+                                </Link>
                                 {Show && (
                                     <div
                                         onMouseOver={overListItem}
@@ -191,7 +191,7 @@ const Header = () => {
                                                 ></img>
                                             </div>
                                             <Link
-                                                to={`/rieng-tu/${path.INFOR}`}
+                                                to={`/trang-ca-nhan/${user_data?._id}`}
                                                 className="flex flex-col mx-4 my-2"
                                             >
                                                 <h3 className="text-black text-lg">
