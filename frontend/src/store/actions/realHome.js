@@ -8,6 +8,7 @@ import {
     apiGetTransactionType,
     apiGetAllRHByUser,
     apiGetSavePost,
+    apiGetAllRHPublicByUser,
 } from "../../services/index";
 
 // ----------------------------------------------------------
@@ -54,6 +55,33 @@ export const realHomeLimit = (payload) => async (dispatch) => {
             type: actionTypes.GET_RHS_LIMIT,
             real_homes: [],
             message: error?.response?.data?.message,
+        });
+    }
+};
+
+export const realHomePublicByUser = (_id) => async (dispatch) => {
+    try {
+        const response = await apiGetAllRHPublicByUser(_id);
+        if (response?.data.success === true) {
+            dispatch({
+                type: actionTypes.GET_RHS_PUBLIC_BY_USER,
+                real_homes_public_by_user: response.data.data,
+                total_post_by_user: response.data.total_post_by_user,
+            });
+        } else {
+            dispatch({
+                type: actionTypes.GET_RHS_PUBLIC_BY_USER,
+                real_homes_public_by_user: [],
+                total_post_by_user: 0,
+                message: response.data.message,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_RHS_PUBLIC_BY_USER,
+            total_post_by_user: 0,
+            real_homes_public_by_user: [],
+            message: error.response.data.message,
         });
     }
 };

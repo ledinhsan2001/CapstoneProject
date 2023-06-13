@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-//memo khi na prop change thì mới render còn không thì không thay đổi
+//memo khi nao prop change thì mới render còn không thì không thay đổi
 // k có memo thg cha thay đổi thì thg con cũng thay đổi bất chấp
 function SearchItem({ beforeIcon, text, textDefault, icon }) {
     return (

@@ -30,7 +30,8 @@ const Home = () => {
     return (
         <>
             {!checkUrl("chi-tiet") &&
-                location.pathname !== `/${path.SERVICE_PRICE}` && (
+                location.pathname !== `/${path.SERVICE_PRICE}` &&
+                !checkUrl("trang-ca-nhan") && (
                     <div className="row w-full">
                         <Header />
                         <Search />
@@ -47,8 +48,9 @@ const Home = () => {
                     </div>
                 )}
             {(checkUrl("chi-tiet") ||
-                location.pathname === `/${path.SERVICE_PRICE}`) && (
-                <div className="row w-full">
+                location.pathname === `/${path.SERVICE_PRICE}` ||
+                checkUrl("trang-ca-nhan")) && (
+                <div className="w-full">
                     <Header />
                     <div className="bg-[#D9D9D9]">
                         <Outlet />

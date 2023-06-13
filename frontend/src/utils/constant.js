@@ -17,7 +17,7 @@ export const path = {
     MANAGEMENT_PAGE: "trang-quan-ly",
     POST_MANAGEMENT: "quan-ly-tin-dang",
     EDIT_INFOR: "sua-thong-tin-ca-nhan",
-    INFOR: "trang-ca-nhan",
+    PAGE_PERSONAL: "trang-ca-nhan/:id",
     HISTORY_PAYMENT: "lich-su-thanh-toan",
 
     SELL_APARTMENTS: "ban-can-ho",

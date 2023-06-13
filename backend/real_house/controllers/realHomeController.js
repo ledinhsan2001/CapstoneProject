@@ -55,6 +55,26 @@ export const getNewPost = catchAsync(async (req, res) => {
     }
 });
 
+export const getAllByUserPublic = async (req, res) => {
+    const { _id } = req.query;
+    let typeRHs = await RealHome.find(
+        { "user_post._id": _id },
+        { __v: 0 }
+    ).sort({ start_date: -1 });
+    if (typeRHs.length > 0) {
+        return res.status(200).json({
+            success: true,
+            data: typeRHs,
+            total_post_by_user: typeRHs.length,
+        });
+    } else {
+        return res.status(400).json({
+            success: false,
+            message: "Không có tin bất động sản nào.",
+        });
+    }
+};
+
 export const getAllByUser = catchAsync(async (req, res) => {
     const { page } = req.query;
     const user_id = req.userId;

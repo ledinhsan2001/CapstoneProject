@@ -15,6 +15,7 @@ export { default as contact } from "./contact.png";
 export { default as bds } from "./bds.png";
 export { default as bds1 } from "./bds1.png";
 export { default as bds2 } from "./bds2.png";
+export { default as cover_img } from "./cover_img.jpg";
 export { default as service1 } from "./service1.png";
 export { default as service2 } from "./service2.png";
 export { default as service3 } from "./service3.png";

@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Item, NewPost } from "../components";
-import { actionGetSavePost } from "../../store/actions";
 import { useState } from "react";
 
 const SavePost = () => {
-    const dispatch = useDispatch();
     const { saved_post, total_post, message } = useSelector(
         (state) => state.real_home
     );

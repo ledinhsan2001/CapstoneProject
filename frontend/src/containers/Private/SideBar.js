@@ -58,7 +58,10 @@ const SideBar = () => {
                 setactive("");
             }}
         >
-            <div className="flex cursor-pointer">
+            <Link
+                to={`/trang-ca-nhan/${user_data?._id}`}
+                className="flex cursor-pointer"
+            >
                 <div className="flex rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[60px] w-[60px] pt-1 mb-2">
                     <span className="animate-ping absolute inline-flex h-[8px] w-[8px] rounded-full bg-green-500 opacity-100 ml-[50px] mb-[40px]"></span>
                     <img
@@ -67,10 +70,7 @@ const SideBar = () => {
                         className="h-[65px] w-[70px] rounded-full"
                     ></img>
                 </div>
-                <Link
-                    to={`/rieng-tu/${path.INFOR}`}
-                    className="flex flex-col mx-3 my-2"
-                >
+                <div className="flex flex-col mx-3 my-2">
                     <h3 className="text-black text-lg">
                         <b>
                             {user_data
@@ -81,8 +81,8 @@ const SideBar = () => {
                     <h3 className="text-blue-500 text-md hover:font-bold">
                         Trang cá nhân
                     </h3>
-                </Link>
-            </div>
+                </div>
+            </Link>
             {/* list item */}
             <div className="m-1">
                 <Link

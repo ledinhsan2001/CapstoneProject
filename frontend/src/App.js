@@ -14,6 +14,7 @@ import {
     DetailRealHome,
     DataSearch,
     HomePage,
+    PersonalPage,
 } from "./containers/Public/index";
 import {
     Private,
@@ -43,6 +44,10 @@ function App() {
                                 exact
                                 path={path.BUYSELL}
                                 element={<BuySell />}
+                            />
+                            <Route
+                                path={path.PAGE_PERSONAL}
+                                element={<PersonalPage />}
                             />
                             <Route
                                 path={path.SERVICE_PRICE}

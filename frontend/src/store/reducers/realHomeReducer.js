@@ -21,6 +21,14 @@ const realHomeReducer = (state = initState, action) => {
                 page_count: action.page_count || 0,
                 total_data: action.total_data || 0,
             };
+        case actionTypes.GET_RHS_PUBLIC_BY_USER:
+            return {
+                ...state,
+                real_homes_public_by_user:
+                    action.real_homes_public_by_user || [],
+                message: action.message || "",
+                total_post_by_user: action.total_post_by_user || 0,
+            };
         case actionTypes.GET_RHS_BY_USER:
             return {
                 ...state,

@@ -3,6 +3,19 @@ const Role = require("../models/role");
 const catchAsync = require("../middlewares/catchAsync");
 const ApiError = require("../utils/ApiError");
 
+const getUserPublic = catchAsync(async (req, res) => {
+    const _id = req.query;
+    const user = await User.findById(_id, { password: 0, __v: 0 });
+    if (user) {
+        return res.status(200).json({ success: true, data: user });
+    } else {
+        return res.status(400).json({
+            success: false,
+            message: "Tài khoản không tồn tại.",
+        });
+    }
+});
+
 const getUser = catchAsync(async (req, res) => {
     const id = req.userId;
     const user = await User.findById({ _id: id }, { password: 0, __v: 0 });
@@ -39,6 +52,7 @@ const putUser = async (req, res) => {
 };
 
 const userController = {
+    getUserPublic,
     getUser,
     putUser,
 };
