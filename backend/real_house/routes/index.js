@@ -1,3 +1,5 @@
+import paymentHistoryRouter from "./paymentHistoryRouter.js";
+import paymentRouter from "./paymentRouter";
 import savePostRouter from "./savePostRouter";
 
 const authRouter = require("./auth");
@@ -5,7 +7,6 @@ const authJwt = require("../middlewares/authJWT");
 const userRouter = require("./user");
 const realHomeTypeRouter = require("./realHomeTypeRouter");
 const transactionTypeRouter = require("./transactionTypeRouter");
-const serviceRouter = require("./services");
 const numberDayRouter = require("./numberDayRouter");
 const newsTypeRouter = require("./newsTypeRouter");
 const insertDataDb = require("./insertDataDb");
@@ -26,7 +27,8 @@ const initRoute = (app) => {
     app.use("/api/admin/news-type", newsTypeRouter);
     app.use("/api/admin/number-day", numberDayRouter);
 
-    app.use("/api/service", serviceRouter);
+    app.use("/api/payment", paymentRouter);
+    app.use("/api/payment-history", paymentHistoryRouter);
     app.use("/api/real-home", realHomeRouter);
     app.use("/api/save-post", savePostRouter);
 

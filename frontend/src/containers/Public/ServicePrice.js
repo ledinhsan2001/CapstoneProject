@@ -54,7 +54,7 @@ const ServicePrice = () => {
                     <tbody className="text-2xl">
                         <tr className="text-center mt-2">
                             <td>Loại tin</td>
-                            <td>Đăng 1 ngày</td>
+                            <td>Đơn giá/Ngày</td>
                             <td>Đăng 5 ngày</td>
                             <td>Đăng 10 ngày</td>
                             <td>Đăng 15 ngày</td>

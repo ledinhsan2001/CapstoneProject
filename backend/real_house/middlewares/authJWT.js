@@ -19,7 +19,13 @@ const verifyToken = (req, res, next) => {
                 .send({ success: false, message: "Không có quyền truy cập!" });
         }
         //so Date.now() > exp 3 số nên * 1000 để so sánh
+        var date_now = Date.now();
         var exp = decoded.exp * 1000;
+        if (date_now > exp) {
+            return res
+                .status(401)
+                .send({ success: false, message: "Không có quyền truy cập!" });
+        }
         req.expiresIn = exp;
 
         //decoded => id gán req.userId

@@ -13,3 +13,5 @@ export { default as SelectAddress } from "./SelectAddress";
 export { default as TextAreaDescription } from "./TextAreaDescription";
 export { default as SelectDescription } from "./SelectDescription";
 export { default as MapLeaflet } from "./MapLeaflet";
+export { default as NewsType } from "./NewsType";
+export { default as NumberDay } from "./NumberDay";

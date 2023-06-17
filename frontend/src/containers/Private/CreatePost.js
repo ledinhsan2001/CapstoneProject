@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Categories, Address, Description, Images } from "./";
+import { Categories, Address, Description, Images, Payment } from "./";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { Contact } from "../components";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,13 +12,17 @@ import {
 import { apiCreateRealHome, apiUpdateRealHome } from "../../services";
 import Swal from "sweetalert2";
 import { validate_data } from "../../utils/validate_data";
-import { delDataEdit } from "../../store/actions";
+import { dataEdit, delDataEdit } from "../../store/actions";
+import { memo } from "react";
 
-const CreatePost = ({ edit }) => {
+const CreatePost = ({ edit, repayment }) => {
     const { prices, areas } = useSelector((state) => state.price_area);
     const { data_edit } = useSelector((state) => state.real_home);
     const { user_data } = useSelector((state) => state.user);
     const [errors, seterrors] = useState([]);
+    const [showPayment, setshowPayment] = useState(false);
+    const [showCreatePost, setshowCreatePost] = useState(true);
+    const [id_post, setid_post] = useState("");
     const dispatch = useDispatch();
 
     const [payload, setpayload] = useState(() => {
@@ -38,9 +42,9 @@ const CreatePost = ({ edit }) => {
             content_description:
                 data_edit?.description?.content_description || "",
             price: data_edit?.description?.price || "",
-            area: data_edit?.description?.area || 0,
-            bedroom: data_edit?.description?.bedroom || 0,
-            toilet: data_edit?.description?.toilet || 0,
+            area: data_edit?.description?.area || "",
+            bedroom: data_edit?.description?.bedroom || "",
+            toilet: data_edit?.description?.toilet || "",
             price_id: data_edit?.price_id || "",
             area_id: data_edit?.area_id || "",
             province_id: data_edit?.province_id || "",
@@ -48,6 +52,28 @@ const CreatePost = ({ edit }) => {
         };
         return init;
     });
+
+    const resetPayload = () => {
+        setpayload({
+            address: "",
+            images: {
+                url: [],
+            },
+            real_home_type_id: "",
+            transaction_type_id: "",
+            title_description: "",
+            short_description: "",
+            content_description: "",
+            price: "",
+            area: 0,
+            bedroom: 0,
+            toilet: 0,
+            price_id: "",
+            area_id: "",
+            province_id: "",
+            number_home: "",
+        });
+    };
 
     const handleSubmit = async () => {
         //get min max from have front data
@@ -114,11 +140,11 @@ const CreatePost = ({ edit }) => {
             user_post: user_data._id,
         };
         let count = validate_data(finalPayload, seterrors);
-        console.log(finalPayload);
         if (count !== 0) {
             Swal.fire("Lỗi!", "Bài viết có lỗi!", "error");
         } else {
-            if (data_edit) {
+            // edit, had payment then active === true
+            if (data_edit && data_edit?.active === true) {
                 finalPayload = {
                     ...finalPayload,
                     real_home_id: data_edit._id,
@@ -128,52 +154,38 @@ const CreatePost = ({ edit }) => {
                 const response = await apiUpdateRealHome(finalPayload);
                 if (response.data.success === true) {
                     Swal.fire("Thành công!", response.data.message, "success");
-                    setpayload({
-                        address: "",
-                        images: {
-                            url: [],
-                        },
-                        real_home_type_id: "",
-                        transaction_type_id: "",
-                        title_description: "",
-                        short_description: "",
-                        content_description: "",
-                        price: "",
-                        area: 0,
-                        bedroom: 0,
-                        toilet: 0,
-                        price_id: "",
-                        area_id: "",
-                        province_id: "",
-                        number_home: "",
-                    });
+                    resetPayload();
                     dispatch(delDataEdit());
                 } else {
                     Swal.fire("Lỗi!", response.data.message, "error");
                 }
-            } else {
+            }
+            // create but have not payment then active === false
+            if (data_edit && data_edit?.active === false) {
+                finalPayload = {
+                    ...finalPayload,
+                    real_home_id: data_edit._id,
+                    description_id: data_edit.description._id,
+                    images_id: data_edit?.images?._id,
+                };
+                const response = await apiUpdateRealHome(finalPayload);
+                if (response.data.success === true) {
+                    dispatch(dataEdit(response.data.data));
+                    setid_post(response.data.data._id);
+                    setshowPayment(true);
+                    setshowCreatePost(false);
+                } else {
+                    Swal.fire("Lỗi!", response.data.message, "error");
+                }
+            }
+            // create
+            else {
                 const response = await apiCreateRealHome(finalPayload);
                 if (response.data.success === true) {
-                    Swal.fire("Thành công!", response.data.message, "success");
-                    setpayload({
-                        address: "",
-                        images: {
-                            url: [],
-                        },
-                        real_home_type_id: "",
-                        transaction_type_id: "",
-                        title_description: "",
-                        short_description: "",
-                        content_description: "",
-                        price: "",
-                        area: 0,
-                        bedroom: 0,
-                        toilet: 0,
-                        price_id: "",
-                        area_id: "",
-                        province_id: "",
-                        number_home: "",
-                    });
+                    dispatch(dataEdit(response.data.data));
+                    setid_post(response.data.data._id);
+                    setshowPayment(true);
+                    setshowCreatePost(false);
                 } else {
                     Swal.fire("Lỗi!", response.data.message, "error");
                 }
@@ -182,57 +194,72 @@ const CreatePost = ({ edit }) => {
     };
     return (
         <div>
-            <div className="flex flex-col h-screen mb-10">
-                <div
-                    className={`${
-                        edit
-                            ? `ml-[15%] text-left flex flex-col px-[10%] mt-4 w-[70%] bg-[#F5F5F5] pb-10`
-                            : `ml-[15%] text-left flex flex-col px-[10%] pt-4 w-[70%]`
-                    }`}
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <div className="font-bold text-4xl my-4">
-                        {edit ? "Chỉnh sửa tin" : `Đăng tin mới`}
+            <div className="flex flex-col h-screen mb-10 items-center">
+                {showCreatePost && (
+                    <div
+                        className={`${
+                            edit
+                                ? `text-left flex flex-col px-[10%] mt-4 w-[70%] bg-[#F5F5F5] pb-10`
+                                : `text-left flex flex-col px-[10%] pt-4 w-[70%]`
+                        }`}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="font-bold text-4xl my-4">
+                            {edit ? "Chỉnh sửa tin" : `Đăng tin mới`}
+                        </div>
+                        <Categories
+                            payload={payload}
+                            setpayload={setpayload}
+                            errors={errors}
+                            seterrors={seterrors}
+                        />
+                        <Address
+                            payload={payload}
+                            setpayload={setpayload}
+                            errors={errors}
+                            seterrors={seterrors}
+                        />
+                        <Description
+                            payload={payload}
+                            setpayload={setpayload}
+                            errors={errors}
+                            seterrors={seterrors}
+                            edit={edit ? edit : undefined}
+                        />
+                        <Images
+                            payload={payload}
+                            setpayload={setpayload}
+                            errors={errors}
+                            seterrors={seterrors}
+                            name="images"
+                        />
+                        <div className="flex justify-center items-center p-2 mt-4 rounded-xl bg-[#2957cc] cursor-pointer text-white">
+                            <button
+                                type="button"
+                                className="flex text-lg justify-center items-center gap-1 w-full"
+                                onClick={() => {
+                                    handleSubmit();
+                                }}
+                            >
+                                {repayment
+                                    ? `Tiếp tục`
+                                    : edit
+                                    ? "Cập nhật"
+                                    : `Tiếp tục`}
+                                <AiOutlineArrowRight className="mt-1" />
+                            </button>
+                        </div>
                     </div>
-                    <Categories
-                        payload={payload}
-                        setpayload={setpayload}
-                        errors={errors}
-                        seterrors={seterrors}
+                )}
+                {showPayment && (
+                    <Payment
+                        setshowPayment={setshowPayment}
+                        resetPayload={resetPayload}
+                        setshowCreatePost={setshowCreatePost}
+                        id_post={id_post}
+                        address={payload.address}
                     />
-                    <Address
-                        payload={payload}
-                        setpayload={setpayload}
-                        errors={errors}
-                        seterrors={seterrors}
-                    />
-                    <Description
-                        payload={payload}
-                        setpayload={setpayload}
-                        errors={errors}
-                        seterrors={seterrors}
-                        edit={edit ? edit : undefined}
-                    />
-                    <Images
-                        payload={payload}
-                        setpayload={setpayload}
-                        errors={errors}
-                        seterrors={seterrors}
-                        name="images"
-                    />
-                    <div className="flex justify-center items-center p-2 mt-4 rounded-xl bg-[#2957cc] cursor-pointer text-white">
-                        <button
-                            type="button"
-                            className="flex text-lg justify-center items-center gap-1 w-full"
-                            onClick={() => {
-                                handleSubmit();
-                            }}
-                        >
-                            {edit ? "Cập nhật" : `Tiếp tục`}
-                            <AiOutlineArrowRight className="mt-1" />
-                        </button>
-                    </div>
-                </div>
+                )}
                 <div className="">
                     <div className=" flex mb-[120px]">
                         <Contact />
@@ -243,4 +270,4 @@ const CreatePost = ({ edit }) => {
     );
 };
 
-export default CreatePost;
+export default memo(CreatePost);

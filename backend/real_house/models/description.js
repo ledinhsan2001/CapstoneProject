@@ -22,7 +22,7 @@ const DescriptionSchema = new Schema(
         },
         price: {
             type: String,
-            default: 0,
+            default: "",
         },
         area: {
             type: Number,

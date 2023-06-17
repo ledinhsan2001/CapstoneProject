@@ -57,15 +57,20 @@ export const TextEditor = ({
             let tagText = document.querySelector("div > .ql-editor");
             tagText.style.fontSize = "18px";
         }
-        if (quill && edit) {
-            value && quill.clipboard.dangerouslyPasteHTML(value);
-            let tagText = document.querySelector("div > .ql-editor");
-            tagText.style.fontSize = "18px";
+        if (quill && !detail) {
+            if (value) {
+                quill.focus();
+                let cursorPosition = quill.getSelection();
+                quill.clipboard.dangerouslyPasteHTML(value);
+                quill.setSelection(cursorPosition.index);
+                let tagText = document.querySelector("div > .ql-editor");
+                tagText.style.fontSize = "16px";
+            }
         }
     }, [quill, value]);
 
     useEffect(() => {
-        if (quill && !detail && edit) {
+        if (quill && !detail) {
             quill.on("text-change", (delta, oldDelta, source) => {
                 // console.log(quill.getText()); // Get text only
                 // console.log(quill.getContents()); // Get delta contents

@@ -49,7 +49,7 @@ const Header = () => {
         dispatch(actions.actionTransactionType());
 
         //dispatch hear to list use
-        dispatch(actions.actionGetSavePost());
+        isLoggedIn && dispatch(actions.actionGetSavePost());
     }, [dispatch]);
 
     useEffect(() => {

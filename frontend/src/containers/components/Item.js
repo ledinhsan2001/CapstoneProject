@@ -1,12 +1,15 @@
 import React, { memo, useEffect, useState } from "react";
 import "./Item.css";
 import icons from "../../utils/icons";
-import { formatUniToString } from "../../utils/constant";
-import { Link } from "react-router-dom";
+import { formatUniToString, path } from "../../utils/constant";
+import { Link, useNavigate } from "react-router-dom";
 import { apiDelSavePost, apiSavePost } from "../../services";
 import Swal from "sweetalert2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionGetSavePost } from "../../store/actions";
+import { MdAccessTime } from "react-icons/md";
+import moment from "moment";
+import "moment/locale/vi";
 
 const {
     FaStar,
@@ -30,10 +33,14 @@ const Item = ({
     content,
     user,
     _id,
+    upAt,
     active,
+    news_type_id,
 }) => {
     const dispatch = useDispatch();
     const [isHoverHeart, setIsHoverHeart] = useState(active ? true : false);
+    const navigate = useNavigate();
+    const { isLoggedIn } = useSelector((state) => state.auth);
 
     const callNotSave = async () => {
         try {
@@ -58,19 +65,23 @@ const Item = ({
     };
 
     const callSave = async () => {
-        const response = await apiSavePost(_id);
-        setIsHoverHeart(true);
-        Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.data.message,
-            showConfirmButton: false,
-            timer: 500,
-        });
+        if (!isLoggedIn) {
+            navigate(`/${path.LOGIN}`);
+        } else {
+            const response = await apiSavePost(_id);
+            setIsHoverHeart(true);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: response.data.message,
+                showConfirmButton: false,
+                timer: 500,
+            });
+        }
     };
 
     useEffect(() => {
-        dispatch(actionGetSavePost());
+        isLoggedIn && dispatch(actionGetSavePost());
     }, [isHoverHeart]);
 
     const data = address.split(",");
@@ -124,7 +135,15 @@ const Item = ({
                     )}`}
                     className="pt-2"
                 >
-                    <div className="short-des text-red-500 max-h-[65px] text-ellipsis text-left ml-1 items-center whitespace-pre-line overflow-hidden hover:text-red-300">
+                    <div
+                        className={`short-des max-h-[65px] text-ellipsis text-left ml-1 items-center whitespace-pre-line overflow-hidden ${
+                            +news_type_id === 0
+                                ? `text-red-500 hover:text-red-300`
+                                : +news_type_id === 1
+                                ? `text-[#ED0CC9] hover:text-[#f593e5]`
+                                : `text-blue-500 hover:text-blue-300`
+                        }`}
+                    >
                         <FaStar
                             size={30}
                             color="orange"
@@ -148,6 +167,10 @@ const Item = ({
                     <span className="wc flex">
                         <FaToilet className="m-1" />
                         {toilet} wc
+                    </span>
+                    <span className="flex text-gray-400">
+                        <MdAccessTime className="m-1" />
+                        {moment(upAt).fromNow()}
                     </span>
                 </div>
                 <div className="">
