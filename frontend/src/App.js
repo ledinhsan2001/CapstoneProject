@@ -22,8 +22,12 @@ import {
     ManagePost,
     EditInfor,
     SavePost,
+    GetPayment,
+    PaymentFail,
+    PaymentHistory,
 } from "./containers/Private";
 import ResetPassword from "./containers/Public/Account/ResetPassword";
+import PaymentStatus from "./containers/Private/PaymentStatus";
 
 function App() {
     return (
@@ -171,6 +175,14 @@ function App() {
                         {/* Private */}
                         <Route path={path.PRIVATE} element={<Private />}>
                             <Route
+                                path={path.GET_PAYMENT}
+                                element={<GetPayment />}
+                            />
+                            <Route
+                                path={path.PAYMENT_FAIL}
+                                element={<PaymentFail />}
+                            />
+                            <Route
                                 path={path.MANAGEMENT_PAGE}
                                 element={<ManagePost />}
                             />
@@ -187,8 +199,12 @@ function App() {
                                 element={<EditInfor />}
                             />
                             <Route
+                                path={path.PAYMENT_STATUS}
+                                element={<PaymentStatus />}
+                            />
+                            <Route
                                 path={path.HISTORY_PAYMENT}
-                                element={<CreatePost />}
+                                element={<PaymentHistory />}
                             />
                             <Route
                                 path={path.SAVED_POST}

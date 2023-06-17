@@ -1,5 +1,7 @@
 import moment from "moment";
 import "moment/locale/vi";
+import { NewsType } from "../models/newsType";
+import { Payment } from "../models/payment";
 const catchAsync = require("../middlewares/catchAsync");
 const { Description } = require("../models/description");
 const { Image } = require("../models/image");
@@ -14,9 +16,15 @@ require("dotenv").config();
 
 export const getDetail = catchAsync(async (req, res) => {
     const { id } = req.query;
-    const real_home = await RealHome.find({ _id: id }, { __v: 0 });
+    const real_home = await RealHome.findOne({ _id: id }, { __v: 0 });
+    const news_type = await NewsType.findOne({
+        _id: real_home.news_type_id,
+    });
+
     if (real_home) {
-        return res.status(200).json({ success: true, data: real_home });
+        return res
+            .status(200)
+            .json({ success: true, data: real_home, news_type: news_type });
     }
     return res
         .status(400)
@@ -25,7 +33,9 @@ export const getDetail = catchAsync(async (req, res) => {
 
 export const getNewPost = catchAsync(async (req, res) => {
     const typeRHs = await RealHome.find(
-        {},
+        {
+            active: true,
+        },
         {
             _id: 1,
             images: {
@@ -36,10 +46,11 @@ export const getNewPost = catchAsync(async (req, res) => {
                 price: 1,
                 title_description: 1,
             },
+            news_type_id: 1,
         }
     )
         .sort({ createdAt: -1 })
-        .limit(5);
+        .limit(7);
 
     if (typeRHs.length > 0) {
         // const limit_data = page_number * limit;
@@ -76,39 +87,40 @@ export const getAllByUserPublic = async (req, res) => {
 };
 
 export const getAllByUser = catchAsync(async (req, res) => {
-    const { page } = req.query;
     const user_id = req.userId;
 
     const results = {};
-    let page_number = parseInt(page);
-    let limit = process.env.LIMIT;
     let typeRHs = await RealHome.find(
         { "user_post._id": user_id },
         { __v: 0 }
     ).sort({ start_date: -1 });
-    // const limit_data = page_number * limit;
-    // .skip(limit_data)
-    // .limit(limit);
+    let payment = await Payment.find({ "user._id": user_id });
 
-    let startIndex = page_number * limit;
-    let lastIndex = (page_number + 1) * limit;
     if (typeRHs.length > 0) {
-        if (lastIndex >= typeRHs.length) {
-            lastIndex = typeRHs.length;
-        }
-        results.data = typeRHs.slice(startIndex, lastIndex);
-        // if (startIndex > 0) {
-        //     results.previous = {
-        //         page: page_number - 1,
-        //     };
-        // }
-        // if (lastIndex < typeRHs.length) {
-        //     results.next = {
-        //         page: page_number + 1,
-        //     };
-        // }
+        results.data = typeRHs;
         results.total_data = typeRHs.length;
-        results.page_count = Math.ceil(typeRHs.length / limit);
+        results.payment = payment;
+        res.status(200).json({ success: true, data: results });
+    } else {
+        return res
+            .status(400)
+            .json({ message: "Danh sách bất động sản trống." });
+        // throw new ApiError(400, "Danh sách kiểu bất động sản trống.");
+    }
+});
+
+export const getAllByUserUnPayment = catchAsync(async (req, res) => {
+    const user_id = req.userId;
+
+    const results = {};
+    let typeRHs = await RealHome.find(
+        { active: false, "user_post._id": user_id },
+        { __v: 0 }
+    ).sort({ start_date: -1 });
+
+    if (typeRHs.length > 0) {
+        results.data = typeRHs;
+        results.total_data = typeRHs.length;
         res.status(200).json({ success: true, data: results });
     } else {
         return res
@@ -126,6 +138,7 @@ export const getAllLimit = catchAsync(async (req, res) => {
         price_id,
         area_id,
         sort_id,
+        news_type_id,
     } = req.query;
 
     //search is format arr[[1,2,3]] = object
@@ -142,9 +155,10 @@ export const getAllLimit = catchAsync(async (req, res) => {
 
     let sort = sort_id;
     let objsort = {};
+    objsort["news_type_id"] = 1;
     if (sort) {
         if (+sort === 0) {
-            objsort["_id"] = 1;
+            objsort["news_type_id"] = 1;
         }
         if (+sort === 1) {
             objsort["createdAt"] = -1;
@@ -163,6 +177,8 @@ export const getAllLimit = catchAsync(async (req, res) => {
     let typeRHs;
 
     let clause_where = {};
+    // posts paymented
+    clause_where["active"] = true;
     if (transaction_type_id) {
         clause_where["transaction_type_id"] = transaction_type_id;
     }
@@ -175,13 +191,13 @@ export const getAllLimit = catchAsync(async (req, res) => {
     if (area_id) {
         clause_where["arr_area"] = { $in: arr_area };
     }
+    if (news_type_id) {
+        clause_where["news_type_id"] = news_type_id;
+    }
 
     // console.log(clause_where);
-    if (sort) {
-        typeRHs = await RealHome.find(clause_where, { __v: 0 }).sort(objsort);
-    } else {
-        typeRHs = await RealHome.find(clause_where, { __v: 0 });
-    }
+    // console.log(objsort);
+    typeRHs = await RealHome.find(clause_where, { __v: 0 }).sort(objsort);
 
     // const limit_data = page_number * limit;
     // .skip(limit_data)
@@ -252,7 +268,6 @@ export const create = async (req, res) => {
         province_id,
     } = req.body;
     const nameExist = await User.findOne({ _id: user_post });
-
     const obj_images = await Image.create({
         url: JSON.stringify(images.url),
     });
@@ -261,7 +276,7 @@ export const create = async (req, res) => {
         _id: transaction_type_id,
     });
 
-    const short_des = `Anh/Chị ${nameExist.first_name} ${nameExist.last_name}. SĐT: ${nameExist.phone}. ${transaction_type_name.name} ${address} Giá: ${price}, diện tích: ${area}`;
+    const short_des = `Anh/Chị ${nameExist.first_name} ${nameExist.last_name}. SĐT: ${nameExist.phone}. ${transaction_type_name.name} ${address} Giá: ${price} VND, diện tích: ${area} m2`;
 
     try {
         const obj_description = await Description.create({
@@ -269,27 +284,22 @@ export const create = async (req, res) => {
             short_description: short_des,
             content_description,
             price,
-            area,
+            area: +area,
             bedroom,
             toilet,
         });
-        let start_date = FormatDate();
 
-        let area = await Area.findOne({ _id: area_id });
-        //then integrated payment will change enddate
-        let end_date = FormatDate(7);
+        let start_date = FormatDate();
         const real_home = await RealHome.create({
             user_post: nameExist,
             address,
             start_date,
-            end_date,
             images: obj_images,
             real_home_type_id,
             transaction_type_id,
             description: obj_description,
             price_id,
             area_id,
-            order_area: area.order,
             province_id,
         });
 
@@ -374,7 +384,7 @@ export const put = catchAsync(async (req, res) => {
                 short_description,
                 content_description,
                 price,
-                area,
+                area: +area,
                 bedroom,
                 toilet,
             }

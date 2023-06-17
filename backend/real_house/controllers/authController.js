@@ -115,17 +115,14 @@ const registerController = catchAsync(async (req, res) => {
             });
 
             // save otp in db
-            console.log("ok1");
             user.OTP = OTP;
             await user.save();
-            console.log("ok2");
 
             return res.status(201).json({
                 success: true,
                 message: `Mã OTP đã gửi đến: (+84) ${phone}`,
             });
         } catch (error) {
-            console.log(error);
             return res.status(400).json({
                 success: false,
                 message: "Gửi mã OTP thất bại. Vui lòng thử lại!",

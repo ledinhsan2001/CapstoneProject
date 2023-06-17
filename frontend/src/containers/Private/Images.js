@@ -21,31 +21,35 @@ const Images = ({ payload, setpayload, errors, seterrors, name }) => {
     const handleUploadImages = async (e) => {
         e.stopPropagation();
         setisLoading(true);
-        const files = e.target.files;
-        const images = new FormData();
-        let urls = [];
-        for (let i = 0; i < files.length; i++) {
-            let file = files[i];
-            images.append(
-                "upload_preset",
-                process.env.REACT_APP_UPLOAD_ASSETS_NAME
-            );
-            images.append("folder", process.env.REACT_APP_FOLDER_NAME);
-            images.append("file", file);
-            const response = await apiUploadImages(images);
-            if (response.status === 200) {
-                urls.push(response.data.secure_url);
+        try {
+            const files = e.target.files;
+            const images = new FormData();
+            let urls = [];
+            for (let i = 0; i < files.length; i++) {
+                let file = files[i];
+                images.append(
+                    "upload_preset",
+                    process.env.REACT_APP_UPLOAD_ASSETS_NAME
+                );
+                images.append("folder", process.env.REACT_APP_FOLDER_NAME);
+                images.append("file", file);
+                const response = await apiUploadImages(images);
+                if (response.status === 200) {
+                    urls.push(response.data.secure_url);
+                }
             }
-        }
 
-        setimagesSelected((prev) => [...prev, ...urls]);
-        setpayload((prev) => ({
-            ...prev,
-            images: {
-                url: [...payload.images.url, ...urls],
-            },
-        }));
-        setisLoading(false);
+            setimagesSelected((prev) => [...prev, ...urls]);
+            setpayload((prev) => ({
+                ...prev,
+                images: {
+                    url: [...payload.images.url, ...urls],
+                },
+            }));
+            setisLoading(false);
+        } catch (error) {
+            setisLoading(false);
+        }
     };
 
     const handleDelImage = (image) => {

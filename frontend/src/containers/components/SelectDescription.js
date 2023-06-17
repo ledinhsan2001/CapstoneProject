@@ -33,12 +33,12 @@ const SelectDescription = ({
                     }
                 />
                 {type === "area" && (
-                    <label className=" flex bg-blue-400 w-[50px] h-[50px] rounded-r-xl items-center justify-center absolute right-8">
+                    <label className="flex bg-blue-400 w-[20%] h-[50px] rounded-r-xl items-center justify-center absolute ml-[70%]">
                         m<sup>2</sup>
                     </label>
                 )}
                 {type === "price" && (
-                    <label className=" flex bg-blue-400 w-[80px] h-[50px] rounded-r-xl items-center justify-center absolute right-8">
+                    <label className=" flex bg-blue-400 w-[20%] h-[50px] rounded-r-xl items-center justify-center absolute ml-[70%]">
                         đồng
                     </label>
                 )}

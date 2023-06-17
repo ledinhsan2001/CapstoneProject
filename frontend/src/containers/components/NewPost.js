@@ -20,6 +20,7 @@ const NewPost = () => {
                                 title={item.description.title_description}
                                 price={item.description.price}
                                 upAt={item.createdAt}
+                                news_type_id={item?.news_type_id}
                             />
                         );
                     })}

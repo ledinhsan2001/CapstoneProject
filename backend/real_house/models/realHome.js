@@ -19,14 +19,6 @@ const RealHomeSchema = new Schema(
             type: String,
             default: "",
         },
-        end_date: {
-            type: String,
-            default: "",
-        },
-        expired: {
-            type: Boolean,
-            default: false,
-        },
         images: ImageSchema,
         real_home_type_id: {
             type: mongoose.Schema.Types.ObjectId,
@@ -45,9 +37,6 @@ const RealHomeSchema = new Schema(
             type: mongoose.Schema.Types.String,
             ref: "Area",
         },
-        order_area: {
-            type: Number,
-        },
         province_id: {
             type: mongoose.Schema.Types.String,
             ref: "Province",
@@ -55,6 +44,10 @@ const RealHomeSchema = new Schema(
         active: {
             type: Boolean,
             default: false,
+        },
+        news_type_id: {
+            type: Number,
+            ref: "NewsType",
         },
     },
     {

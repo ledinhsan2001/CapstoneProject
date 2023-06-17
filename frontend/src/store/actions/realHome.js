@@ -9,6 +9,8 @@ import {
     apiGetAllRHByUser,
     apiGetSavePost,
     apiGetAllRHPublicByUser,
+    apiGetAllRHByUserUnPay,
+    apiGetnewsType,
 } from "../../services/index";
 
 // ----------------------------------------------------------
@@ -19,6 +21,7 @@ export const realHomeDetail = (id) => async (dispatch) => {
             dispatch({
                 type: actionTypes.GET_DETAIL_POST,
                 real_home_detail: response.data.data,
+                news_type_detail: response.data.news_type,
             });
         } else {
             dispatch({
@@ -30,6 +33,7 @@ export const realHomeDetail = (id) => async (dispatch) => {
         dispatch({
             type: actionTypes.GET_DETAIL_POST,
             real_home_detail: null,
+            news_type: null,
         });
     }
 };
@@ -95,6 +99,7 @@ export const realHomeByUser = (page) => async (dispatch) => {
                 real_homes_by_user: response.data.data.data,
                 page_count: response.data.data.page_count,
                 total_data: response.data.data.total_data,
+                payment_data: response.data.data.payment,
             });
         } else {
             dispatch({
@@ -106,6 +111,34 @@ export const realHomeByUser = (page) => async (dispatch) => {
         dispatch({
             type: actionTypes.GET_RHS_BY_USER,
             real_homes_by_user: [],
+            payment: [],
+            message: error.response.data.message,
+        });
+    }
+};
+
+export const realHomeByUserUnPay = () => async (dispatch) => {
+    try {
+        const response = await apiGetAllRHByUserUnPay();
+        if (response?.data.success === true) {
+            dispatch({
+                type: actionTypes.GET_RHS_BY_USER_UNPAY,
+                real_homes_by_user_unpay: response.data.data.data,
+                total_unpay: response.data.data.total_data,
+            });
+        } else {
+            dispatch({
+                type: actionTypes.GET_RHS_BY_USER_UNPAY,
+                message: response.data.data.message,
+                real_homes_by_user_unpay: null,
+                total_unpay: 0,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_RHS_BY_USER_UNPAY,
+            real_homes_by_user_unpay: null,
+            total_unpay: 0,
             message: error.response.data.message,
         });
     }
@@ -235,6 +268,31 @@ export const actionGetSavePost = () => async (dispatch) => {
             message: error.response.data.message,
             saved_post: null,
             total_post: 0,
+        });
+    }
+};
+
+export const actionGetNewsType = () => async (dispatch) => {
+    try {
+        const response = await apiGetnewsType();
+        if (response?.data.success === true) {
+            dispatch({
+                type: actionTypes.GET_NEWS_TYPE,
+                news_type: response.data.data,
+                message: response.data.message,
+            });
+        } else {
+            dispatch({
+                type: actionTypes.GET_NEWS_TYPE,
+                message: response.data.message,
+                news_type: null,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_NEWS_TYPE,
+            message: error.response.data.message,
+            news_type: null,
         });
     }
 };

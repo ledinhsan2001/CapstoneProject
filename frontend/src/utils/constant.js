@@ -19,6 +19,9 @@ export const path = {
     EDIT_INFOR: "sua-thong-tin-ca-nhan",
     PAGE_PERSONAL: "trang-ca-nhan/:id",
     HISTORY_PAYMENT: "lich-su-thanh-toan",
+    PAYMENT_STATUS: "trang-thai-thanh-toan",
+    GET_PAYMENT: "payment-success",
+    PAYMENT_FAIL: "payment-fail",
 
     SELL_APARTMENTS: "ban-can-ho",
     SELL_VILLA: "ban-biet-thu",

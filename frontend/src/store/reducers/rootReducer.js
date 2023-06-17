@@ -7,14 +7,14 @@ import storage from "redux-persist/lib/storage";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import { persistReducer } from "redux-persist";
 
-const commonConfig = {
+const persistConfig = {
     storage,
     stateReconciler: autoMergeLevel2,
 };
 
 //whitelist nói cho localStorage biết danh sách nào được giữ lại, blacklist ngược lại
 const authConfig = {
-    ...commonConfig,
+    ...persistConfig,
     key: "auth",
     whitelist: ["isLoggedIn", "accessToken", "refreshToken"],
 };

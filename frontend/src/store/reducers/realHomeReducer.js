@@ -36,6 +36,14 @@ const realHomeReducer = (state = initState, action) => {
                 message: action.message || "",
                 page_count: action.page_count || 0,
                 total_data: action.total_data || 0,
+                payment_data: action.payment_data || [],
+            };
+        case actionTypes.GET_RHS_BY_USER_UNPAY:
+            return {
+                ...state,
+                real_homes_by_user_unpay: action.real_homes_by_user_unpay || [],
+                message: action.message || "",
+                total_unpay: action.total_unpay || 0,
             };
         case actionTypes.GET_NEW_POST:
             return {
@@ -47,6 +55,7 @@ const realHomeReducer = (state = initState, action) => {
             return {
                 ...state,
                 real_home_detail: action.real_home_detail || [],
+                news_type_detail: action.news_type_detail || [],
                 message: action.message || "",
             };
         case actionTypes.RH_EDIT:
@@ -80,7 +89,13 @@ const realHomeReducer = (state = initState, action) => {
                 ...state,
                 saved_post: action.saved_post || [],
                 total_post: action.total_post || 0,
-                message: action.message,
+                message: action.message || "",
+            };
+        case actionTypes.GET_NEWS_TYPE:
+            return {
+                ...state,
+                news_type: action.news_type || [],
+                message: action.message || "",
             };
         default:
             return state;

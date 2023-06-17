@@ -56,6 +56,19 @@ export const apiGetAllRHByUser = (page) =>
         }
     });
 
+export const apiGetAllRHByUserUnPay = () =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "get",
+                url: `/api/real-home/all-by-user-unpayment`,
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
+
 // ----------------------------------
 export const apiGetNewPost = () =>
     new Promise(async (resolve, reject) => {
@@ -231,6 +244,20 @@ export const apiDelSavePost = (real_home_id) =>
                 method: "delete",
                 url: "/api/save-post/delete",
                 params: { real_home_id },
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
+
+// newstype
+export const apiGetnewsType = () =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "get",
+                url: "/api/admin/news-type",
             });
             resolve(response);
         } catch (error) {

@@ -13,6 +13,6 @@ npm i react-paginate --save -dev
 npm i moment --save -dev để hiện thị theo khoảng cách thời gian
 npm install react-loader-spinner --save   loading
 npm install react-slick slick-carousel --save -dev  slick image
-npm i leaflet react-leaflet --save -dev  gg maps
+npm i leaflet react-leaflet --save -dev  gg maps. link: https://leafletjs.com/plugins.html
 npm i leaflet-geosearch --save -dev   input addres =>  geography lat,long 
-npm install react-quilljs quill    format textarea
+npm install react-quilljs quill    format textarea link: https://www.npmjs.com/package/react-quilljs

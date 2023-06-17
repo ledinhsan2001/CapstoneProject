@@ -65,7 +65,7 @@ const Description = ({ payload, setpayload, errors, seterrors, edit }) => {
                     <div className="w-[100%] flex flex-col">
                         <SelectDescription
                             title={"Giá bán"}
-                            placeHolder={"Nhập giá"}
+                            placeHolder={"Ví dụ: 2 tỷ"}
                             obligate={"true"}
                             type="price"
                             value={payload.price}
@@ -93,7 +93,7 @@ const Description = ({ payload, setpayload, errors, seterrors, edit }) => {
                     </div>
                     <SelectDescription
                         title={"Diện tích"}
-                        placeHolder={"Nhập diện tích"}
+                        placeHolder={"Ví dụ: 30"}
                         obligate={"true"}
                         type="area"
                         value={payload.area}
@@ -105,14 +105,14 @@ const Description = ({ payload, setpayload, errors, seterrors, edit }) => {
                 <div className="flex my-3 px-3 gap-5">
                     <SelectDescription
                         title={"Số phòng ngủ"}
-                        placeHolder={"Nhập số phòng ngủ"}
+                        placeHolder={"Ví dụ: 1"}
                         type="bedroom"
                         value={payload.bedroom}
                         setValue={setpayload}
                     />
                     <SelectDescription
                         title={"Số toilet"}
-                        placeHolder={"Nhập số toilet"}
+                        placeHolder={"Ví dụ: 1"}
                         type="toilet"
                         value={payload.toilet}
                         setValue={setpayload}

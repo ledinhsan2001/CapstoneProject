@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 //Outlet đại diện route con cho Route mẹ. Khi có các route lồng nhau
-import { Outlet, useLocation } from "react-router-dom";
+import {
+    Outlet,
+    useLocation,
+    useNavigate,
+    useSearchParams,
+} from "react-router-dom";
 import "./Home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,17 +14,34 @@ import * as actions from "../../store/actions";
 import { Footer, Header, Search } from "./index";
 import { Contact, Overview } from "../components/index";
 import { path } from "../../utils/constant";
+import { logout } from "../../store/actions/auth";
 
 const Home = () => {
     const dispatch = useDispatch();
     const location = useLocation();
+    const { isLoggedIn, message, accessToken, refreshToken } = useSelector(
+        (state) => state.auth
+    );
+    const { user_data } = useSelector((state) => state.user);
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(actions.actionPrices());
         dispatch(actions.actionAreas());
         dispatch(actions.newPost());
         dispatch(actions.realHomeTypes());
+        dispatch(actions.actionGetNewsType());
     }, [dispatch]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            isLoggedIn && dispatch(actions.actionUser());
+        }, 2000);
+        if (isLoggedIn && !user_data) {
+            dispatch(logout());
+            navigate(`/${path.LOGIN}`);
+        }
+    }, [isLoggedIn]);
 
     const checkUrl = (url) => {
         let incl = location.pathname.includes(url);

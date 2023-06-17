@@ -12,6 +12,7 @@ const {
     AiOutlineHeart,
     RiUserSettingsLine,
     RiLogoutCircleRLine,
+    SiMoneygram,
     TbReportMoney,
     VscSave,
 } = icons;
@@ -26,17 +27,11 @@ const SideBar = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!isLoggedIn) {
+        if (isLoggedIn && !user_data) {
+            dispatch(logout());
             navigate(`/${path.LOGIN}`);
         }
     }, [isLoggedIn]);
-
-    // useEffect(() => {
-    //     if (!user_data) {
-    //         dispatch(logout());
-    //         navigate(`/${path.LOGIN}`);
-    //     }
-    // }, []);
 
     useEffect(() => {
         let url = window.location.pathname;
@@ -119,6 +114,21 @@ const SideBar = () => {
                 >
                     <MdPostAdd size={25} className="mr-2" />
                     <p>Quản lý tin đăng</p>
+                </Link>
+                <Link
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setactive("trang-thai-thanh-toan");
+                    }}
+                    to={`/rieng-tu/${path.PAYMENT_STATUS}`}
+                    className={`flex p-2 border-b ${
+                        active === "trang-thai-thanh-toan"
+                            ? `font-bold text-gray-700 translate-x-3 bg-green-200 text-md rounded-lg hover:text-gray-700 items-center mt-3`
+                            : `border-gray-300 hover:bg-green-200 text-md rounded-lg cursor-pointer items-center hover:font-bold hover:text-gray-700 mt-3 hover:translate-x-3`
+                    } `}
+                >
+                    <SiMoneygram size={25} className="mr-2" />
+                    <p className="ml-2">Trạng thái thanh toán</p>
                 </Link>
                 <Link
                     onClick={(e) => {

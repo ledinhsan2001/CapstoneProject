@@ -9,3 +9,8 @@ export { default as EditPost } from "./EditPost";
 export { default as EditInfor } from "./EditInfor";
 export { default as ChangePass } from "./ChangePass";
 export { default as SavePost } from "./SavePost";
+export { default as Payment } from "./Payment";
+export { default as GetPayment } from "./GetPayment";
+export { default as PaymentFail } from "./PaymentFail";
+export { default as PaymentHistory } from "./PaymentHistory";
+export { default as SelectNumberDay } from "./SelectNumberDay";

@@ -10,7 +10,7 @@ import { useState } from "react";
 import icons from "../../utils/icons";
 import moment from "moment";
 import "moment/locale/vi";
-import { GetNummberFromString, path } from "../../utils/constant";
+import { GetNummberFromString } from "../../utils/constant";
 import { mdi_user, ggmap } from "../../assets/images";
 import Swal from "sweetalert2";
 import { MapLeaflet, NewPost } from "../components";
@@ -32,7 +32,10 @@ const DetailRealHome = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const [real_home, setreal_home] = useState("");
-    const { real_home_detail } = useSelector((state) => state.real_home);
+    const [news_type, setnews_type] = useState("");
+    const { real_home_detail, news_type_detail } = useSelector(
+        (state) => state.real_home
+    );
     const [isHoverHeart, setIsHoverHeart] = useState(false);
 
     useEffect(() => {
@@ -40,7 +43,8 @@ const DetailRealHome = () => {
     }, [id, dispatch]);
 
     useEffect(() => {
-        real_home_detail && setreal_home(real_home_detail[0]);
+        real_home_detail && setreal_home(real_home_detail);
+        news_type_detail && setnews_type(news_type_detail);
     }, [real_home_detail]);
 
     var settings = {
@@ -68,7 +72,7 @@ const DetailRealHome = () => {
     const handleScrollMap = () => {
         const element = document.getElementById("map");
         if (element) {
-            // 👇 Will scroll smoothly to the top of the next section
+            //  Will scroll smoothly to the top of the next section
             element.scrollIntoView({ behavior: "smooth" });
         }
     };
@@ -78,7 +82,15 @@ const DetailRealHome = () => {
             <div className="mx-[10%] ">
                 <div className="flex flex-col">
                     <div className="w-[100%] my-6">
-                        <div className="text-red-600 text-ellipsis text-left items-center whitespace-pre-line overflow-hidden text-3xl font-bold">
+                        <div
+                            className={`text-red-600 text-ellipsis text-left items-center whitespace-pre-line overflow-hidden text-3xl font-bold ${
+                                news_type._id === 0
+                                    ? `text-red-500`
+                                    : news_type._id === 1
+                                    ? "text-[#ED0CC9]"
+                                    : `text-blue-500`
+                            }`}
+                        >
                             <FaStar
                                 size={40}
                                 color="orange"
@@ -100,6 +112,7 @@ const DetailRealHome = () => {
                             >
                                 <img
                                     src={ggmap}
+                                    alt="map"
                                     width={35}
                                     height={35}
                                     className="ml-10 inline-block"
@@ -249,9 +262,20 @@ const DetailRealHome = () => {
                                             <td className="flex mt-2 w-[100%] text-ellipsis text-md whitespace-pre-line overflow-hidden ml-[10%]">
                                                 Loại tin:
                                             </td>
-                                            <td className="w-[70%] text-red-500 text-ellipsis text-md items-start whitespace-pre-line overflow-hidden">
-                                                {real_home?.price_id}
-                                            </td>
+                                            {news_type && (
+                                                <td
+                                                    className={`w-[70%] text-ellipsis text-md items-start whitespace-pre-line overflow-hidden ${
+                                                        news_type._id === 0
+                                                            ? `text-red-500`
+                                                            : news_type._id ===
+                                                              1
+                                                            ? "text-[#ED0CC9]"
+                                                            : `text-blue-500`
+                                                    }`}
+                                                >
+                                                    {news_type.name}
+                                                </td>
+                                            )}
                                         </tr>
                                         <tr className="w-full p-2 h-[50px] bg-gray-200">
                                             <td className="flex mt-2 w-[100%] text-ellipsis text-md whitespace-pre-line overflow-hidden ml-[10%]">
@@ -330,6 +354,7 @@ const DetailRealHome = () => {
                                         className="bg-blue-50 text-blue-500 rounded-4 hover:bg-blue-500 hover:text-white w-[80px] h-[45px] border-[1px] border-solid border-blue-500 overflow-hidden text-ellipsis whitespace-nowrap items-center flex justify-center"
                                         href={`http://zalo.me/${real_home?.user_post?.phone}`}
                                         target="_blank"
+                                        rel="noreferrer"
                                     >
                                         zalo
                                     </a>
