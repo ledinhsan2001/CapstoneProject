@@ -91,11 +91,14 @@ const DetailRealHome = () => {
                                     : `text-blue-500`
                             }`}
                         >
-                            <FaStar
-                                size={40}
-                                color="orange"
-                                className="inline-block mb-[10px] mr-2"
-                            />
+                            {+news_type._id !== 2 && (
+                                <FaStar
+                                    size={40}
+                                    color="orange"
+                                    className="inline-block mb-[10px] mr-2"
+                                />
+                            )}
+
                             {real_home?.description?.title_description}
                         </div>
                         <div className="text-ellipsis text-left items-center text-[17px]  whitespace-pre-line overflow-hidden flex">

@@ -95,7 +95,9 @@ const realHomeReducer = (state = initState, action) => {
             return {
                 ...state,
                 news_type: action.news_type || [],
+                number_day: action.number_day || [],
                 message: action.message || "",
+                number_day_message: action.number_day_message || "",
             };
         default:
             return state;

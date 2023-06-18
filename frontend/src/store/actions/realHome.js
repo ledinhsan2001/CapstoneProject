@@ -11,6 +11,7 @@ import {
     apiGetAllRHPublicByUser,
     apiGetAllRHByUserUnPay,
     apiGetnewsType,
+    apiGetNumberDay,
 } from "../../services/index";
 
 // ----------------------------------------------------------
@@ -275,23 +276,28 @@ export const actionGetSavePost = () => async (dispatch) => {
 export const actionGetNewsType = () => async (dispatch) => {
     try {
         const response = await apiGetnewsType();
+        const number_day = await apiGetNumberDay();
         if (response?.data.success === true) {
             dispatch({
                 type: actionTypes.GET_NEWS_TYPE,
                 news_type: response.data.data,
+                number_day: number_day.data.data,
                 message: response.data.message,
             });
         } else {
             dispatch({
                 type: actionTypes.GET_NEWS_TYPE,
                 message: response.data.message,
-                news_type: null,
+                number_day_message: number_day.data.message,
+                number_day: null,
+                number_day: null,
             });
         }
     } catch (error) {
         dispatch({
             type: actionTypes.GET_NEWS_TYPE,
             message: error.response.data.message,
+            news_type: null,
             news_type: null,
         });
     }
