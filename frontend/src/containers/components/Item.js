@@ -144,11 +144,13 @@ const Item = ({
                                 : `text-blue-500 hover:text-blue-300`
                         }`}
                     >
-                        <FaStar
-                            size={30}
-                            color="orange"
-                            className="inline-block mb-1"
-                        />
+                        {+news_type_id !== 2 && (
+                            <FaStar
+                                size={30}
+                                color="orange"
+                                className="inline-block mb-1"
+                            />
+                        )}
                         {shortDescription}
                     </div>
                 </Link>

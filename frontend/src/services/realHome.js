@@ -264,3 +264,15 @@ export const apiGetnewsType = () =>
             reject(error);
         }
     });
+export const apiGetNumberDay = () =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "get",
+                url: "/api/admin/number-day",
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
