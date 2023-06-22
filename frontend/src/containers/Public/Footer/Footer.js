@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { LogoNav, paypal } from "../../../assets/images/index";
-import { formatUniToString, path } from "../../../utils/constant";
+import { formatUniToString } from "../../../utils/constant";
 
 const Footer = () => {
     return (
@@ -24,7 +24,7 @@ const Footer = () => {
                         </p>
                     </div>
                 </div>
-                <div className="mx-[50px]">
+                <div className="flex flex-col text-left mx-[50px] gap-2 mt-[-70px]">
                     <h5 className="mb-3 font-bold">PHƯƠNG THỨC THANH TOÁN</h5>
                     <Link to={"https://www.paypal.com/vn/home"} target="_blank">
                         <img

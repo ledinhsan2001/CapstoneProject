@@ -6,10 +6,9 @@ import Swal from "sweetalert2";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import InputRegister from "./InputRegister";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { validate_data } from "../../../utils/validate_data";
 import { login } from "../../../store/actions/auth";
-import { useEffect } from "react";
 import actionTypes from "../../../store/actions/actionTypes";
 import { apiLogin } from "../../../services";
 

@@ -26,10 +26,7 @@ const UrlHomePage = () => {
                         {real_home_types_bs?.length > 0 &&
                             real_home_types_bs.map((item) => {
                                 return (
-                                    <div
-                                        className="w-[50%] hover:translate-x-3"
-                                        key={item._id}
-                                    >
+                                    <div className="w-[50%]" key={item._id}>
                                         <LinkNavigate
                                             text={item.name}
                                             icon={
@@ -53,10 +50,7 @@ const UrlHomePage = () => {
                         {real_home_types_r?.length > 0 &&
                             real_home_types_r.map((item) => {
                                 return (
-                                    <div
-                                        className="w-[50%] hover:translate-x-3"
-                                        key={item._id}
-                                    >
+                                    <div className="w-[50%]" key={item._id}>
                                         <LinkNavigate
                                             text={item.name}
                                             icon={

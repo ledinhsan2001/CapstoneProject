@@ -155,10 +155,11 @@ export const getAllLimit = catchAsync(async (req, res) => {
 
     let sort = sort_id;
     let objsort = {};
+    // sort follow news_type everytime
     objsort["news_type_id"] = 1;
     if (sort) {
         if (+sort === 0) {
-            objsort["news_type_id"] = 1;
+            objsort["createdAt"] = 1;
         }
         if (+sort === 1) {
             objsort["createdAt"] = -1;
@@ -174,7 +175,6 @@ export const getAllLimit = catchAsync(async (req, res) => {
     let page_number = parseInt(page);
     let limit = process.env.LIMIT;
     const results = {};
-    let typeRHs;
 
     let clause_where = {};
     // posts paymented
@@ -192,12 +192,10 @@ export const getAllLimit = catchAsync(async (req, res) => {
         clause_where["arr_area"] = { $in: arr_area };
     }
     if (news_type_id) {
-        clause_where["news_type_id"] = news_type_id;
+        clause_where["news_type_id"] = +news_type_id;
     }
 
-    // console.log(clause_where);
-    // console.log(objsort);
-    typeRHs = await RealHome.find(clause_where, { __v: 0 }).sort(objsort);
+    const typeRHs = await RealHome.find(clause_where, { __v: 0 }).sort(objsort);
 
     // const limit_data = page_number * limit;
     // .skip(limit_data)
@@ -217,36 +215,42 @@ export const getAllLimit = catchAsync(async (req, res) => {
         return res
             .status(400)
             .json({ message: "Danh sách bất động sản trống." });
-        // throw new ApiError(400, "Danh sách kiểu bất động sản trống.");
     }
 });
 
 export const getAll = async (req, res) => {
-    const typeRHs = await RealHome.aggregate([
-        // {
-        //     $lookup: {
-        //         from: "Area",
-        //         localField: "area_id",
-        //         foreignField: "_id",
-        //         as: "area_order",
-        //     },
-        // },
-        // {
-        //     $sort: {
-        //         "description.area": 1,
-        //     },
-        // },
-        // {
-        //     $group: {
-        //         _id: "$area_id",
-        //     },
-        // },
-        // { $unwind: "$RealHome" },
-    ]);
+    const typeRHs = await RealHome.find().sort({ createdAt: -1 });
+    // ([{
+    //     $lookup: {
+    //         from: "Area",
+    //         localField: "area_id",
+    //         foreignField: "_id",
+    //         as: "area_order",
+    //     },
+    // },
+    // {
+    //     $sort: {
+    //         "description.area": 1,
+    //     },
+    // },
+    // {
+    //     $group: {
+    //         _id: "$area_id",
+    //     },
+    // },
+    // { $unwind: "$RealHome" },
+    // ]);
     if (typeRHs.length) {
-        res.status(200).json({ success: true, data: typeRHs });
+        return res.status(200).json({
+            success: true,
+            data: typeRHs,
+            total_all_data: typeRHs.length,
+        });
     } else {
-        throw new ApiError(400, "Danh sách kiểu bất động sản trống.");
+        return res.status(400).json({
+            success: false,
+            message: "Danh sách kiểu bất động sản trống.",
+        });
     }
 };
 

@@ -1,11 +1,6 @@
 import React, { useEffect } from "react";
 //Outlet đại diện route con cho Route mẹ. Khi có các route lồng nhau
-import {
-    Outlet,
-    useLocation,
-    useNavigate,
-    useSearchParams,
-} from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import "./Home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,11 +32,14 @@ const Home = () => {
         setTimeout(() => {
             isLoggedIn && dispatch(actions.actionUser());
         }, 2000);
+    }, [isLoggedIn]);
+
+    useEffect(() => {
         if (isLoggedIn && !user_data) {
             dispatch(logout());
             navigate(`/${path.LOGIN}`);
         }
-    }, [isLoggedIn]);
+    }, [user_data]);
 
     const checkUrl = (url) => {
         let incl = location.pathname.includes(url);

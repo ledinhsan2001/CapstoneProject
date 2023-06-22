@@ -34,35 +34,30 @@ const verifyToken = (req, res, next) => {
     });
 };
 
-const isAdmin = (req, res, next) => {
-    User.findById(req.userId).exec((err, user) => {
-        if (err) {
-            res.status(500).send({ error: err });
-            return;
+const isAdmin = async (req, res, next) => {
+    const user = await User.findById(req.userId);
+    if (user) {
+        const roles = Role.find({
+            _id: { $in: user.roles },
+        });
+        if (!roles) {
+            return res
+                .status(500)
+                .json({ success: false, message: "role trống" });
         }
-
-        Role.find(
-            {
-                _id: { $in: user.roles },
-            },
-            (err, roles) => {
-                if (err) {
-                    res.status(500).send({ message: err });
-                    return;
-                }
-
-                for (let i = 0; i < roles.length; i++) {
-                    if (roles[i].name === "admin") {
-                        next();
-                        return;
-                    }
-                }
-
-                res.status(403).send({ error: "Yêu cầu role Admin!" });
-                return;
+        for (let i = 0; i < roles.length; i++) {
+            if (roles[i].name === "admin") {
+                next();
             }
-        );
-    });
+        }
+        return res
+            .status(403)
+            .json({ success: false, message: "Yêu cầu quyền Admin!" });
+    } else {
+        return res
+            .status(500)
+            .json({ success: false, message: "Tài khoản không tồn tại" });
+    }
 };
 
 const authJwt = {
