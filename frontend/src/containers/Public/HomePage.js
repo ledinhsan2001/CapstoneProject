@@ -23,9 +23,9 @@ const HomePage = () => {
 
     return (
         <div>
-            <div className="p-4 bg-gray-700 justify-center z-2">
-                <Slider {...settings}>
-                    <div className="ml-[10%]">
+            <div className="p-4 bg-gray-700 justify-center">
+                <Slider {...settings} className="slidderr">
+                    <div className="ml-[10%] z-[10]">
                         <img
                             src={bds}
                             alt="bds1"

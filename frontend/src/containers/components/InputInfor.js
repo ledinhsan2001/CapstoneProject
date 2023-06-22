@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import Swal from "sweetalert2";
 
 const InputInfor = ({
     text,
@@ -10,6 +11,7 @@ const InputInfor = ({
     name1,
     errors,
     seterrors,
+    password,
 }) => {
     const MessageErr = (name_err) => {
         let mess = errors.find((item) => item.name === name_err);
@@ -20,8 +22,8 @@ const InputInfor = ({
             <p
                 className={
                     visible
-                        ? `text-lg text-start font-bold pr-[70px] whitespace-nowrap mt-[-50px] w-[25%]`
-                        : `text-lg text-start font-bold pr-[70px] whitespace-nowrap w-[25%]`
+                        ? `text-lg text-start font-bold pr-[70px] whitespace-nowrap mt-[-50px] w-[25%] mr-4`
+                        : `text-lg text-start font-bold pr-[70px] whitespace-nowrap w-[25%] mr-4`
                 }
             >
                 {text}
@@ -34,7 +36,16 @@ const InputInfor = ({
                         value={value}
                         readOnly
                     ></input>
-                    <p className="cursor-pointer text-start py-2 hover:text-blue-400">
+                    <p
+                        className="cursor-pointer text-start py-2 hover:text-blue-400"
+                        onClick={(e) =>
+                            Swal.fire(
+                                "Lỗi",
+                                "Hiện tại chưa có chức năng đổi số điện thoại",
+                                "error"
+                            )
+                        }
+                    >
                         <u>Bấm vào đây để đổi số điện thoại</u>
                     </p>
                 </div>
@@ -79,6 +90,7 @@ const InputInfor = ({
                 <div className="flex flex-col w-[70%]">
                     <input
                         className={`flex items-center justify-between h-[50px] w-[100%] px-3 relative rounded-lg bg-blue-100 border-solid border-1 outline-none hover:bg-white hover:border-solid hover:border-2 hover:border-blue-300 cursor-pointer `}
+                        type={password ? "password" : "text"}
                         value={value}
                         onChange={(e) =>
                             setValue((prev) => ({
@@ -87,6 +99,7 @@ const InputInfor = ({
                             }))
                         }
                     ></input>
+                    <p className="text-red-500">{errors && MessageErr(name)}</p>
                 </div>
             )}
         </div>

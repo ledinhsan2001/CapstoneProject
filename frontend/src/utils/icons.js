@@ -29,6 +29,7 @@ import { MdAccessTime } from "react-icons/md";
 import { ImPhone } from "react-icons/im";
 import { BsImages } from "react-icons/bs";
 import { GrLinkPrevious } from "react-icons/gr";
+import { GrMoney } from "react-icons/gr";
 import { RiUserSettingsLine } from "react-icons/ri";
 import { VscSave } from "react-icons/vsc";
 import { MdDeleteOutline } from "react-icons/md";
@@ -75,6 +76,7 @@ const icons = {
     AiOutlineArrowLeft,
     MdAccessTime,
     TfiFilter,
+    GrMoney,
     SiMoneygram,
 };
 

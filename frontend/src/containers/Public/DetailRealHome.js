@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { realHomeDetail } from "../../store/actions/realHome";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -10,11 +10,12 @@ import { useState } from "react";
 import icons from "../../utils/icons";
 import moment from "moment";
 import "moment/locale/vi";
-import { GetNummberFromString } from "../../utils/constant";
+import { GetNummberFromString, path } from "../../utils/constant";
 import { mdi_user, ggmap } from "../../assets/images";
 import Swal from "sweetalert2";
 import { MapLeaflet, NewPost } from "../components";
 import { TextEditor } from "../components/TextEditor";
+import { apiDelSavePost, apiSavePost } from "../../services";
 
 const {
     FaStar,
@@ -29,14 +30,17 @@ const {
 } = icons;
 
 const DetailRealHome = () => {
-    const { id } = useParams();
-    const dispatch = useDispatch();
     const [real_home, setreal_home] = useState("");
     const [news_type, setnews_type] = useState("");
-    const { real_home_detail, news_type_detail } = useSelector(
+    const { isLoggedIn } = useSelector((state) => state.auth);
+    const [isHoverHeart, setIsHoverHeart] = useState(false);
+    const [arrSavedPostId, setarrSavedPostId] = useState([]);
+    const { id } = useParams();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { real_home_detail, news_type_detail, saved_post } = useSelector(
         (state) => state.real_home
     );
-    const [isHoverHeart, setIsHoverHeart] = useState(false);
 
     useEffect(() => {
         dispatch(realHomeDetail({ id: id }));
@@ -45,7 +49,7 @@ const DetailRealHome = () => {
     useEffect(() => {
         real_home_detail && setreal_home(real_home_detail);
         news_type_detail && setnews_type(news_type_detail);
-    }, [real_home_detail]);
+    }, [real_home_detail, news_type_detail]);
 
     var settings = {
         dots: true,
@@ -53,10 +57,6 @@ const DetailRealHome = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-    };
-
-    const activeHeart = () => {
-        setIsHoverHeart(!isHoverHeart);
     };
 
     const handleSendContact = () => {
@@ -74,6 +74,58 @@ const DetailRealHome = () => {
         if (element) {
             //  Will scroll smoothly to the top of the next section
             element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            let arr = [];
+            saved_post?.map((item) => arr.push(item?.real_home?._id));
+            setarrSavedPostId(arr);
+        }
+    }, [saved_post]);
+
+    useEffect(() => {
+        if (arrSavedPostId.includes(real_home?._id)) {
+            setIsHoverHeart(true);
+        }
+    }, [arrSavedPostId]);
+
+    const callNotSave = async (realhome_id) => {
+        try {
+            const response = await apiDelSavePost(realhome_id);
+            setIsHoverHeart(false);
+            // Swal.fire({
+            //     position: "top-end",
+            //     icon: "success",
+            //     title: response.data.message,
+            //     showConfirmButton: false,
+            //     timer: 500,
+            // });
+        } catch (error) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: error.response.data.message,
+                showConfirmButton: false,
+                timer: 500,
+            });
+        }
+    };
+
+    const callSave = async (realhome_id) => {
+        if (!isLoggedIn) {
+            navigate(`/${path.LOGIN}`);
+        } else {
+            const response = await apiSavePost(realhome_id);
+            setIsHoverHeart(true);
+            // Swal.fire({
+            //     position: "top-end",
+            //     icon: "success",
+            //     title: response.data.message,
+            //     showConfirmButton: false,
+            //     timer: 500,
+            // });
         }
     };
 
@@ -110,14 +162,14 @@ const DetailRealHome = () => {
                                 {real_home?.address}
                             </div>
                             <div
-                                className="flex items-center text-blue-500 underline hover:underline-offset-2 hover:font-bold cursor-pointer"
+                                className="flex items-center text-blue-500 underline hover:underline-offset-2 hover:font-bold cursor-pointer gap-1"
                                 onClick={() => handleScrollMap()}
                             >
                                 <img
                                     src={ggmap}
                                     alt="map"
-                                    width={35}
-                                    height={35}
+                                    width={28}
+                                    height={28}
                                     className="ml-10 inline-block"
                                 />
                                 Xem bản đồ
@@ -136,14 +188,21 @@ const DetailRealHome = () => {
                                     />
                                     {real_home?.description?.area} m<sup>2</sup>
                                 </span>
-                                <span className="flex justify-center text-[20px] items-center">
-                                    <MdOutlineBed className="mx-1" size={30} />
-                                    {real_home?.description?.bedroom} pn
-                                </span>
-                                <span className="flex justify-center text-[20px] items-center">
-                                    <FaToilet className="mx-1" size={24} />
-                                    {real_home?.description?.toilet} wc
-                                </span>
+                                {real_home?.description?.bedroom !== 0 && (
+                                    <span className="flex justify-center text-[20px] items-center">
+                                        <MdOutlineBed
+                                            className="mx-1"
+                                            size={30}
+                                        />
+                                        {real_home?.description?.bedroom} pn
+                                    </span>
+                                )}
+                                {real_home?.description?.toilet !== 0 && (
+                                    <span className="flex justify-center text-[20px] items-center">
+                                        <FaToilet className="mx-1" size={24} />
+                                        {real_home?.description?.toilet} wc
+                                    </span>
+                                )}
                                 <span className="flex justify-center text-[20px] items-center">
                                     <AiOutlineClockCircle
                                         className="mx-1"
@@ -154,8 +213,19 @@ const DetailRealHome = () => {
                             </div>
                             <div className="flex w-[25%] ml-2% cursor-pointer justify-end">
                                 <span
-                                    onClick={() => activeHeart()}
-                                    className="flex gap-2 text-[20px]"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (isHoverHeart) {
+                                            callNotSave(real_home?._id);
+                                        } else {
+                                            callSave(real_home?._id);
+                                        }
+                                    }}
+                                    className={`${
+                                        isHoverHeart
+                                            ? "underline text-red-500"
+                                            : ""
+                                    } flex gap-2 text-[20px]`}
                                 >
                                     {isHoverHeart ? (
                                         <FiHeart
@@ -169,7 +239,7 @@ const DetailRealHome = () => {
                                             className="hover:text-red-500"
                                         />
                                     )}{" "}
-                                    Lưu tin
+                                    {isHoverHeart ? "Đã lưu tin" : "Lưu tin"}
                                 </span>
                             </div>
                         </div>

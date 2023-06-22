@@ -6,6 +6,7 @@ import { combineReducers } from "redux";
 import storage from "redux-persist/lib/storage";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import { persistReducer } from "redux-persist";
+import paymentReducer from "./paymentReducer";
 
 const persistConfig = {
     storage,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
     real_home: realHomeReducer,
     price_area: pricesReducer,
     user: userReducer,
+    payment: paymentReducer,
 });
 
 export default rootReducer;

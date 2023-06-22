@@ -46,12 +46,14 @@ input[type="range"]::-webkit-slider-thumb:active {
   z-index: 10 !important;
 }
 .slick-next {
+  z-index: 10 !important;
   right:30px !important;
 }
+
 button.slick-arrow::before  {
   font-size: 40px !important;
+  z-index: 10 !important;
 }
-
 /* leaflet */
 .leaflet-container {
   height: 450px;

@@ -59,6 +59,9 @@ const SavePost = () => {
                                         user={item?.real_home?.user_post}
                                         _id={item?.real_home?._id}
                                         active
+                                        news_type_id={
+                                            item?.real_home?.news_type_id
+                                        }
                                     />
                                 );
                             })}

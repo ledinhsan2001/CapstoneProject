@@ -99,6 +99,13 @@ const realHomeReducer = (state = initState, action) => {
                 message: action.message || "",
                 number_day_message: action.number_day_message || "",
             };
+        case actionTypes.GET_ALL_RHS:
+            return {
+                ...state,
+                all_real_home: action.all_real_home || [],
+                total_all_data: action.total_all_data || 0,
+                message: action.message || "",
+            };
         default:
             return state;
     }

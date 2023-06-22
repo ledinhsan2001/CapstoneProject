@@ -24,7 +24,9 @@ const Header = () => {
     const { isLoggedIn, message, accessToken, refreshToken } = useSelector(
         (state) => state.auth
     );
-    const { transaction_types } = useSelector((state) => state.real_home);
+    const { transaction_types, total_post } = useSelector(
+        (state) => state.real_home
+    );
     const { user_data } = useSelector((state) => state.user);
     const [Show, setShow] = useState(false);
     const [searchParams] = useSearchParams();
@@ -48,8 +50,9 @@ const Header = () => {
         // sell rental header
         dispatch(actions.actionTransactionType());
 
-        //dispatch hear to list use
+        //dispatch here to list use
         isLoggedIn && dispatch(actions.actionGetSavePost());
+        isLoggedIn && dispatch(actions.realHomeByUserUnPay());
     }, [dispatch]);
 
     useEffect(() => {
@@ -143,18 +146,21 @@ const Header = () => {
                             to={`/rieng-tu/${path.SAVED_POST}`}
                             className="hover:drop-shadow-2xl hover:font-bold hover:text-gray-600 hover:bg-green-200 rounded-xl hover:translate-y-2"
                         >
-                            <div className="TagANav m-2 flex justify-item items-center text-lg h-[30px] w-[130px]">
+                            <div className="TagANav m-2 flex justify-item items-center text-lg h-[30px] w-[130px] relative">
                                 <img
                                     src={heart}
                                     alt="heart"
                                     className="pr-1"
                                 ></img>
+                                <p className="bg-red-500 text-white rounded-full p-1 absolute h-[24px] w-[24px] items-center justify-center flex font-bold top-0 left-6 mt-[-10px]">
+                                    {total_post}
+                                </p>
                                 Yêu thích
                             </div>
                         </Link>
-                        <div className="m-2 flex hover:drop-shadow-2xl">
+                        <div className="m-2 flex">
                             <div
-                                className="TagUserNav rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[50px] w-[50px] relative hover:translate-y-2 z-1000 cursor-pointer"
+                                className="TagUserNav rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[50px] w-[50px] relative cursor-pointer z-[10000]"
                                 onMouseOver={overListItem}
                                 onMouseLeave={leaveListItem}
                             >
@@ -175,11 +181,10 @@ const Header = () => {
                                     <div
                                         onMouseOver={overListItem}
                                         onMouseLeave={leaveListItem}
-                                        id="ListItem"
-                                        className="absolute bg-white border-2 right-0 top-full shadow-md rounded-md p-2 w-[280px] h-[370px]"
+                                        className="absolute bg-white border-2 right-0 top-full shadow-md rounded-md p-2 w-[280px] h-[370px] z-[10000]"
                                     >
-                                        <div className="flex cursor-pointer z-100">
-                                            <div className="flex rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[70px] w-[70px] mb-2 mx-2 z-1000">
+                                        <div className="flex cursor-pointer">
+                                            <div className="flex rounded-full bg-[#D9D9D9] items-center justify-center hover:text-gray-600 h-[70px] w-[70px] mb-2 mx-2">
                                                 <span className="animate-ping absolute inline-flex h-[8px] w-[8px] rounded-full bg-green-500 opacity-100 ml-[55px] mb-[50px]"></span>
                                                 <img
                                                     src={

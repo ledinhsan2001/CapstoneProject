@@ -21,22 +21,23 @@ const PaymentHistory = () => {
     }, [payment_history]);
 
     const handleFilter = (value) => {
+        console.log(payment_history);
         if (value === 1) {
             // News Special
             let special = payment_history.filter(
-                (item) => item?.payment?.news_type_id === 0
+                (item) => item?.payment?.news_type?._id === 0
             );
             setpayment_histories(special);
         } else if (value === 2) {
             // News featured
             let featured = payment_history.filter(
-                (item) => item?.payment?.news_type_id === 1
+                (item) => item?.payment?.news_type?._id === 1
             );
             setpayment_histories(featured);
         } else if (value === 3) {
             // News common
             let common = payment_history.filter(
-                (item) => item?.payment?.news_type_id === 2
+                (item) => item?.payment?.news_type?._id === 2
             );
             setpayment_histories(common);
         } else {

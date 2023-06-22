@@ -12,9 +12,34 @@ import {
     apiGetAllRHByUserUnPay,
     apiGetnewsType,
     apiGetNumberDay,
+    apiGetAllRealHome,
 } from "../../services/index";
 
 // ----------------------------------------------------------
+export const getAllRealHome = () => async (dispatch) => {
+    try {
+        const response = await apiGetAllRealHome();
+        if (response?.data.success === true) {
+            dispatch({
+                type: actionTypes.GET_ALL_RHS,
+                all_real_home: response.data.data,
+                total_all_data: response.data.total_all_data,
+            });
+        } else {
+            dispatch({
+                type: actionTypes.GET_ALL_RHS,
+                message: response.data.message,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_ALL_RHS,
+            all_real_home: null,
+            total_all_data: null,
+        });
+    }
+};
+
 export const realHomeDetail = (id) => async (dispatch) => {
     try {
         const response = await apiGetDetailRealHome(id);
@@ -290,7 +315,6 @@ export const actionGetNewsType = () => async (dispatch) => {
                 message: response.data.message,
                 number_day_message: number_day.data.message,
                 number_day: null,
-                number_day: null,
             });
         }
     } catch (error) {
@@ -298,7 +322,7 @@ export const actionGetNewsType = () => async (dispatch) => {
             type: actionTypes.GET_NEWS_TYPE,
             message: error.response.data.message,
             news_type: null,
-            news_type: null,
+            number_day: null,
         });
     }
 };

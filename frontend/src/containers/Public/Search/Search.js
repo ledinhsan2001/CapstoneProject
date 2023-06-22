@@ -86,7 +86,6 @@ const Search = () => {
                 item[1] !== "--- Diện tích ---"
         );
         drop_name_null.map((item) => (obj_search[item[0]] = item[1]));
-
         const exist_category =
             obj_search.transaction_type || obj_search.real_home_type
                 ? true
@@ -102,13 +101,19 @@ const Search = () => {
                 title_search += `${obj_search[i]}, `;
             }
         }
-        navigate(
-            {
-                pathname: `/${path.SEARCH}`,
-                search: createSearchParams(arr_search_id).toString(),
-            },
-            { state: { title_search } }
-        );
+        if (Object.entries(arr_search_id).length > 0) {
+            navigate(
+                {
+                    pathname: `/${path.SEARCH}`,
+                    search: createSearchParams(arr_search_id).toString(),
+                },
+                { state: { title_search } }
+            );
+        } else {
+            navigate({
+                pathname: `/`,
+            });
+        }
     };
 
     return (

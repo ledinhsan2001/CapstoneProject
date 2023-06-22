@@ -127,6 +127,8 @@ const SelectForm = ({
                                       : "tỷ +"
                                   : "m +"
                           }`
+                        : range1 === 0 && range2 === 0
+                        ? `--- Chọn mức giá ---`
                         : `Từ ${FormatPercent(min)}-${FormatPercent(max)} ${
                               name === "price" ? (rental ? "triệu" : "tỷ") : "m"
                           }`
