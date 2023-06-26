@@ -37,10 +37,6 @@ const DescriptionSchema = new Schema(
             type: Number,
             default: 0,
         },
-        // published: {
-        //     type: String, use moment show distance
-        //     default: "",
-        // },
     },
     {
         //auto createdAt, updatedAt

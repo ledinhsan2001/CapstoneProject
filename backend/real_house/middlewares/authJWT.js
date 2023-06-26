@@ -37,7 +37,7 @@ const verifyToken = (req, res, next) => {
 const isAdmin = async (req, res, next) => {
     const user = await User.findById(req.userId);
     if (user) {
-        const roles = Role.find({
+        const roles = await Role.find({
             _id: { $in: user.roles },
         });
         if (!roles) {
@@ -45,14 +45,20 @@ const isAdmin = async (req, res, next) => {
                 .status(500)
                 .json({ success: false, message: "role trống" });
         }
+        let count = 0;
         for (let i = 0; i < roles.length; i++) {
             if (roles[i].name === "admin") {
-                next();
+                count++;
+                // next();
             }
         }
-        return res
-            .status(403)
-            .json({ success: false, message: "Yêu cầu quyền Admin!" });
+        if (count !== 0) {
+            next();
+        } else {
+            return res
+                .status(403)
+                .json({ success: false, message: "Yêu cầu quyền Admin!" });
+        }
     } else {
         return res
             .status(500)

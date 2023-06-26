@@ -163,7 +163,7 @@ const Address = ({ payload, setpayload, errors, seterrors }) => {
             </div>
             <div className="flex my-3 px-3">
                 <SelectAddress
-                    title={"Số nhà"}
+                    title={"Đường"}
                     defaultValue={"ví dụ: 100"}
                     type="number_home"
                     simple="true"

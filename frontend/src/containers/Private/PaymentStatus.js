@@ -115,20 +115,13 @@ const PaymentStatus = () => {
                                             )}`}
                                         </td>
                                         <td className="flex border-[1px] border-gray-400 items-center justify-center">
-                                            <Link
-                                                to={`/chi-tiet/${
-                                                    item?._id
-                                                }/${formatUniToString(
-                                                    item?.description
-                                                        ?.title_description
-                                                )}`}
-                                            >
+                                            <div>
                                                 <img
                                                     className=" h-[80px] w-[100%] object-cover rounded-sm "
                                                     src={images[0]}
                                                     alt="img"
                                                 ></img>
-                                            </Link>
+                                            </div>
                                         </td>
                                         <td
                                             className={`border-[1px] border-gray-400 max-h-[65px] text-ellipsis text-center text-lg ml-1 items-center whitespace-pre-line overflow-hidden ${
@@ -140,19 +133,12 @@ const PaymentStatus = () => {
                                                     : "text-blue-700"
                                             } `}
                                         >
-                                            <Link
-                                                to={`/chi-tiet/${
-                                                    item?._id
-                                                }/${formatUniToString(
-                                                    item?.description
-                                                        ?.title_description
-                                                )}`}
-                                            >
+                                            <div>
                                                 {`${item?.description?.title_description.slice(
                                                     0,
                                                     56
                                                 )}...`}
-                                            </Link>
+                                            </div>
                                         </td>
                                         <td className="border-[1px] border-gray-400 text-blue-500 text-[20px] font-bold">
                                             <p>

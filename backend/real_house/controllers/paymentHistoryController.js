@@ -1,7 +1,8 @@
-import HistoryPayment from "../models/paymentHistory";
+const PaymentHistory = require("../models/paymentHistory");
+
 const getAll = async (req, res) => {
     try {
-        const payment_history = await HistoryPayment.find();
+        const payment_history = await PaymentHistory.find();
         if (payment_history.length > 0) {
             return res.status(200).json({
                 success: true,
@@ -25,7 +26,7 @@ const getAll = async (req, res) => {
 const get = async (req, res) => {
     const id = req.userId;
     try {
-        const payment_history = await HistoryPayment.find({
+        const payment_history = await PaymentHistory.find({
             "payment.user._id": id,
         }).sort({
             createdAt: -1,
@@ -59,7 +60,7 @@ const getAllLimit = async (req, res) => {
     let lastIndex = (page_number + 1) * limit;
     const results = {};
     try {
-        const payment_history = await HistoryPayment.find().sort({
+        const payment_history = await PaymentHistory.find().sort({
             createdAt: -1,
         });
         if (payment_history.length > 0) {
@@ -92,28 +93,9 @@ const getAllLimit = async (req, res) => {
     }
 };
 
-// const drop = async (req, res) => {
-//     const { real_home_id } = req.query;
-//     const id = req.userId;
-//     try {
-//         await SavePost.findOneAndDelete({
-//             user_id: id,
-//             "real_home._id": real_home_id,
-//         });
-//         return res.status(201).json({
-//             success: true,
-//             message: "Xóa lưu tin.",
-//         });
-//     } catch (error) {
-//         return res
-//             .status(200)
-//             .json({ success: false, message: "Xóa lưu tin không thành công!" });
-//     }
-// };
-
 const paymentHistoryController = {
-    get,
     getAll,
+    get,
     getAllLimit,
 };
 module.exports = paymentHistoryController;

@@ -24,6 +24,7 @@ const Home = () => {
         dispatch(actions.actionPrices());
         dispatch(actions.actionAreas());
         dispatch(actions.newPost());
+        dispatch(actions.actionTransactionType());
         dispatch(actions.realHomeTypes());
         dispatch(actions.actionGetNewsType());
     }, [dispatch]);
