@@ -16,11 +16,6 @@ const UserSchema = new Schema(
             default: "",
         },
         address: { type: String, default: "" },
-        account_no: {
-            type: String,
-            default: "",
-        },
-        saved_news_count: { type: Number, default: 0 },
         link_zalo: { type: String, default: "" },
         email: { type: String, default: "" },
         refresh_token: String,

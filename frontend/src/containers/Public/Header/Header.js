@@ -21,9 +21,7 @@ const { MdPostAdd, AiOutlineHeart, RiUserSettingsLine, RiLogoutCircleRLine } =
     icons;
 
 const Header = () => {
-    const { isLoggedIn, message, accessToken, refreshToken } = useSelector(
-        (state) => state.auth
-    );
+    const { isLoggedIn } = useSelector((state) => state.auth);
     const { transaction_types, total_post } = useSelector(
         (state) => state.real_home
     );
@@ -37,23 +35,18 @@ const Header = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setTimeout(() => {
-            isLoggedIn && dispatch(actions.actionUser());
-        }, 2000);
+        if (isLoggedIn) {
+            setTimeout(() => {
+                dispatch(actions.actionUser());
+                dispatch(actions.actionGetSavePost());
+                dispatch(actions.realHomeByUserUnPay());
+            }, 2000);
+        }
         if (isLoggedIn && !user_data) {
             dispatch(logout());
             navigate(`/${path.LOGIN}`);
         }
     }, [isLoggedIn]);
-
-    useEffect(() => {
-        // sell rental header
-        dispatch(actions.actionTransactionType());
-
-        //dispatch here to list use
-        isLoggedIn && dispatch(actions.actionGetSavePost());
-        isLoggedIn && dispatch(actions.realHomeByUserUnPay());
-    }, [dispatch]);
 
     useEffect(() => {
         headerRef.current.scrollIntoView({

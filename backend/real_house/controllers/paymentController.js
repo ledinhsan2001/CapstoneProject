@@ -1,4 +1,4 @@
-import historyPayment from "../models/paymentHistory";
+import PaymentHistory from "../models/paymentHistory";
 import { NewsType } from "../models/newsType";
 import { NumberDay } from "../models/numberDay";
 import { Payment } from "../models/payment";
@@ -144,7 +144,7 @@ export const get = (req, res) => {
                     expiration_date: end_date,
                 });
 
-                const history_payment = await historyPayment.create({
+                const history_payment = await PaymentHistory.create({
                     payment: obj_payment,
                 });
 

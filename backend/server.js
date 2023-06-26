@@ -3,26 +3,8 @@ const cors = require("cors");
 const db = require("./config/connectDB");
 require("dotenv").config();
 import initRoute from "./real_house/routes";
-import { FormatDate } from "./real_house/utils/FormatDate";
-import moment from "moment";
 import "moment/locale/vi";
 const app = express();
-// import area from "./real_house/models/area";
-// import {
-//     price_buysell,
-//     price_rental,
-//     area_data,
-// } from "./real_house/data/price";
-// area_data.forEach(async (item, index) => {
-//     await new area({
-//         _id: item._id,
-//         name: item.value,
-//         order: index,
-//     }).save();
-// });
-// console.log("done");
-//connect db
-
 db.connect();
 
 app.use(cors());

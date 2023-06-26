@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { PaymentSchema } = require("./payment");
 
 const Schema = mongoose.Schema;
-const HistoryPayment = new Schema(
+const PaymentHistory = new Schema(
     {
         payment: PaymentSchema,
     },
@@ -11,4 +11,4 @@ const HistoryPayment = new Schema(
         timestamps: true,
     }
 );
-module.exports = mongoose.model("HistoryPayment", HistoryPayment);
+module.exports = mongoose.model("PaymentHistory", PaymentHistory);
