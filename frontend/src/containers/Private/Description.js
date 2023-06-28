@@ -74,8 +74,7 @@ const Description = ({ payload, setpayload, errors, seterrors, edit }) => {
                             seterrors={seterrors}
                         />
                         <p className="text-sm text-red-500 mt-1">
-                            Có dấu cách giữa chữ và số (
-                            <b>Ví dụ: 1 tỷ hoặc 1 triệu.</b>)
+                            (<b>Ví dụ: 100 triệu hoặc 1 tỷ/tháng.</b>)
                         </p>
                         <div className="flex items-center">
                             <input

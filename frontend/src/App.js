@@ -15,6 +15,7 @@ import {
     DataSearch,
     HomePage,
     PersonalPage,
+    BlogDetail,
 } from "./containers/Public/index";
 import {
     Private,
@@ -61,6 +62,10 @@ function App() {
                             <Route
                                 path={path.DETAIL_REALHOMES__TITLE_ID}
                                 element={<DetailRealHome />}
+                            />
+                            <Route
+                                path={path.DETAIL_BLOG__TITLE_ID}
+                                element={<BlogDetail />}
                             />
                             {/*Page Search data  */}
                             <Route

@@ -20,9 +20,9 @@ const SavePost = () => {
                     Tin đăng đã lưu
                 </div>
                 <div className="my-2 flex justify-between items-center">
-                    <h6 className="titleh6 text-left">
+                    <div className="titleh6 text-left">
                         <b>{total_post}</b> tin bất động sản bạn đã lưu.
-                    </h6>
+                    </div>
                 </div>
                 <div className="flex mb-[100px] gap-3 w-full">
                     <div className="w-[60%]">

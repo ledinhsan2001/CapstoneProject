@@ -6,7 +6,6 @@ const {
     getAllUser,
     getAllUserLimit,
     drop,
-    getAdmin,
 } = require("../controllers/userController");
 import authJwt from "../middlewares/authJWT";
 
@@ -17,6 +16,6 @@ userRouter.get("/get-all", getAllUser);
 userRouter.get("/detail-public", getUserPublic);
 userRouter.get("/detail", [authJwt.verifyToken], getUser);
 userRouter.put("/put", [authJwt.verifyToken], putUser);
-userRouter.put("/drop", drop);
+userRouter.delete("/drop", [authJwt.verifyToken, authJwt.isAdmin], drop);
 
 module.exports = userRouter;

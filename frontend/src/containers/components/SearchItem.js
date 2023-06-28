@@ -8,10 +8,10 @@ function SearchItem({ beforeIcon, text, textDefault, icon }) {
         <div
             className={`p-2 mb-1 bg-white ${
                 text ? `text-black ` : `text-gray-500`
-            }  rounded-xl flex justify-between cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap items-center hover:drop-shadow-2xl`}
+            }  rounded-xl flex justify-between hover:cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap items-center hover:drop-shadow-2xl`}
         >
             {beforeIcon}
-            <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+            <span className="overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer">
                 {text === textDefault ? (
                     textDefault
                 ) : text ? (

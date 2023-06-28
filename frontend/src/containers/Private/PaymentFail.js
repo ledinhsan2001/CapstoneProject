@@ -9,7 +9,7 @@ const PaymentFail = () => {
         <div>
             <div class="grid h-[800px] px-4 bg-white place-content-center">
                 <div class="text-center">
-                    <h1 class="font-black text-blue-300 text-9xl">404</h1>
+                    <div class="font-black text-blue-300 text-9xl">404</div>
 
                     <p class="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                         Lỗi!

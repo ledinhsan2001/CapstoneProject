@@ -6,9 +6,9 @@ const NewPost = () => {
     const { new_posts } = useSelector((state) => state.real_home);
     return (
         <div className="gap-3">
-            <h1 className="text-md font-['inherit'] mt-[14px]">
+            <div className="text-md font-['inherit'] mt-[14px]">
                 <b>TIN MỚI ĐĂNG</b>
-            </h1>
+            </div>
             <div className="w-full flex flex-col mt-3 gap-3">
                 {new_posts.length > 0 &&
                     new_posts.map((item) => {

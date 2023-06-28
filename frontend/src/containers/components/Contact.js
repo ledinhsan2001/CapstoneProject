@@ -22,13 +22,13 @@ const Contact = ({ max }) => {
                     <b>
                         <MdQuestionMark color="red" size={50} />
                     </b>
-                    <h1 className="text-3xl">
+                    <div className="text-3xl">
                         <b>Bạn cần hỗ trợ?</b>
-                    </h1>
+                    </div>
                     <div className="flex flex-col items-center pt-4">
-                        <h1 className="text-xl text-red-600">
+                        <div className="text-xl text-red-600">
                             <b>Vui lòng liên hệ</b>
-                        </h1>
+                        </div>
                         <p>
                             <b>Số điện thoại: 0326.687.233</b>
                         </p>

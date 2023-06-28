@@ -1,3 +1,5 @@
+import blogRouter from "./blogRouter.js";
+import blogTypeRouter from "./blogTypeRouter.js";
 import paymentHistoryRouter from "./paymentHistoryRouter.js";
 import paymentRouter from "./paymentRouter";
 import savePostRouter from "./savePostRouter";
@@ -31,6 +33,8 @@ const initRoute = (app) => {
     app.use("/api/payment-history", paymentHistoryRouter);
     app.use("/api/real-home", realHomeRouter);
     app.use("/api/save-post", savePostRouter);
+    app.use("/api/blog", blogRouter);
+    app.use("/api/blog-type", blogTypeRouter);
 
     app.use(catchError);
 

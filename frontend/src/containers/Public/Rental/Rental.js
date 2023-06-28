@@ -31,9 +31,9 @@ const BuySell = () => {
         <div>
             <div>
                 <div className="bg-[#F5F5F5]">
-                    <h3 className="text-black mt-3 text-2xl">
+                    <div className="text-black mt-3 text-2xl">
                         <b>Cho thuê bất động sản ưu đãi 2023</b>
-                    </h3>
+                    </div>
                     <div className="column-main-buysell ml-[20px] mt-4 p-[1%] rounded-[15px] bg-white w-[96%]">
                         <div className="container max-h-[100px] max-w-[100%] flex flex-wrap text-justify overflow-hidden textflow-ellipsis whitespace-pre-line">
                             {real_home_types_r?.length > 0 &&

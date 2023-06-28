@@ -357,10 +357,7 @@ const sendOTP = async (req, res) => {
         try {
             const accountSid = process.env.TWILIO_ACCOUNT_SID;
             const authToken = process.env.TWILIO_AUTH_TOKEN;
-            console.log(accountSid);
-            console.log(authToken);
             const client = require("twilio")(accountSid, authToken);
-            console.log(client);
             let OTP = "";
             for (let i = 0; i < 4; i++) {
                 OTP += Math.floor(Math.random() * 10);

@@ -60,9 +60,9 @@ const ResetPassword = () => {
                     </div>
                     <div className="flex flex-col border-[1px] border-black border-solid bg-white w-[30%] items-center">
                         <div className="mt-5">
-                            <h3 className="font-['Irish_Grover'] text-[25px] not-italic">
+                            <div className="font-['Irish_Grover'] text-[25px] not-italic">
                                 ĐẶT LẠI MẬT KHẨU
-                            </h3>
+                            </div>
                         </div>
                         <div className="flex flex-col gap-2 w-[60%] mt-4">
                             <InputRegister

@@ -12,6 +12,7 @@ const verifyToken = (req, res, next) => {
             .status(403)
             .send({ success: false, message: "Không có token được cung cấp!" });
     }
+
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
         if (err) {
             return res
@@ -49,7 +50,6 @@ const isAdmin = async (req, res, next) => {
         for (let i = 0; i < roles.length; i++) {
             if (roles[i].name === "admin") {
                 count++;
-                // next();
             }
         }
         if (count !== 0) {

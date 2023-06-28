@@ -4,3 +4,4 @@ export * from "./actionPrices";
 export * from "./actionAreas";
 export * from "./actionUser";
 export * from "./actionPayment";
+export * from "./actionBlog";

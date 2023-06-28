@@ -42,10 +42,11 @@ const Header = () => {
                 dispatch(actions.realHomeByUserUnPay());
             }, 2000);
         }
-        if (isLoggedIn && !user_data) {
-            dispatch(logout());
-            navigate(`/${path.LOGIN}`);
-        }
+        // if (isLoggedIn && !user_data) {
+        //     dispatch(logout());
+        //     navigate(`/${path.LOGIN}`);
+        // }
+        // console.log("ok");
     }, [isLoggedIn]);
 
     useEffect(() => {
@@ -85,9 +86,9 @@ const Header = () => {
                 <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 font-normal w-[40%]">
                     <li className="m-2 px-2">
                         <Link to={"/"}>
-                            <h5 className="hover:font-bold text-blue-600 hover:text-blue-700 text-lg">
+                            <div className="hover:font-bold text-blue-600 hover:text-blue-700 text-lg">
                                 Trang chủ
-                            </h5>
+                            </div>
                         </Link>
                     </li>
                     {transaction_types?.length > 0 &&
@@ -97,25 +98,25 @@ const Header = () => {
                                     <Link
                                         to={`/${formatUniToString(item.name)}`}
                                     >
-                                        <h5 className="hover:font-bold text-blue-600 hover:text-blue-700 text-lg">
+                                        <div className="hover:font-bold text-blue-600 hover:text-blue-700 text-lg">
                                             {item.name}
-                                        </h5>
+                                        </div>
                                     </Link>
                                 </li>
                             );
                         })}
                     <li className="m-2 px-2">
                         <Link to={"/bang-gia-dich-vu"}>
-                            <h5 className="hover:font-bold text-blue-600 hover:text-blue-700 text-lg">
+                            <div className="hover:font-bold text-blue-600 hover:text-blue-700 text-lg">
                                 Bảng giá dịch vụ
-                            </h5>
+                            </div>
                         </Link>
                     </li>
                     <li className="m-2 px-2">
                         <Link to={"/blog"}>
-                            <h5 className="hover:font-bold text-blue-600 hover:text-blue-700 text-lg">
+                            <div className="hover:font-bold text-blue-600 hover:text-blue-700 text-lg">
                                 Blog
-                            </h5>
+                            </div>
                         </Link>
                     </li>
                 </ul>
@@ -192,16 +193,16 @@ const Header = () => {
                                                 to={`/trang-ca-nhan/${user_data?._id}`}
                                                 className="flex flex-col mx-4 my-2"
                                             >
-                                                <h3 className="text-black text-lg">
+                                                <div className="text-black text-lg">
                                                     <b>
                                                         {user_data
                                                             ? `${user_data.first_name} ${user_data.last_name}`
                                                             : ""}
                                                     </b>
-                                                </h3>
-                                                <h3 className="text-blue-500 text-md hover:font-bold">
+                                                </div>
+                                                <div className="text-blue-500 text-md hover:font-bold">
                                                     Trang cá nhân
-                                                </h3>
+                                                </div>
                                             </Link>
                                         </div>
                                         {/* list item */}

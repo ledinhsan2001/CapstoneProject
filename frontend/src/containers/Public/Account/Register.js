@@ -57,9 +57,9 @@ const Register = () => {
                     </div>
                     <div className="flex flex-col border-[1px] border-black border-solid bg-white w-[30%] items-center">
                         <div className="mt-5">
-                            <h3 className="font-['Irish_Grover'] text-[25px] not-italic">
+                            <div className="font-['Irish_Grover'] text-[25px] not-italic">
                                 TÀI KHOẢN
-                            </h3>
+                            </div>
                         </div>
                         <div id="recaptcha-container"></div>
                         <div className="flex justify-center py-3">

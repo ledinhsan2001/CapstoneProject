@@ -29,6 +29,7 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
             saved_post?.map((item) => arr.push(item?.real_home?._id));
             setarrSavedPostId(arr);
         }
+        // eslint-disable-next-line
     }, [saved_post]);
 
     useEffect(() => {
@@ -57,6 +58,7 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
                 arr_search["sort_id"] = sort;
             }
         }
+
         arr_search
             ? dispatch(realHomeLimit(arr_search))
             : dispatch(
@@ -239,9 +241,9 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
     return (
         <div className="main w-[100%]">
             <div className="titleSort">
-                <h6 className="titleh6 text-left mb-1">
+                <div className="titleh6 text-left mb-1">
                     <b>{total_data}</b> tin cho thuê nhà đất ở toàn quốc
-                </h6>
+                </div>
 
                 <div className="flex justify-between">
                     <div className="btnSort flex items-center">

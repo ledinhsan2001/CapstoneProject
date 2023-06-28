@@ -14,7 +14,11 @@ const SelectForm = ({
     queries,
     rental,
     arrmaxmin,
+    activeQuickPick,
+    setactiveQuickPick,
 }) => {
+    const [activeEle, setActiveEle] = useState("");
+
     const [range1, setRange1] = useState(
         name === "price" && arrmaxmin.pricearr
             ? arrmaxmin?.pricearr[0]
@@ -29,7 +33,15 @@ const SelectForm = ({
             ? arrmaxmin?.areaarr[1]
             : 100
     );
-    const [activeEle, setActiveEle] = useState("");
+
+    useEffect(() => {
+        if (name === "price") {
+            setActiveEle(activeQuickPick?.price_id);
+        }
+        if (name === "area") {
+            setActiveEle(activeQuickPick?.area_id);
+        }
+    }, [activeQuickPick]);
 
     useEffect(() => {
         const element = document.getElementById("active-range");
@@ -43,7 +55,10 @@ const SelectForm = ({
     }, [range1, range2]);
 
     const handleClick = (e, value) => {
-        activeEle && setActiveEle("");
+        if (activeEle) {
+            setActiveEle("");
+            setactiveQuickPick("");
+        }
         const elementId = document.getElementById("rangeGray");
         const locationBound = elementId.getBoundingClientRect();
         let percent = value
@@ -73,7 +88,6 @@ const SelectForm = ({
     //Click select fast
     const handPrice = (code, value) => {
         setActiveEle(code);
-
         //arr number
         let arrRange =
             name === "price" ? getNumbersPrice(value) : getNumbersArea(value);
@@ -114,6 +128,15 @@ const SelectForm = ({
                 ? getCodeRangeArea(range_minmax, content)
                 : [];
 
+        // setactiveQuickPick
+        let arr_id = arrType.map((item) => item._id);
+
+        if (arr_id?.length === 1)
+            setactiveQuickPick((prev) => ({
+                ...prev,
+                [`${name}_id`]: arr_id[0],
+            }));
+
         //Send data to handSubmit => Search
         handleSubmit(
             e,
@@ -128,11 +151,14 @@ const SelectForm = ({
                                   : "m +"
                           }`
                         : range1 === 0 && range2 === 0
-                        ? `--- Chọn mức giá ---`
+                        ? name === "price"
+                            ? `--- Chọn mức giá ---`
+                            : "--- Diện tích ---"
                         : `Từ ${FormatPercent(min)}-${FormatPercent(max)} ${
                               name === "price" ? (rental ? "triệu" : "tỷ") : "m"
                           }`
                 }`,
+
                 [`${name}_id`]: [arrType.map((item) => item._id)],
             },
             { [`${name}arr`]: [min, max] }
@@ -163,7 +189,7 @@ const SelectForm = ({
                     >
                         <GrLinkPrevious size={24} className="cursor-pointer" />
                     </span>
-                    <h3 className="ml-[35%]">{text}</h3>
+                    <div className="ml-[35%]">{text}</div>
                 </div>
                 {(name === "area" || name === "price") && (
                     <div className="p-10 pt-20">
@@ -213,7 +239,10 @@ const SelectForm = ({
                                 value={range1}
                                 onChange={(e) => {
                                     setRange1(+e.target.value);
-                                    activeEle && setActiveEle("");
+                                    if (activeEle) {
+                                        setActiveEle("");
+                                        setactiveQuickPick("");
+                                    }
                                 }}
                                 className="w-full absolute appearance-none pointer-events-none top-0 bottom-0"
                             />
@@ -225,7 +254,10 @@ const SelectForm = ({
                                 value={range2}
                                 onChange={(e) => {
                                     setRange2(+e.target.value);
-                                    activeEle && setActiveEle("");
+                                    if (activeEle) {
+                                        setActiveEle("");
+                                        setactiveQuickPick("");
+                                    }
                                 }}
                                 className="w-full absolute appearance-none pointer-events-none top-0 bottom-0"
                             />
@@ -249,22 +281,23 @@ const SelectForm = ({
                             </div>
                         </div>
                         <div className="mt-14">
-                            <h4 className="text-left font-medium">
+                            <div className="text-left font-medium">
                                 Chọn nhanh
-                            </h4>
+                            </div>
                             <div className="flex gap-3 items-center flex-wrap w-full mt-10">
                                 {content?.map((item) => {
+                                    // console.log(item._id);
                                     return (
                                         <button
                                             key={item._id}
-                                            onClick={() =>
-                                                handPrice(item._id, item.name)
-                                            }
                                             className={`p-1 cursor-pointer rounded-md ${
                                                 activeEle === item._id
                                                     ? "text-white bg-blue-500"
                                                     : "bg-gray-200"
                                             }`}
+                                            onClick={() =>
+                                                handPrice(item._id, item.name)
+                                            }
                                         >
                                             {item.name}
                                         </button>
@@ -327,9 +360,10 @@ const SelectForm = ({
                             return (
                                 <span
                                     key={item._id}
-                                    className="py-2 flex gap-2"
+                                    className="py-2 flex gap-2 hover:cursor-pointer"
                                 >
                                     <input
+                                        className=" hover:cursor-pointer"
                                         type="radio"
                                         name={name}
                                         id={item._id}
@@ -346,7 +380,10 @@ const SelectForm = ({
                                             });
                                         }}
                                     />
-                                    <label htmlFor={item._id}>
+                                    <label
+                                        htmlFor={item._id}
+                                        className=" hover:cursor-pointer"
+                                    >
                                         {item.name}
                                     </label>
                                 </span>

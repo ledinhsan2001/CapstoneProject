@@ -32,6 +32,10 @@ const Search = () => {
     const [text, setText] = useState("");
     const [name, setName] = useState("");
     const [rental, setrental] = useState("");
+    const [activeQuickPick, setactiveQuickPick] = useState({
+        price_id: "",
+        area_id: "",
+    });
     const [arrmaxmin, setarrmaxmin] = useState({});
     const [queries, setqueries] = useState({});
     const [params] = useSearchParams();
@@ -62,53 +66,27 @@ const Search = () => {
     );
 
     const submitSearch = () => {
-        //get cac id from search(name and name_id)
-        const arr_search = Object.entries(queries).filter((item) =>
-            item[0].includes("_id")
-        );
-        let arr_search_id = {};
-        let drop_id_null = arr_search.filter((item) => item[1] !== null);
-        // [] => {}
-        drop_id_null.map((item) => (arr_search_id[item[0]] = item[1]));
-
-        //get cac name from search to show title page search data
-        let title_search = "";
-        let obj_search = {};
-        const arr_search_name = Object.entries(queries).filter(
-            (item) => !item[0].includes("_id")
-        );
-        let drop_name_null = arr_search_name.filter(
+        // queries contain all param search name an _id
+        let drop_name_null = Object.entries(queries).filter(
             (item) =>
                 item[1] !== "--- Giao dịch ---" &&
                 item[1] !== "--- Loại nhà đất ---" &&
                 item[1] !== "--- Khu vực ---" &&
                 item[1] !== "--- Chọn mức giá ---" &&
-                item[1] !== "--- Diện tích ---"
+                item[1] !== "--- Diện tích ---" &&
+                //ex: [real_home_type_id, null]
+                item[1] !== null &&
+                item[1][0]?.length > 0
         );
-        drop_name_null.map((item) => (obj_search[item[0]] = item[1]));
-        const exist_category =
-            obj_search.transaction_type || obj_search.real_home_type
-                ? true
-                : false;
-        if (exist_category) {
-            for (let i in obj_search) {
-                title_search += `${obj_search[i]}, `;
-            }
-        } else {
-            // only have price, area, province
-            title_search = "Bất động sản ";
-            for (let i in obj_search) {
-                title_search += `${obj_search[i]}, `;
-            }
-        }
-        if (Object.entries(arr_search_id).length > 0) {
-            navigate(
-                {
-                    pathname: `/${path.SEARCH}`,
-                    search: createSearchParams(arr_search_id).toString(),
-                },
-                { state: { title_search } }
-            );
+
+        let obj_queries = {};
+        drop_name_null.forEach((item) => (obj_queries[item[0]] = item[1]));
+
+        if (Object.entries(obj_queries).length > 0) {
+            navigate({
+                pathname: `/${path.SEARCH}`,
+                search: createSearchParams(obj_queries).toString(),
+            });
         } else {
             navigate({
                 pathname: `/`,
@@ -120,9 +98,9 @@ const Search = () => {
         <>
             <div className="search flex flex-col gap-3 w-[19.3%] max-h-[470px] bg-white items-center justify-center">
                 <div>
-                    <h4 className="text-blue-700 font-['inherit'] mt-[4px]">
+                    <div className="text-blue-700 font-['inherit'] mt-[4px]">
                         <b>{title.HeaderSearch}</b>
-                    </h4>
+                    </div>
                 </div>
                 <div className="Search-class flex flex-col items-center justify-center max-h-[900px] p-[3%] bg-[#febb02] rounded-xl overflow-hidden text-ellipsis whitespace-nowrap w-[80%] ">
                     <span
@@ -238,6 +216,8 @@ const Search = () => {
                     queries={queries}
                     rental={rental}
                     arrmaxmin={arrmaxmin}
+                    activeQuickPick={activeQuickPick}
+                    setactiveQuickPick={setactiveQuickPick}
                 />
             )}
         </>

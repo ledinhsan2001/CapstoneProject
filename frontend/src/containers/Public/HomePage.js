@@ -49,9 +49,9 @@ const HomePage = () => {
                 </Slider>
             </div>
             <div>
-                <h5 className="text-black mt-2 text-2xl">
+                <div className="text-black mt-2 text-2xl">
                     <b>{title.HeaderMain}</b>
-                </h5>
+                </div>
                 <div className="column-main flex w-[98%]">
                     <UrlHomePage />
                 </div>
