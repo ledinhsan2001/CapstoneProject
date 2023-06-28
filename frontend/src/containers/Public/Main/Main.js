@@ -33,9 +33,9 @@ const Main = () => {
     return (
         <div>
             <div>
-                <h5 className="text-black mt-2 text-2xl">
+                <div className="text-black mt-2 text-2xl">
                     <b>{title.HeaderMain}</b>
-                </h5>
+                </div>
                 <div className="main flex justify-evenly mt-3">
                     <div className="list block bg-[#F5F5F5] w-[67%] overflow-hidden text-ellipsis whitespace-nowrap">
                         <List real_home_type_id={real_home_type_id} />

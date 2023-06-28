@@ -63,9 +63,9 @@ const PaymentStatus = () => {
                     Trạng thái thanh toán
                 </div>
                 <div className="my-2 flex justify-between items-center">
-                    <h6 className="titleh6 text-left">
+                    <div className="titleh6 text-left">
                         <b>{total_unpay}</b> trạng thái tin thanh toán.
-                    </h6>
+                    </div>
                 </div>
                 <table className="table-fixed border-[2px] border-gray-600 border-separate bg-white w-full">
                     <thead className="text-lg bg-gray-500 text-white">

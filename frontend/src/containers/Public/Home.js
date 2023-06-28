@@ -14,9 +14,7 @@ import { logout } from "../../store/actions/auth";
 const Home = () => {
     const dispatch = useDispatch();
     const location = useLocation();
-    const { isLoggedIn, message, accessToken, refreshToken } = useSelector(
-        (state) => state.auth
-    );
+    const { isLoggedIn } = useSelector((state) => state.auth);
     const { user_data } = useSelector((state) => state.user);
     const navigate = useNavigate();
 
@@ -27,19 +25,22 @@ const Home = () => {
         dispatch(actions.actionTransactionType());
         dispatch(actions.realHomeTypes());
         dispatch(actions.actionGetNewsType());
-    }, [dispatch]);
+        dispatch(actions.actionGetAlllBlogType());
+    }, []);
 
     useEffect(() => {
         setTimeout(() => {
             isLoggedIn && dispatch(actions.actionUser());
+            // eslint-disable-next-line
         }, 2000);
-    }, [isLoggedIn]);
+    }, [isLoggedIn, dispatch]);
 
     useEffect(() => {
         if (isLoggedIn && !user_data) {
             dispatch(logout());
             navigate(`/${path.LOGIN}`);
         }
+        // eslint-disable-next-line
     }, [user_data]);
 
     const checkUrl = (url) => {
@@ -51,6 +52,8 @@ const Home = () => {
     return (
         <>
             {!checkUrl("chi-tiet") &&
+                !checkUrl("blog") &&
+                !checkUrl(path.DETAIL_BLOG__TITLE_ID) &&
                 location.pathname !== `/${path.SERVICE_PRICE}` &&
                 !checkUrl("trang-ca-nhan") && (
                     <div className="row w-full">
@@ -70,7 +73,9 @@ const Home = () => {
                 )}
             {(checkUrl("chi-tiet") ||
                 location.pathname === `/${path.SERVICE_PRICE}` ||
-                checkUrl("trang-ca-nhan")) && (
+                checkUrl(path.DETAIL_BLOG__TITLE_ID) ||
+                checkUrl("trang-ca-nhan") ||
+                checkUrl("blog")) && (
                 <div className="w-full">
                     <Header />
                     <div className="bg-[#D9D9D9]">

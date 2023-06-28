@@ -15,3 +15,4 @@ export { default as SelectDescription } from "./SelectDescription";
 export { default as MapLeaflet } from "./MapLeaflet";
 export { default as NewsType } from "./NewsType";
 export { default as NumberDay } from "./NumberDay";
+export { default as ItemBlog } from "./ItemBlog";

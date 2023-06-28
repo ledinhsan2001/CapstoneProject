@@ -400,16 +400,16 @@ const DetailRealHome = () => {
                                         ></img>
                                     </div>
                                     <div className="flex flex-col mx-3 my-2">
-                                        <h3 className="text-black text-lg">
+                                        <div className="text-black text-lg">
                                             <b>
                                                 {real_home
                                                     ? `${real_home?.user_post?.first_name} ${real_home?.user_post?.last_name}`
                                                     : ""}
                                             </b>
-                                        </h3>
-                                        <h3 className="text-blue-500 text-md hover:font-bold">
+                                        </div>
+                                        <div className="text-blue-500 text-md hover:font-bold">
                                             Trang cá nhân
-                                        </h3>
+                                        </div>
                                     </div>
                                 </Link>
                                 <div className="flex mt-1 overflow-hidden text-ellipsis whitespace-nowrap px-4 gap-4 pb-3 border-b-[2px]">

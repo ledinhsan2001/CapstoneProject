@@ -42,7 +42,7 @@ const ItemSidebarMain = ({
 
     return (
         <div className="m-2 p-3 w-full bg-white">
-            <h3 className="text-lg font-semibold">{title}</h3>
+            <div className="text-lg font-semibold">{title}</div>
             {/* Danh sách mua bán */}
             {!isDouble &&
                 data_link?.length > 0 &&

@@ -25,7 +25,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="flex flex-col text-left mx-[50px] gap-2 mt-[-70px]">
-                    <h5 className="mb-3 font-bold">PHƯƠNG THỨC THANH TOÁN</h5>
+                    <div className="mb-3 font-bold">PHƯƠNG THỨC THANH TOÁN</div>
                     <Link to={"https://www.paypal.com/vn/home"} target="_blank">
                         <img
                             src={paypal}
@@ -37,7 +37,7 @@ const Footer = () => {
                     </Link>
                 </div>
                 <div className="flex flex-col text-left mx-[50px] gap-2">
-                    <h5 className="mb-3 font-bold">VỀ BDS</h5>
+                    <div className="mb-3 font-bold">VỀ BDS</div>
                     <Link to={`/`}>Trang chủ</Link>
                     <Link to={`/${formatUniToString("Giới thiệu")}`}>
                         Giới thiệu
@@ -48,7 +48,7 @@ const Footer = () => {
                     <Link to={`/${formatUniToString("Liên hệ")}`}>Liên hệ</Link>
                 </div>
                 <div className="flex flex-col text-left mx-[50px] gap-2">
-                    <h5 className="mb-3 font-bold">HỖ TRỢ KHÁCH HÀNG</h5>
+                    <div className="mb-3 font-bold">HỖ TRỢ KHÁCH HÀNG</div>
                     <Link to={`/${formatUniToString("Tin tức")}`}>Tin tức</Link>
                     <Link to={`/${formatUniToString("Bảng giá dịch vụ")}`}>
                         Bảng giá dịch vụ

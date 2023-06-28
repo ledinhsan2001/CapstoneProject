@@ -126,9 +126,9 @@ const ManagePost = () => {
                     Quản lý tin đăng
                 </div>
                 <div className="my-2 flex justify-between items-center">
-                    <h6 className="titleh6 text-left">
+                    <div className="titleh6 text-left">
                         <b>{total_data}</b> tin bất động sản của bạn.
-                    </h6>
+                    </div>
                     <div className=" flex items-center text-left gap-1">
                         <TfiFilter size={16} />
                         <p className="mr-4 text-[18px] font-bold">

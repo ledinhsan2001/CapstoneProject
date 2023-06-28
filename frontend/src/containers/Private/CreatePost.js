@@ -85,7 +85,8 @@ const CreatePost = ({ edit, repayment }) => {
 
         let price_id;
         let area_id;
-        let checkUnit = payload?.price?.split(" ");
+        let check_billion = payload?.price?.includes("tỷ");
+        let check_million = payload?.price?.includes("triệu");
         let price_number;
         if (payload?.price) {
             price_number = FormatGetNummber(payload?.price);
@@ -96,30 +97,19 @@ const CreatePost = ({ edit, repayment }) => {
             area_number = FormatGetNummber(payload?.area);
         }
 
-        //price_number khác số là undefined: thỏa thuận
-        // checkunit[1] khác số là undefined : giá không ghi triệu hay tỷ là cho dưới 1 tỷ
-        //  checkUnit[1] có chữ mà khác 1 tỷ là cho dưới 1 tỷ
+        //price_number != number is undefined: thỏa thuận or input error data
+
         payload.transaction_type_id === "645b56517cc26519dbcaad34"
-            ? !price_number || !checkUnit[1] || checkUnit[1] !== "tỷ"
-                ? checkUnit[1] === "tỷ/tháng"
-                    ? (price_id = price_maxmin.find(
-                          (price) =>
-                              price_number >= +price.min &&
-                              price_number < +price.max
-                      )?._id)
-                    : (price_id = "duoi_1ty")
+            ? !price_number || !check_billion
+                ? (price_id = "duoi_1ty")
                 : (price_id = price_maxmin.find(
                       (price) =>
                           price_number >= +price.min &&
                           price_number < +price.max
                   )?._id)
-            : !price_number || !checkUnit[1] || checkUnit[1] !== "triệu"
-            ? checkUnit[1] === "triệu/tháng"
-                ? (price_id = price_maxmin.find(
-                      (price) =>
-                          price_number >= +price.min &&
-                          price_number < +price.max
-                  )?._id)
+            : !price_number || !check_million
+            ? check_billion
+                ? (price_id = "tren_15trieu")
                 : (price_id = "duoi_1trieu")
             : (price_id = price_maxmin.find(
                   (price) =>

@@ -16,7 +16,7 @@ const ItemSide = ({ id, title, price, img, upAt, news_type_id }) => {
                 alt="ảnh item sidebar"
             ></img>
             <div className="flex flex-col flex-auto">
-                <h4
+                <div
                     className={`max-h-[45px] text-ellipsis text-left items-center whitespace-pre-line overflow-hidden text-sm cursor-pointer ${
                         news_type_id === 0
                             ? `text-red-500`
@@ -26,7 +26,7 @@ const ItemSide = ({ id, title, price, img, upAt, news_type_id }) => {
                     }`}
                 >
                     {`${title?.slice(0, 46)}...`}
-                </h4>
+                </div>
                 <div className="flex mt-1 justify-between">
                     <span className="text-[#16c784] text-[16px] ml-2">
                         {price}

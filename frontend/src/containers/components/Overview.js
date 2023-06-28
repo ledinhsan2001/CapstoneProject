@@ -10,10 +10,10 @@ const Overview = () => {
                 </div>
 
                 <div className="flex flex-col items-center ml-2 mt-3 mr-7">
-                    <h1 className="font-['Merriweather_Bold'] text-2xl">
+                    <div className="font-['Merriweather_Bold'] text-2xl">
                         Bán và cho thuê cùng RealHomes
-                    </h1>
-                    <h4>Nền tảng giao dịch bất động sản hàng đầu Việt Nam</h4>
+                    </div>
+                    <div>Nền tảng giao dịch bất động sản hàng đầu Việt Nam</div>
                     <div className="flex items-center mt-3 cursor-pointer justify-around">
                         <div className="flex flex-col mx-1 pt-2 items-center bg-white w-[150px] h-[150px]">
                             <img

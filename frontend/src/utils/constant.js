@@ -7,7 +7,8 @@ export const path = {
     BUYSELL: "mua-ban",
     SERVICE_PRICE: "bang-gia-dich-vu",
     BLOG: "blog",
-    DETAIL_REALHOMES__TITLE_ID: "chi-tiet/:id/:slug",
+    DETAIL_BLOG__TITLE_ID: "blog/chi-tiet/:id",
+    DETAIL_REALHOMES__TITLE_ID: "chi-tiet/:id",
     SEARCH: "tim-kiem",
     RESET_PASSWORD: "quen-mat-khau",
 

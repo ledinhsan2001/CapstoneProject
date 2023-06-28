@@ -90,7 +90,6 @@ const PersonalPage = () => {
                                 )}
                             {real_homes_public_by_user?.length > 0 &&
                                 real_homes_public_by_user.map((item) => {
-                                    console.log(item?.images?.url);
                                     return (
                                         <Item
                                             key={item._id}

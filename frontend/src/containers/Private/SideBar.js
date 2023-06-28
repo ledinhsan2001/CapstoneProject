@@ -67,16 +67,16 @@ const SideBar = () => {
                     ></img>
                 </div>
                 <div className="flex flex-col mx-3 my-2">
-                    <h3 className="text-black text-lg">
+                    <div className="text-black text-lg">
                         <b>
                             {user_data
                                 ? `${user_data?.first_name} ${user_data?.last_name}`
                                 : ""}
                         </b>
-                    </h3>
-                    <h3 className="text-blue-500 text-md hover:font-bold">
+                    </div>
+                    <div className="text-blue-500 text-md hover:font-bold">
                         Trang cá nhân
-                    </h3>
+                    </div>
                 </div>
             </Link>
             {/* list item */}
