@@ -7,12 +7,12 @@ import { formatUniToString } from "../../utils/constant";
 const ItemSide = ({ id, title, price, img, upAt, news_type_id }) => {
     return (
         <Link
-            to={`/chi-tiet/${id}/${formatUniToString(title)}`}
+            to={`/chi-tiet/${id}?${formatUniToString(title)}`}
             className="w-full flex items-center gap-1 border-b border-b-gray-300 pb-2 hover:font-bold"
         >
             <img
                 className="w-[80px] h-[80px] object-cover flex-none rounded-md"
-                src={img[0]}
+                src={img[0]?.url}
                 alt="ảnh item sidebar"
             ></img>
             <div className="flex flex-col flex-auto">

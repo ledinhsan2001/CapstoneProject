@@ -28,6 +28,14 @@ const sub_header_transactionType_ChoThue = realhometypes2.titleHeader.title;
 
 export const insertDtDbController = async (req, res) => {
     try {
+        // // insert province
+        // province.forEach(async (item) => {
+        //     await Province.create({
+        //         _id: item.province_id,
+        //         name: item.province_name,
+        //     });
+        // });
+
         // // insert simple area and price
         // price_buysell.forEach(async (item, index) => {
         //     await new price({

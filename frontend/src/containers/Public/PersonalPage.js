@@ -29,6 +29,7 @@ const PersonalPage = () => {
         };
         id && fetchDataUser();
         id && dispatch(realHomePublicByUser(id));
+        // eslint-disable-next-line
     }, [id]);
 
     const sliceDate = () => {

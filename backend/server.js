@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./config/connectDB");
+const db = require("./real_house/config/connectDB");
 require("dotenv").config();
 import initRoute from "./real_house/routes";
 import "moment/locale/vi";

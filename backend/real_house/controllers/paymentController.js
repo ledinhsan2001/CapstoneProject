@@ -5,6 +5,7 @@ import { Payment } from "../models/payment";
 import { RealHome } from "../models/realHome";
 import { User } from "../models/user";
 import { FormatDate } from "../utils/FormatDate";
+import SavePost from "../models/SavePost";
 require("dotenv").config();
 const paypal = require("paypal-rest-sdk");
 
@@ -82,6 +83,7 @@ export const get = (req, res) => {
     // receive ID
     const user_id = req.userId;
     const PayerID = req.query.PayerID;
+
     const total_price = req.query.total_price;
     const VND = req.query.VND;
     const id_post = req.query.id_post;
@@ -114,48 +116,87 @@ export const get = (req, res) => {
                 // Get Payment Response
                 // console.log(JSON.stringify(payment));
 
-                const user = await User.findOne({ _id: user_id });
-                const obj_news_type = await NewsType.findOne({
-                    _id: news_type_id,
-                });
-                const obj_number_day = await NumberDay.findOne({
-                    number_day: +number_day,
-                });
+                try {
+                    const user = await User.findOne({ _id: user_id });
+                    const obj_news_type = await NewsType.findOne({
+                        _id: news_type_id,
+                    });
+                    const obj_number_day = await NumberDay.findOne({
+                        number_day: +number_day,
+                    });
 
-                // update active
-                const obj_real_home = await RealHome.findByIdAndUpdate(
-                    { _id: id_post },
-                    { active: true, news_type_id: obj_news_type._id },
-                    {
-                        new: true,
+                    // update active
+                    const obj_real_home = await RealHome.findByIdAndUpdate(
+                        { _id: id_post },
+                        { active: true, news_type_id: obj_news_type._id },
+                        {
+                            new: true,
+                        }
+                    );
+
+                    let start_date = FormatDate();
+                    let end_date = FormatDate(+number_day);
+
+                    const expireAt = new Date();
+                    expireAt.setDate(expireAt.getDate() + +number_day); // Set expiry after numberday
+
+                    const obj_payment = await Payment.create({
+                        user: user,
+                        news_type: obj_news_type,
+                        number_day: obj_number_day,
+                        real_home: obj_real_home,
+                        total_price: +VND,
+                        start_date: start_date,
+                        expiration_date: end_date,
+                        expireAt: expireAt,
+                    });
+
+                    if (obj_payment) {
+                        const deleteTime = expireAt;
+                        setTimeout(async () => {
+                            // Delete the document from the first collection (automatically by the `expireAt` index)
+                            // No explicit delete operation needed here, the document will be automatically deleted
+
+                            // Update the field after document payment deleted
+                            const expire_update =
+                                await RealHome.findByIdAndUpdate(
+                                    { _id: id_post },
+                                    {
+                                        active: false,
+                                    }
+                                );
+
+                            if (expire_update) {
+                                console.log("Field updated success.");
+                            } else {
+                                console.error("Error updating field:", error);
+                            }
+                        }, deleteTime - Date.now());
+
+                        const history_payment = await PaymentHistory.create({
+                            payment: obj_payment,
+                        });
+
+                        obj_payment.save();
+                        history_payment.save();
+
+                        return res.status(200).json({
+                            success: true,
+                            messages: "Thanh toán thành công!",
+                            data: payment,
+                        });
+                    } else {
+                        return res.status(400).json({
+                            success: false,
+                            messages: "Thanh toán không thành công!",
+                        });
                     }
-                );
-
-                let start_date = FormatDate();
-                let end_date = FormatDate(+number_day);
-
-                const obj_payment = await Payment.create({
-                    user: user,
-                    news_type: obj_news_type,
-                    number_day: obj_number_day,
-                    real_home: obj_real_home,
-                    total_price: +VND,
-                    start_date: start_date,
-                    expiration_date: end_date,
-                });
-
-                const history_payment = await PaymentHistory.create({
-                    payment: obj_payment,
-                });
-
-                obj_payment.save();
-                history_payment.save();
-
-                return res.status(200).json({
-                    success: true,
-                    messages: "Thanh toán thành công!",
-                    data: payment,
-                });
+                } catch (error) {
+                    return res.status(400).json({
+                        success: false,
+                        messages: "Thanh toán không thành công!",
+                    });
+                }
             }
         }
     );

@@ -31,14 +31,14 @@ const {
 
 const DetailRealHome = () => {
     const [real_home, setreal_home] = useState("");
-    const [news_type, setnews_type] = useState("");
+    const [payment, setpayment] = useState("");
     const { isLoggedIn } = useSelector((state) => state.auth);
     const [isHoverHeart, setIsHoverHeart] = useState(false);
     const [arrSavedPostId, setarrSavedPostId] = useState([]);
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { real_home_detail, news_type_detail, saved_post } = useSelector(
+    const { real_home_detail, payment_detail, saved_post } = useSelector(
         (state) => state.real_home
     );
 
@@ -48,8 +48,8 @@ const DetailRealHome = () => {
 
     useEffect(() => {
         real_home_detail && setreal_home(real_home_detail);
-        news_type_detail && setnews_type(news_type_detail);
-    }, [real_home_detail, news_type_detail]);
+        payment_detail && setpayment(payment_detail);
+    }, [real_home_detail, payment_detail]);
 
     var settings = {
         dots: true,
@@ -136,14 +136,14 @@ const DetailRealHome = () => {
                     <div className="w-[100%] my-6">
                         <div
                             className={`text-red-600 text-ellipsis text-left items-center whitespace-pre-line overflow-hidden text-3xl font-bold ${
-                                news_type._id === 0
+                                payment?.news_type?._id === 0
                                     ? `text-red-500`
-                                    : news_type._id === 1
+                                    : payment?.news_type?._id === 1
                                     ? "text-[#ED0CC9]"
                                     : `text-blue-500`
                             }`}
                         >
-                            {+news_type._id !== 2 && (
+                            {payment?.news_type?._id !== 2 && (
                                 <FaStar
                                     size={40}
                                     color="orange"
@@ -255,10 +255,12 @@ const DetailRealHome = () => {
                                                 return (
                                                     <div
                                                         className="ml-[10%]"
-                                                        key={item}
+                                                        key={item?.url}
                                                     >
                                                         <img
-                                                            src={item || bds}
+                                                            src={
+                                                                item?.url || bds
+                                                            }
                                                             alt="Ảnh bất động sản"
                                                             className="object-cover w-[80%] h-[400px]"
                                                         ></img>
@@ -335,18 +337,19 @@ const DetailRealHome = () => {
                                             <td className="flex mt-2 w-[100%] text-ellipsis text-md whitespace-pre-line overflow-hidden ml-[10%]">
                                                 Loại tin:
                                             </td>
-                                            {news_type && (
+                                            {payment && (
                                                 <td
                                                     className={`w-[70%] text-ellipsis text-md items-start whitespace-pre-line overflow-hidden ${
-                                                        news_type._id === 0
+                                                        payment?.news_type
+                                                            ?._id === 0
                                                             ? `text-red-500`
-                                                            : news_type._id ===
-                                                              1
+                                                            : payment?.news_type
+                                                                  ?._id === 1
                                                             ? "text-[#ED0CC9]"
                                                             : `text-blue-500`
                                                     }`}
                                                 >
-                                                    {news_type.name}
+                                                    {payment?.news_type?.name}
                                                 </td>
                                             )}
                                         </tr>
@@ -367,7 +370,7 @@ const DetailRealHome = () => {
                                                 Ngày đăng:
                                             </td>
                                             <td className="w-[70%] text-ellipsis text-md items-start whitespace-pre-line overflow-hidden">
-                                                {real_home?.end_date}
+                                                {payment?.start_date}
                                             </td>
                                         </tr>
                                         <tr className="w-full p-2 h-[50px] bg-gray-200">
@@ -375,7 +378,7 @@ const DetailRealHome = () => {
                                                 Ngày hết hạn:
                                             </td>
                                             <td className="w-[70%] text-ellipsis text-md items-start whitespace-pre-line overflow-hidden">
-                                                {real_home?.end_date}
+                                                {payment?.expiration_date}
                                             </td>
                                         </tr>
                                     </tbody>

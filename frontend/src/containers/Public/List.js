@@ -10,7 +10,7 @@ import {
     useLocation,
 } from "react-router-dom";
 
-const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
+const List = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [params] = useSearchParams();
@@ -33,209 +33,96 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
     }, [saved_post]);
 
     useEffect(() => {
-        let page_value = params.get("page");
-        let price = params.get("price_id");
-        let area = params.get("area_id");
-        // let province = params.get("province_id");
+        // mua+b%nsa => mua bán
+        const searchParams = new URLSearchParams(location.search);
+        //get cac id from search
+        let obj_search_id = {};
 
-        let page = page_value ? +page_value - 1 : 0;
-        let code = price ? price : area ? area : undefined;
-        let type = price ? "price_id" : area ? "area_id" : undefined;
-
-        // if have sort
-        let sort = params.get("sort_id");
-        let sort_code = sort ? sort : undefined;
-        let sort_type = sort ? "sort_id" : undefined;
-
-        // if have filter
-        let news_type = params.get("news_type_id");
-        let news_type_code = news_type ? news_type : undefined;
-        let news_type_type = news_type ? "news_type_id" : undefined;
-
-        if (arr_search) {
-            arr_search["page"] = page;
-            if (sort) {
-                arr_search["sort_id"] = sort;
+        // return pair key/value follow order on url
+        for (let i of searchParams.entries()) {
+            // real_home:Mua bán, real_home_id:35256346
+            if (i[0].includes("_id")) {
+                obj_search_id[i[0]] = i[1];
             }
         }
 
-        arr_search
-            ? dispatch(realHomeLimit(arr_search))
-            : dispatch(
-                  realHomeLimit({
-                      page,
-                      transaction_type_id,
-                      real_home_type_id,
-                      [type]: code,
-                      [sort_type]: sort_code,
-                      [news_type_type]: news_type_code,
-                  })
-              );
+        // reset sort_id and new_type_id
+        let check_reset = Object.entries(obj_search_id).filter(
+            (item) => item[0] === "sort_id"
+        );
+        // reset active sort_id
+        if (check_reset.length === 0) {
+            setsortActive(0);
+            let element = document.getElementById("filter_new_type_id");
+            element.value = 3;
+        }
+
+        let page_value = params.get("page");
+        let page = +page_value > 0 ? +page_value - 1 : 0;
+        obj_search_id["page"] = page;
+
+        dispatch(realHomeLimit(obj_search_id));
         setCurrentPage(+page);
-    }, [params, real_home_type_id, transaction_type_id, arr_search, dispatch]);
+    }, [params, location.search]);
 
     function handlePageClick(e) {
-        let price = params.get("price_id");
-        let area = params.get("area_id");
-        // let province = params.get("province_id");
+        const searchParams = new URLSearchParams(location.search);
 
-        let code = price ? price : area ? area : undefined;
-        let type = price ? "price_id" : area ? "area_id" : undefined;
+        //get cac id from search
+        let obj_search_id = {};
 
-        // if have sort
-        let sort = params.get("sort_id");
-        let sort_code = sort ? sort : undefined;
-        let sort_type = sort ? "sort_id" : undefined;
-
-        // if have filter
-        let news_type = params.get("news_type_id");
-        let news_type_code = news_type ? news_type : undefined;
-        let news_type_type = news_type ? "news_type_id" : undefined;
-
-        if (arr_search) {
-            arr_search["page"] = e.selected + 1;
-            if (sort) {
-                arr_search["sort_id"] = sort;
-            }
-            if (news_type) {
-                arr_search["news_type_id"] = news_type;
-            }
+        for (let i of searchParams.entries()) {
+            // real_home:Mua bán, real_home_id:35256346
+            obj_search_id[i[0]] = i[1];
         }
+        obj_search_id["page"] = e.selected + 1;
 
-        let objparams = {};
-        if (type) {
-            objparams[type] = code;
-        }
-        if (sort) {
-            objparams[sort_type] = sort_code;
-        }
-        if (news_type) {
-            objparams[news_type_type] = news_type_code;
-        }
-        objparams["page"] = e.selected + 1;
-
-        arr_search
-            ? navigate({
-                  pathname: location.pathname,
-                  search: createSearchParams(arr_search).toString(),
-              })
-            : type
-            ? navigate({
-                  pathname: location.pathname,
-                  search: createSearchParams(objparams).toString(),
-              })
-            : navigate({
-                  pathname: location.pathname,
-                  search: createSearchParams(objparams).toString(),
-              });
+        navigate({
+            pathname: location.pathname,
+            search: createSearchParams(obj_search_id).toString(),
+        });
     }
 
     const handleSort = (value) => {
         setsortActive(value);
 
-        let price = params.get("price_id");
-        let area = params.get("area_id");
-        // let province = params.get("province_id");
+        const searchParams = new URLSearchParams(location.search);
 
-        let code = price ? price : area ? area : undefined;
-        let type = price ? "price_id" : area ? "area_id" : undefined;
+        //get cac id from search
+        let obj_search_id = {};
 
-        let sort_code = value;
-        let sort_type = "sort_id";
-
-        let news_type = params.get("news_type_id");
-        let news_type_code = news_type ? news_type : undefined;
-        let news_type_type = news_type ? "news_type_id" : undefined;
-
-        if (arr_search) {
-            arr_search["page"] = 1;
-            arr_search[sort_type] = sort_code;
-            if (news_type) {
-                arr_search[news_type_type] = news_type_code;
-            }
+        for (let i of searchParams.entries()) {
+            // real_home:Mua bán, real_home_id:35256346
+            obj_search_id[i[0]] = i[1];
         }
+        let page_value = params.get("page");
+        let page = +page_value > 0 ? +page_value - 1 : 0;
+        obj_search_id["page"] = page;
 
-        let objparams = {};
-        if (type) {
-            objparams[type] = code;
-        }
-        objparams[sort_type] = sort_code;
-        if (news_type) {
-            objparams[news_type_type] = news_type_code;
-        }
-        objparams["page"] = 1;
+        obj_search_id["sort_id"] = value;
 
-        arr_search
-            ? navigate({
-                  pathname: location.pathname,
-                  search: createSearchParams(arr_search).toString(),
-              })
-            : type
-            ? navigate({
-                  pathname: location.pathname,
-                  search: createSearchParams(objparams).toString(),
-              })
-            : navigate({
-                  pathname: location.pathname,
-                  search: createSearchParams(objparams).toString(),
-              });
+        navigate({
+            pathname: location.pathname,
+            search: createSearchParams(obj_search_id).toString(),
+        });
     };
 
     const handleFilter = (value) => {
-        let price = params.get("price_id");
-        let area = params.get("area_id");
-        let sort = params.get("sort_id");
-        // let province = params.get("province_id");
+        const searchParams = new URLSearchParams(location.search);
 
-        let code = price ? price : area ? area : undefined;
-        let type = price ? "price_id" : area ? "area_id" : undefined;
+        //get cac id from search
+        let obj_search_id = {};
 
-        let sort_code = sort;
-        let sort_type = "sort_id";
-
-        let news_type_code;
-        let news_type_type;
-        if (value !== 4) {
-            news_type_code = value;
-            news_type_type = "news_type_id";
+        for (let i of searchParams.entries()) {
+            // real_home:Mua bán, real_home_id:35256346
+            obj_search_id[i[0]] = i[1];
         }
+        obj_search_id["news_type_id"] = value;
 
-        if (arr_search) {
-            arr_search["page"] = 1;
-            if (value !== 4) {
-                arr_search[news_type_type] = news_type_code;
-            }
-            if (sort) {
-                arr_search[sort_type] = sort_code;
-            }
-        }
-
-        let objparams = {};
-        if (type) {
-            objparams[type] = code;
-        }
-        if (value !== 4) {
-            objparams[news_type_type] = news_type_code;
-        }
-        if (sort) {
-            objparams[sort_type] = sort_code;
-        }
-        objparams["page"] = 1;
-
-        arr_search
-            ? navigate({
-                  pathname: location.pathname,
-                  search: createSearchParams(arr_search).toString(),
-              })
-            : type
-            ? navigate({
-                  pathname: location.pathname,
-                  search: createSearchParams(objparams).toString(),
-              })
-            : navigate({
-                  pathname: location.pathname,
-                  search: createSearchParams(objparams).toString(),
-              });
+        navigate({
+            pathname: location.pathname,
+            search: createSearchParams(obj_search_id).toString(),
+        });
     };
 
     return (
@@ -292,13 +179,11 @@ const List = ({ transaction_type_id, real_home_type_id, arr_search }) => {
                     <div className=" flex items-center text-left">
                         <p className="mr-2">Lọc loại tin:</p>
                         <select
+                            id="filter_new_type_id"
                             className=" h-[34px] w-[150px] p-1 my-1 rounded-xl border-solid border-1 border-black hover:bg-white hover:text-black hover:border-solid hover:border-2 hover:border-blue-300 cursor-pointer"
                             onChange={(e) => handleFilter(+e.target.value)}
                         >
-                            <option
-                                className="text-red-500 font-bold"
-                                value={4}
-                            >
+                            <option className="text-black font-bold" value={3}>
                                 Mặc định
                             </option>
                             <option

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import icons from "../../utils/icons";
 import { getNumbersArea, getNumbersPrice } from "../../utils/constant";
 import { getCodeRangePrice, getCodeRangeArea } from "../../utils/constant";
@@ -41,6 +41,7 @@ const SelectForm = ({
         if (name === "area") {
             setActiveEle(activeQuickPick?.area_id);
         }
+        // eslint-disable-next-line
     }, [activeQuickPick]);
 
     useEffect(() => {
@@ -121,16 +122,13 @@ const SelectForm = ({
                 : [FormatPercent(min), FormatPercent(max)];
         let arrType =
             name === "price"
-                ? rental
-                    ? getCodeRangePrice(range_minmax, content.slice(8, 16))
-                    : getCodeRangePrice(range_minmax, content.slice(0, 8))
+                ? getCodeRangePrice(range_minmax, content)
                 : name === "area"
                 ? getCodeRangeArea(range_minmax, content)
                 : [];
 
         // setactiveQuickPick
         let arr_id = arrType.map((item) => item._id);
-
         if (arr_id?.length === 1)
             setactiveQuickPick((prev) => ({
                 ...prev,
@@ -158,7 +156,6 @@ const SelectForm = ({
                               name === "price" ? (rental ? "triệu" : "tỷ") : "m"
                           }`
                 }`,
-
                 [`${name}_id`]: [arrType.map((item) => item._id)],
             },
             { [`${name}arr`]: [min, max] }
@@ -174,7 +171,7 @@ const SelectForm = ({
             className="fixed z-50 left-0 bottom-0 right-0 top-0 bg-overlay-70 flex justify-center items-center"
         >
             <div
-                className="w-1/3 bg-white rounded-md mt-[-15%]"
+                className="w-1/3 bg-white rounded-md"
                 onClick={(e) => {
                     e.stopPropagation();
                     setIsShowForm(true);
@@ -263,7 +260,7 @@ const SelectForm = ({
                             />
                             <div className="absolute flex justify-between items-center left-0 right-0 top-3">
                                 <span
-                                    className="cursor-pointer"
+                                    className="cursor-pointer ml-[-5px]"
                                     onClick={(e) => handleClick(e, 0)}
                                 >
                                     0
@@ -286,7 +283,6 @@ const SelectForm = ({
                             </div>
                             <div className="flex gap-3 items-center flex-wrap w-full mt-10">
                                 {content?.map((item) => {
-                                    // console.log(item._id);
                                     return (
                                         <button
                                             key={item._id}
@@ -310,6 +306,8 @@ const SelectForm = ({
                                     onClick={() => {
                                         setRange1(0);
                                         setRange2(0);
+                                        setActiveEle("");
+                                        setactiveQuickPick("");
                                     }}
                                 >
                                     Đặt lại
@@ -337,9 +335,11 @@ const SelectForm = ({
                         </div>
                     </div>
                 )}
+                {/* is transaction_type, real_home_type, province */}
                 {name !== "area" && name !== "price" && (
-                    <div className="p-4 flex flex-col">
+                    <div className="p-4 flex flex-col h-[600px] overflow-y-auto">
                         <span className="py-2 flex gap-2">
+                            {/* transaction_type_id: null */}
                             <input
                                 type="radio"
                                 id="default"
@@ -396,4 +396,4 @@ const SelectForm = ({
     );
 };
 
-export default SelectForm;
+export default memo(SelectForm);

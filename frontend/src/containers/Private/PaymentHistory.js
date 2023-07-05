@@ -1,48 +1,76 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
-import { Link } from "react-router-dom";
-import { GetNummberFromString, formatUniToString } from "../../utils/constant";
+import {
+    createSearchParams,
+    useLocation,
+    useNavigate,
+    useSearchParams,
+} from "react-router-dom";
+import { GetNummberFromString } from "../../utils/constant";
 import { TfiFilter } from "react-icons/tfi";
+import ReactPaginate from "react-paginate";
 
 const PaymentHistory = () => {
     const dispatch = useDispatch();
     const [payment_histories, setpayment_histories] = useState([]);
-    const { payment_history, message, total_payment } = useSelector(
-        (state) => state.user
-    );
+    const {
+        limit_history_pay,
+        message,
+        total_all_history_pay,
+        page_count_history_pay,
+    } = useSelector((state) => state.payment);
+    const [currentPage, setCurrentPage] = useState(0);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [params] = useSearchParams();
 
     useEffect(() => {
-        dispatch(actions.actionPayment());
-    }, [dispatch]);
+        setpayment_histories(limit_history_pay);
+    }, [limit_history_pay]);
 
     useEffect(() => {
-        setpayment_histories(payment_history);
-    }, [payment_history]);
+        let obj_page = {};
+
+        let page_value = params.get("page");
+        let page = +page_value > 0 ? +page_value - 1 : 0;
+        obj_page["page"] = page;
+
+        let news_type = params.get("news_type_id");
+        let news_type_code = news_type ? +news_type : undefined;
+        if (news_type_code) {
+            obj_page["news_type_id"] = news_type_code;
+        }
+
+        dispatch(actions.actionPayment(obj_page));
+        setCurrentPage(+page);
+    }, [params]);
+
+    function handlePageClick(e) {
+        let obj_page = {};
+
+        let news_type = params.get("news_type_id");
+        let news_type_code = news_type ? +news_type : undefined;
+        if (news_type_code) {
+            obj_page["news_type_id"] = news_type_code;
+        }
+
+        obj_page["page"] = e.selected + 1;
+
+        navigate({
+            pathname: location.pathname,
+            search: createSearchParams(obj_page).toString(),
+        });
+    }
 
     const handleFilter = (value) => {
-        console.log(payment_history);
-        if (value === 1) {
-            // News Special
-            let special = payment_history.filter(
-                (item) => item?.payment?.news_type?._id === 0
-            );
-            setpayment_histories(special);
-        } else if (value === 2) {
-            // News featured
-            let featured = payment_history.filter(
-                (item) => item?.payment?.news_type?._id === 1
-            );
-            setpayment_histories(featured);
-        } else if (value === 3) {
-            // News common
-            let common = payment_history.filter(
-                (item) => item?.payment?.news_type?._id === 2
-            );
-            setpayment_histories(common);
-        } else {
-            setpayment_histories(payment_history);
-        }
+        let obj_page = {};
+        obj_page["news_type_id"] = +value;
+
+        navigate({
+            pathname: location.pathname,
+            search: createSearchParams(obj_page).toString(),
+        });
     };
 
     const checkIdNewsType = (payment) => {
@@ -67,13 +95,13 @@ const PaymentHistory = () => {
 
     return (
         <div>
-            <div className="px-10 py-2">
+            <div className="px-10 py-2 mb-[200px]">
                 <div className="text-left text-black font-bold text-4xl pb-4">
                     Lịch sử thanh toán
                 </div>
                 <div className="my-2 flex justify-between items-center">
                     <div className="titleh6 text-left">
-                        <b>{total_payment}</b> tin bạn đã thanh toán.
+                        <b>{total_all_history_pay}</b> tin bạn đã thanh toán.
                     </div>
                     <div className=" flex items-center text-left gap-1">
                         <TfiFilter size={16} />
@@ -92,19 +120,19 @@ const PaymentHistory = () => {
                             </option>
                             <option
                                 className="text-red-500 font-bold"
-                                value={1}
+                                value={3}
                             >
                                 Tin đặc biệt
                             </option>
                             <option
                                 className="text-[#ED0CC9] font-bold"
-                                value={2}
+                                value={1}
                             >
                                 Tin đặc sắc
                             </option>
                             <option
                                 className="text-blue-500 font-bold"
-                                value={3}
+                                value={2}
                             >
                                 Tin thường
                             </option>
@@ -164,19 +192,13 @@ const PaymentHistory = () => {
                                             )}`}
                                         </td>
                                         <td className="flex border-[1px] border-gray-400 items-center justify-center">
-                                            <Link
-                                                to={`/chi-tiet/${
-                                                    item_payment?.real_home?._id
-                                                }/${formatUniToString(
-                                                    description?.title_description
-                                                )}`}
-                                            >
+                                            <div>
                                                 <img
                                                     className=" h-[80px] w-[100%] object-cover rounded-sm "
-                                                    src={images[0]}
+                                                    src={images[0]?.url}
                                                     alt="img"
                                                 ></img>
-                                            </Link>
+                                            </div>
                                         </td>
                                         <td
                                             className={`border-[1px] border-gray-400 max-h-[65px] text-ellipsis text-center text-lg ml-1 items-center whitespace-pre-line overflow-hidden ${
@@ -191,18 +213,12 @@ const PaymentHistory = () => {
                                                     : "text-blue-700"
                                             } `}
                                         >
-                                            <Link
-                                                to={`/chi-tiet/${
-                                                    item_payment?.real_home?._id
-                                                }/${formatUniToString(
-                                                    description?.title_description
-                                                )}`}
-                                            >
+                                            <div>
                                                 {`${description?.title_description.slice(
                                                     0,
                                                     56
                                                 )}...`}
-                                            </Link>
+                                            </div>
                                         </td>
                                         <td
                                             className={`border-[1px] border-gray-400 text-[18px] font-bold ${
@@ -242,6 +258,30 @@ const PaymentHistory = () => {
                     </tbody>
                 </table>
                 {message && <div className="bg-white">{message}</div>}
+                {payment_histories?.length > 0 && (
+                    <div className="mt-4 w-[100%]">
+                        <ReactPaginate
+                            className=""
+                            breakLabel="..."
+                            nextLabel="next >"
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={3}
+                            pageCount={page_count_history_pay}
+                            previousLabel="< previous"
+                            renderOnZeroPageCount={null}
+                            marginPagesDisplayed={1}
+                            containerClassName="pagination justify-content-center"
+                            pageClassName="page-item"
+                            pageLinkClassName="page-link"
+                            previousClassName="page-item"
+                            previousLinkClassName="page-link"
+                            nextClassName="page-item"
+                            nextLinkClassName="page-link"
+                            activeClassName="active"
+                            forcePage={currentPage}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

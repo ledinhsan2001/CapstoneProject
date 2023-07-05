@@ -23,6 +23,11 @@ const PaymentSchema = new Schema(
             type: String,
             default: "",
         },
+        expireAt: {
+            type: Date,
+            expires: 0, // Expire immediately
+            default: Date.now(),
+        },
     },
     {
         //auto createdAt, updatedAt

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import icons from "../../utils/icons";
-import { apiUploadImages } from "../../services";
+import { apiUploadImages, apidelImagOnCloud } from "../../services";
 import { RotatingLines } from "react-loader-spinner";
-
 const { FcAddImage, BsTrash } = icons;
 
 const Images = ({ payload, setpayload, errors, seterrors, name }) => {
@@ -35,7 +34,10 @@ const Images = ({ payload, setpayload, errors, seterrors, name }) => {
                 images.append("file", file);
                 const response = await apiUploadImages(images);
                 if (response.status === 200) {
-                    urls.push(response.data.secure_url);
+                    urls.push({
+                        url: response.data.secure_url,
+                        public_id: response.data.public_id,
+                    });
                 }
             }
 
@@ -52,12 +54,23 @@ const Images = ({ payload, setpayload, errors, seterrors, name }) => {
         }
     };
 
-    const handleDelImage = (image) => {
-        setimagesSelected((prev) => prev?.filter((item) => item !== image));
+    const handleDelImage = async (image) => {
+        // delete img on cloudinary err should do not use
+        const response = await apidelImagOnCloud(image?.public_id);
+        if (response.data.success === true) {
+            alert(response.data.message);
+        } else {
+            alert(response.data.message);
+        }
+        setimagesSelected((prev) =>
+            prev?.filter((item) => item?.url !== image?.url)
+        );
         setpayload((prev) => ({
             ...prev,
             images: {
-                url: payload?.images.url?.filter((item) => item !== image),
+                url: payload?.images.url?.filter(
+                    (item) => item?.url !== image?.url
+                ),
             },
         }));
     };
@@ -106,11 +119,11 @@ const Images = ({ payload, setpayload, errors, seterrors, name }) => {
                     {imagesSelected?.map((item) => {
                         return (
                             <div
-                                key={item}
+                                key={item?.url}
                                 className="relative h-[150px] w-1/6 z-10 mx-2 rounded-md"
                             >
                                 <img
-                                    src={item}
+                                    src={item?.url}
                                     alt="Ảnh đã chọn"
                                     className="object-contain w-full h-full rounded-md "
                                 ></img>

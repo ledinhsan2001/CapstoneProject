@@ -33,6 +33,7 @@ import { GrMoney } from "react-icons/gr";
 import { RiUserSettingsLine } from "react-icons/ri";
 import { VscSave } from "react-icons/vsc";
 import { MdDeleteOutline } from "react-icons/md";
+import { MdMoneyOff } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { GiMoneyStack } from "react-icons/gi";
 import { TfiFilter } from "react-icons/tfi";
@@ -78,6 +79,7 @@ const icons = {
     TfiFilter,
     GrMoney,
     SiMoneygram,
+    MdMoneyOff,
 };
 
 export default icons;

@@ -1,6 +1,30 @@
 import actionTypes from "./actionTypes";
 import * as services from "../../services";
 
+export const actionGetAllBlog = () => async (dispatch) => {
+    try {
+        const response = await services.apiGetAllBlog();
+        if (response?.data.success === true) {
+            dispatch({
+                type: actionTypes.GET_ALL_BLOG,
+                blogs: response.data.data,
+            });
+        } else {
+            dispatch({
+                type: actionTypes.GET_ALL_BLOG,
+                message: response.data.message,
+                blogs: null,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_ALL_BLOG,
+            blogs: null,
+            message: error.response?.data?.message,
+        });
+    }
+};
+
 export const actionGetAllBlogLimit = (page_blog_id) => async (dispatch) => {
     try {
         const response = await services.apiGetAllBlogLimit(page_blog_id);
@@ -54,9 +78,9 @@ export const actionDetailBlog = (_id) => async (dispatch) => {
     }
 };
 
-export const actionGetAlllBlogType = () => async (dispatch) => {
+export const actionGetAllBlogType = () => async (dispatch) => {
     try {
-        const response = await services.apiGetAlllBlogType();
+        const response = await services.apiGetAllBlogType();
         if (response?.data.success === true) {
             dispatch({
                 type: actionTypes.GET_ALL_BLOG_TYPE,

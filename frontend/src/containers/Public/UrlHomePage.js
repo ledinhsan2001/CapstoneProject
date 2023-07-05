@@ -28,6 +28,7 @@ const UrlHomePage = () => {
                                 return (
                                     <div className="w-[50%]" key={item._id}>
                                         <LinkNavigate
+                                            id={item._id}
                                             text={item.name}
                                             icon={
                                                 <IoIosArrowForward color="red" />
@@ -52,6 +53,7 @@ const UrlHomePage = () => {
                                 return (
                                     <div className="w-[50%]" key={item._id}>
                                         <LinkNavigate
+                                            id={item._id}
                                             text={item.name}
                                             icon={
                                                 <IoIosArrowForward color="red" />

@@ -1,27 +1,21 @@
 import actionTypes from "../actions/actionTypes";
 
 const initState = {
-    total_payment_his: 0,
-    data_pay_his: [],
+    page_count_pay_his: 0,
+    total_all_pay_his: 0,
+    limit_data_pay_his: [],
     message: "",
 };
 
 const paymentReducer = (state = initState, action) => {
     switch (action.type) {
-        case actionTypes.GET_ALL_PAYMENT_HISTORY:
+        case actionTypes.GET_PAY_HIS_LIMIT_BY_USER:
             return {
                 ...state,
-                total_payment_his: action.total_payment_his,
-                data_pay_his: action.data_pay_his,
-                message: action.message,
-            };
-        case actionTypes.GET_ALL_LIMIT_PAYMENT_HISTORY:
-            return {
-                ...state,
-                limit_data_pay_his: action.limit_data_pay_his,
-                total_all_pay_his: action.total_all_pay_his,
-                page_count_pay_his: action.page_count_pay_his,
-                message: action.message,
+                limit_history_pay: action.limit_history_pay || null,
+                total_all_history_pay: action.total_all_history_pay || 0,
+                page_count_history_pay: action.page_count_history_pay || 0,
+                message: action.message || "",
             };
         default:
             return state;

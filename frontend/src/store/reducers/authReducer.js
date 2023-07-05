@@ -29,7 +29,6 @@ const authReducer = (state = initState, action) => {
             return {
                 ...state,
                 isLoggedIn: false,
-                message: "Đăng xuất thành công",
                 accessToken: null,
                 refreshToken: null,
                 user_data: null,

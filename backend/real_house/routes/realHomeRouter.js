@@ -10,6 +10,8 @@ const {
     getNewPost,
     getAllByUserPublic,
     getAllByUserUnPayment,
+    dropImgOnCloud,
+    putSold,
 } = require("../controllers/realHomeController");
 const { verifyToken } = require("../middlewares/authJWT");
 
@@ -25,8 +27,10 @@ realHomeRouter.get(
 );
 realHomeRouter.get("/new-post", getNewPost);
 realHomeRouter.get("/detail", getDetail);
-realHomeRouter.post("/create", create);
-realHomeRouter.put("/put", put);
-realHomeRouter.delete("/delete", drop);
+realHomeRouter.post("/create", [verifyToken], create);
+realHomeRouter.put("/put", [verifyToken], put);
+realHomeRouter.put("/put-sold", [verifyToken], putSold);
+realHomeRouter.delete("/delete", [verifyToken], drop);
+realHomeRouter.post("/delete-image", [verifyToken], dropImgOnCloud);
 
 module.exports = realHomeRouter;

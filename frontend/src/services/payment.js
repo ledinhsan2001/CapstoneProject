@@ -30,37 +30,13 @@ export const apigetPayment = (payload) =>
     });
 
 // Payment History
-export const apigetPaymentHistory = () =>
+export const apigetPaymentHistory = (payload) =>
     new Promise(async (resolve, reject) => {
         try {
             const response = await axiosConfig({
                 method: "get",
-                url: "/api/payment-history/get",
-            });
-            resolve(response);
-        } catch (error) {
-            reject(error);
-        }
-    });
-export const apigetAllPayHis = () =>
-    new Promise(async (resolve, reject) => {
-        try {
-            const response = await axiosConfig({
-                method: "get",
-                url: "/api/payment-history/getAll",
-            });
-            resolve(response);
-        } catch (error) {
-            reject(error);
-        }
-    });
-export const apigetAllPayHisLimit = (page) =>
-    new Promise(async (resolve, reject) => {
-        try {
-            const response = await axiosConfig({
-                method: "get",
-                url: "/api/payment-history/getAllLimit",
-                params: page,
+                url: "/api/payment-history/get-limit-by-user",
+                params: payload,
             });
             resolve(response);
         } catch (error) {

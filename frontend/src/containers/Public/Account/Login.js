@@ -11,7 +11,6 @@ import { validate_data } from "../../../utils/validate_data";
 import { login } from "../../../store/actions/auth";
 import actionTypes from "../../../store/actions/actionTypes";
 import { apiLogin } from "../../../services";
-import { actionUser } from "../../../store/actions";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -128,6 +127,7 @@ const Login = () => {
                                 href={`/${path.RESET_PASSWORD}`}
                                 target="_blank"
                                 className="text-cyan-500"
+                                rel="noreferrer"
                             >
                                 Quên mật khẩu?
                             </a>

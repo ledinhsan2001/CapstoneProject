@@ -1,84 +1,34 @@
 import actionTypes from "./actionTypes";
 import * as services from "../../services";
 
-export const actionPayment = () => async (dispatch) => {
+export const actionPayment = (payload) => async (dispatch) => {
     try {
-        const response = await services.apigetPaymentHistory();
+        const response = await services.apigetPaymentHistory(payload);
         if (response?.data.success === true) {
             dispatch({
-                type: actionTypes.GET_PAYMENT_HISTORY,
-                payment_history: response.data.data,
-                total_payment: response.data.total_payment,
+                type: actionTypes.GET_PAY_HIS_LIMIT_BY_USER,
+                limit_history_pay: response.data.data.limit_history_pay,
+                total_all_history_pay: response.data.data.total_all_history_pay,
+                page_count_history_pay:
+                    response.data.data.page_count_history_pay,
             });
         } else {
             dispatch({
-                type: actionTypes.GET_PAYMENT_HISTORY,
+                type: actionTypes.GET_PAY_HIS_LIMIT_BY_USER,
                 message: response.data.message,
-                payment_history: null,
-                total_payment: 0,
+                limit_history_pay: null,
+                total_all_history_pay: 0,
+                page_count_history_pay: 0,
             });
         }
     } catch (error) {
+        console.log(error);
         dispatch({
-            type: actionTypes.GET_PAYMENT_HISTORY,
-            payment_history: null,
-            total_payment: 0,
+            type: actionTypes.GET_PAY_HIS_LIMIT_BY_USER,
+            limit_history_pay: null,
+            total_all_history_pay: 0,
+            page_count_history_pay: 0,
             message: error.response.data.message,
-        });
-    }
-};
-export const actionGetAllPayHis = () => async (dispatch) => {
-    try {
-        const response = await services.apigetAllPayHis();
-        if (response?.data.success === true) {
-            dispatch({
-                type: actionTypes.GET_ALL_PAYMENT_HISTORY,
-                data_pay_his: response.data.data_pay_his,
-                total_payment_his: response.data.total_payment_his,
-            });
-        } else {
-            dispatch({
-                type: actionTypes.GET_ALL_PAYMENT_HISTORY,
-                message: response.data.message,
-                data_pay_his: null,
-                total_payment_his: 0,
-            });
-        }
-    } catch (error) {
-        dispatch({
-            type: actionTypes.GET_ALL_PAYMENT_HISTORY,
-            data_pay_his: null,
-            total_payment_his: 0,
-            message: error.response?.data?.message,
-        });
-    }
-};
-export const actiongetAllPayHisLimit = (page) => async (dispatch) => {
-    try {
-        const response = await services.apigetAllPayHisLimit(page);
-        if (response?.data.success === true) {
-            dispatch({
-                type: actionTypes.GET_ALL_LIMIT_PAYMENT_HISTORY,
-                limit_data_pay_his: response.data.data.limit_data_pay_his,
-                total_all_pay_his: response.data.data.total_all_pay_his,
-                page_count_pay_his: response.data.data.page_count_pay_his,
-            });
-        } else {
-            dispatch({
-                type: actionTypes.GET_ALL_LIMIT_PAYMENT_HISTORY,
-                message: response.data.message,
-                limit_data_pay_his: null,
-                total_all_pay_his: 0,
-                page_count_pay_his: 0,
-            });
-        }
-    } catch (error) {
-        dispatch({
-            type: actionTypes.GET_ALL_LIMIT_PAYMENT_HISTORY,
-            limit_data_pay_his: null,
-            total_all_pay_his: 0,
-            page_count_pay_his: 0,
-            message: error.response?.data?.message,
         });
     }
 };

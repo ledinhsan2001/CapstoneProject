@@ -20,6 +20,7 @@ const Description = ({ payload, setpayload, errors, seterrors, edit }) => {
                 price: payload?.price || "",
             }));
         }
+        // eslint-disable-next-line
     }, [checked]);
 
     return (

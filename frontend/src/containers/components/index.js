@@ -16,3 +16,4 @@ export { default as MapLeaflet } from "./MapLeaflet";
 export { default as NewsType } from "./NewsType";
 export { default as NumberDay } from "./NumberDay";
 export { default as ItemBlog } from "./ItemBlog";
+export { default as Recommend } from "./Recommend";

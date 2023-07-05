@@ -42,13 +42,13 @@ export const apiGetAllRHPublicByUser = (_id) =>
         }
     });
 
-export const apiGetAllRHByUser = (page) =>
+export const apiGetAllRHByUser = (payload) =>
     new Promise(async (resolve, reject) => {
         try {
             const response = await axiosConfig({
                 method: "get",
                 url: `/api/real-home/all-by-user`,
-                params: { page: page },
+                params: payload,
             });
             resolve(response);
         } catch (error) {
@@ -150,6 +150,20 @@ export const apiUploadImages = (images) =>
         }
     });
 
+export const apidelImagOnCloud = (public_id) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "post",
+                url: `/api/real-home/delete-image`,
+                data: { public_id },
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
+
 //Detail post
 export const apiGetDetailRealHome = (id) =>
     new Promise(async (resolve, reject) => {
@@ -195,6 +209,20 @@ export const apiUpdateRealHome = (payload) =>
         }
     });
 
+export const apiUpdateSold = (real_home_id) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "put",
+                url: `/api/real-home/put-sold`,
+                params: { real_home_id },
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
+
 //delete post
 export const apiDeleteRealHome = ({ ...payload }) =>
     new Promise(async (resolve, reject) => {
@@ -217,6 +245,19 @@ export const apiGetSavePost = () =>
             const response = await axiosConfig({
                 method: "get",
                 url: "/api/save-post/",
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
+export const apiGetSavePostLimit = (page) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "get",
+                url: "/api/save-post/all-limit",
+                params: page,
             });
             resolve(response);
         } catch (error) {

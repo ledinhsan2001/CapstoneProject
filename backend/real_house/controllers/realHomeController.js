@@ -1,34 +1,36 @@
 import moment from "moment";
 import "moment/locale/vi";
-import { NewsType } from "../models/newsType";
 import { Payment } from "../models/payment";
 const catchAsync = require("../middlewares/catchAsync");
 const { Description } = require("../models/description");
 const { Image } = require("../models/image");
 const { RealHome } = require("../models/realHome");
-const Area = require("../models/area");
-const realHomeType = require("../models/realHomeType");
 const { TransactionType } = require("../models/transactionType");
 const { User } = require("../models/user");
-const ApiError = require("../utils/ApiError");
 const { FormatDate } = require("../utils/FormatDate");
 require("dotenv").config();
+const cloudinary = require("../utils/cloudinary");
 
 export const getDetail = catchAsync(async (req, res) => {
     const { id } = req.query;
-    const real_home = await RealHome.findOne({ _id: id }, { __v: 0 });
-    const news_type = await NewsType.findOne({
-        _id: real_home.news_type_id,
-    });
-
-    if (real_home) {
+    try {
+        const real_home = await RealHome.findOne({ _id: id }, { __v: 0 });
+        const payment = await Payment.findOne({
+            "real_home._id": real_home._id,
+        });
+        if (real_home) {
+            return res
+                .status(200)
+                .json({ success: true, data: real_home, payment: payment });
+        }
         return res
-            .status(200)
-            .json({ success: true, data: real_home, news_type: news_type });
+            .status(400)
+            .json({ success: false, message: "Bất động sản không tồn tại!" });
+    } catch (error) {
+        return res
+            .status(400)
+            .json({ success: false, message: "Bất động sản không tồn tại!" });
     }
-    return res
-        .status(400)
-        .json({ success: false, message: "Bất động sản không tồn tại!" });
 });
 
 export const getNewPost = catchAsync(async (req, res) => {
@@ -62,14 +64,13 @@ export const getNewPost = catchAsync(async (req, res) => {
         return res
             .status(400)
             .json({ message: "Danh sách bất động sản trống." });
-        // throw new ApiError(400, "Danh sách kiểu bất động sản trống.");
     }
 });
 
 export const getAllByUserPublic = async (req, res) => {
     const { _id } = req.query;
     let typeRHs = await RealHome.find(
-        { "user_post._id": _id },
+        { "user_post._id": _id, active: true },
         { __v: 0 }
     ).sort({ start_date: -1 });
     if (typeRHs.length > 0) {
@@ -88,24 +89,62 @@ export const getAllByUserPublic = async (req, res) => {
 
 export const getAllByUser = catchAsync(async (req, res) => {
     const user_id = req.userId;
+    const { page, filter_id } = req.query;
 
+    let page_number = parseInt(page);
+    let limit = process.env.LIMIT;
     const results = {};
-    let typeRHs = await RealHome.find(
-        { "user_post._id": user_id },
-        { __v: 0 }
-    ).sort({ start_date: -1 });
+
+    let clause_where = {};
+    // obligate
+    clause_where["user_post._id"] = user_id;
+
+    if (filter_id) {
+        if (+filter_id === 1) {
+            clause_where["news_type_id"] = 0;
+        }
+        if (+filter_id === 2) {
+            clause_where["news_type_id"] = 1;
+        }
+        if (+filter_id === 3) {
+            clause_where["news_type_id"] = 2;
+        }
+        if (+filter_id === 4) {
+            clause_where["active"] = false;
+            clause_where["sold"] = false;
+        }
+        if (+filter_id === 5) {
+            //case have not until change status active expired when click sold
+            clause_where["active"] = true;
+            clause_where["sold"] = false;
+        }
+        if (+filter_id === 6) {
+            clause_where["sold"] = true;
+        }
+    }
+
+    let typeRHs = await RealHome.find(clause_where, { __v: 0 }).sort({
+        start_date: -1,
+    });
+
     let payment = await Payment.find({ "user._id": user_id });
 
+    let startIndex = page_number * limit;
+    let lastIndex = (page_number + 1) * limit;
     if (typeRHs.length > 0) {
-        results.data = typeRHs;
-        results.total_data = typeRHs.length;
+        if (lastIndex >= typeRHs.length) {
+            lastIndex = typeRHs.length;
+        }
+        results.data_post_by_user = typeRHs.slice(startIndex, lastIndex);
+        results.total_data_post_by_user = typeRHs.length;
+        results.page_count_post_by_user = Math.ceil(typeRHs.length / limit);
         results.payment = payment;
-        res.status(200).json({ success: true, data: results });
+
+        return res.status(200).json({ success: true, data: results });
     } else {
         return res
             .status(400)
             .json({ message: "Danh sách bất động sản trống." });
-        // throw new ApiError(400, "Danh sách kiểu bất động sản trống.");
     }
 });
 
@@ -114,7 +153,7 @@ export const getAllByUserUnPayment = catchAsync(async (req, res) => {
 
     const results = {};
     let typeRHs = await RealHome.find(
-        { active: false, "user_post._id": user_id },
+        { active: false, "user_post._id": user_id, sold: false },
         { __v: 0 }
     ).sort({ start_date: -1 });
 
@@ -126,7 +165,6 @@ export const getAllByUserUnPayment = catchAsync(async (req, res) => {
         return res
             .status(400)
             .json({ message: "Danh sách bất động sản trống." });
-        // throw new ApiError(400, "Danh sách kiểu bất động sản trống.");
     }
 });
 
@@ -137,6 +175,7 @@ export const getAllLimit = catchAsync(async (req, res) => {
         real_home_type_id,
         price_id,
         area_id,
+        province_id,
         sort_id,
         news_type_id,
     } = req.query;
@@ -153,7 +192,7 @@ export const getAllLimit = catchAsync(async (req, res) => {
             ? (arr_area = area_id[0])
             : (arr_area = [area_id]);
 
-    let sort = sort_id;
+    let sort = +sort_id;
     let objsort = {};
     // sort follow news_type everytime
     objsort["news_type_id"] = 1;
@@ -189,10 +228,16 @@ export const getAllLimit = catchAsync(async (req, res) => {
         clause_where["price_id"] = { $in: arr_price };
     }
     if (area_id) {
-        clause_where["arr_area"] = { $in: arr_area };
+        clause_where["area_id"] = { $in: arr_area };
+    }
+    if (province_id) {
+        clause_where["province_id"] = +province_id;
     }
     if (news_type_id) {
-        clause_where["news_type_id"] = +news_type_id;
+        let number_id = +news_type_id;
+        if (number_id !== 3) {
+            clause_where["news_type_id"] = +news_type_id;
+        }
     }
 
     const typeRHs = await RealHome.find(clause_where, { __v: 0 }).sort(objsort);
@@ -441,9 +486,36 @@ export const put = catchAsync(async (req, res) => {
     }
 });
 
+export const putSold = async (req, res) => {
+    const user_id = req.userId;
+    const { real_home_id } = req.query;
+
+    const typeRHs = await RealHome.findOneAndUpdate(
+        { _id: real_home_id, "user_post._id": user_id },
+        { sold: true }
+    );
+    if (typeRHs) {
+        return res.status(200).json({
+            success: true,
+            message: "Cập nhật tin đã bán/thuê thành công.",
+        });
+    } else {
+        return res
+            .status(400)
+            .json({ message: "Cập nhật tin đã bán/thuê thất bại!" });
+    }
+};
+
 export const drop = async (req, res) => {
     const { _id, description_id, images_id } = req.body;
     try {
+        const image = await Image.findById({ _id: images_id });
+        if (image) {
+            // Delete on cloudinary
+            image.url.forEach(async (item) => {
+                await cloudinary.uploader.destroy(item?.public_id);
+            });
+        }
         await Image.findOneAndDelete({ _id: images_id });
         await Description.findOneAndDelete({
             _id: description_id,
@@ -458,6 +530,25 @@ export const drop = async (req, res) => {
         return res.status(400).json({
             success: false,
             message: "Xóa bất động sản không thành công!",
+        });
+    }
+};
+
+export const dropImgOnCloud = async (req, res) => {
+    const { public_id } = req.body;
+    try {
+        if (public_id) {
+            // Delete on cloudinary
+            await cloudinary.uploader.destroy(public_id);
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Bạn đã xóa ảnh trên cloud thành công!",
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: "Xóa ảnh trên cloud không thành công!",
         });
     }
 };

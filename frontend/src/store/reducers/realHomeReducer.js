@@ -32,10 +32,11 @@ const realHomeReducer = (state = initState, action) => {
         case actionTypes.GET_RHS_BY_USER:
             return {
                 ...state,
-                real_homes_by_user: action.real_homes_by_user || [],
-                message: action.message || "",
-                page_count: action.page_count || 0,
-                total_data: action.total_data || 0,
+                data_post_by_user: action.data_post_by_user || [],
+                message_real_home_by_user:
+                    action.message_real_home_by_user || "",
+                page_count_post_by_user: action.page_count_post_by_user || 0,
+                total_data_post_by_user: action.total_data_post_by_user || 0,
                 payment_data: action.payment_data || [],
             };
         case actionTypes.GET_RHS_BY_USER_UNPAY:
@@ -55,7 +56,7 @@ const realHomeReducer = (state = initState, action) => {
             return {
                 ...state,
                 real_home_detail: action.real_home_detail || [],
-                news_type_detail: action.news_type_detail || [],
+                payment_detail: action.payment_detail || [],
                 message: action.message || "",
             };
         case actionTypes.RH_EDIT:
@@ -89,6 +90,14 @@ const realHomeReducer = (state = initState, action) => {
                 ...state,
                 saved_post: action.saved_post || [],
                 total_post: action.total_post || 0,
+                message: action.message || "",
+            };
+        case actionTypes.GET_SAVE_POST_LIMIT:
+            return {
+                ...state,
+                limit_save_post: action.limit_save_post || [],
+                total_all_save_post: action.total_all_save_post || 0,
+                page_count_save_post: action.page_count_save_post || 0,
                 message: action.message || "",
             };
         case actionTypes.GET_NEWS_TYPE:

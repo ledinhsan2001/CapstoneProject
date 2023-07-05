@@ -3,8 +3,8 @@ const authJwt = require("../middlewares/authJWT");
 const paymentHistoryRouter = express.Router();
 const {
     getAll,
-    get,
     getAllLimit,
+    getLimitByUser,
 } = require("../controllers/paymentHistoryController");
 
 paymentHistoryRouter.get("/getAll", getAll);
@@ -13,6 +13,10 @@ paymentHistoryRouter.get(
     [authJwt.verifyToken, authJwt.isAdmin],
     getAllLimit
 );
-paymentHistoryRouter.get("/get", [authJwt.verifyToken], get);
+paymentHistoryRouter.get(
+    "/get-limit-by-user",
+    [authJwt.verifyToken],
+    getLimitByUser
+);
 
 module.exports = paymentHistoryRouter;

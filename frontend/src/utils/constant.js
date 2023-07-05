@@ -49,7 +49,7 @@ export const path = {
 
 export const title = {
     HeaderSearch: "TÌM KIẾM NHÀ ĐẤT",
-    HeaderMain: "Tìm kiếm bất động sản giá tốt",
+    HeaderMain: "Mua bán bất động sản giá tốt 2023",
     titleSale: "Nhà Đất Bán",
     titleRental: "Nhà Đất Cho Thuê",
 };
@@ -71,13 +71,16 @@ export const GetNummberFromString = (string) => {
     }
 };
 
+// Từ 1 tỷ - 2 tỷ => [1,2]
 export const getNumbersPrice = (string) =>
     string.split(" ").filter((item) => +item);
+// Từ 20m2 - 30m2 => [20,30]
 export const getNumbersArea = (string) =>
     string
         .split(" ")
         .map((item) => item.match(/\d+/))
         .filter((item) => item !== null);
+// \d same as [0-9] +: groups. ex: not +: 23r2 => 2. have +: 23r2 => 23
 
 //Search
 export const getCodePrice = (arrType) => {
