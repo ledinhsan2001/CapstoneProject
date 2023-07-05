@@ -1,5 +1,18 @@
 import axiosConfig from "../axiosConfig";
 
+export const apiGetAllBlog = () =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const response = await axiosConfig({
+                method: "get",
+                url: "/api/blog/all-new",
+            });
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    });
+
 export const apiGetAllBlogLimit = (page_blog_id) =>
     new Promise(async (resolve, reject) => {
         try {
@@ -28,7 +41,7 @@ export const apiGetDetailBlog = (_id) =>
         }
     });
 
-export const apiGetAlllBlogType = () =>
+export const apiGetAllBlogType = () =>
     new Promise(async (resolve, reject) => {
         try {
             const response = await axiosConfig({

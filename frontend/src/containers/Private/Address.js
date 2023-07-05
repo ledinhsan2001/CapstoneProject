@@ -56,16 +56,16 @@ const Address = ({ payload, setpayload, errors, seterrors }) => {
         province ? fetchDistrict() : setdistricts(null);
     }, [province]);
 
-    useEffect(() => {
-        if (data_edit) {
-            let arradd = data_edit?.address?.split(",");
-            let district_name = arradd?.length === 4 ? arradd[2] : arradd[1];
-            let find_district_id = districts?.find((item) => {
-                return item.district_name === district_name;
-            });
-            setdistrict(data_edit ? find_district_id?.district_id : "");
-        }
-    }, [districts]);
+    // useEffect(() => {
+    //     if (data_edit) {
+    //         let arradd = data_edit?.address?.split(",");
+    //         let district_name = arradd?.length === 4 ? arradd[2] : arradd[1];
+    //         let find_district_id = districts?.find((item) => {
+    //             return item.district_name === district_name;
+    //         });
+    //         setdistrict(data_edit ? find_district_id?.district_id : "");
+    //     }
+    // }, [districts]);
 
     useEffect(() => {
         // Province change 2 field district and ward change follow

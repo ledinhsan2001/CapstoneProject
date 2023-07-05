@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 //Outlet đại diện route con cho Route mẹ. Khi có các route lồng nhau
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import "./Home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,44 +9,48 @@ import * as actions from "../../store/actions";
 import { Footer, Header, Search } from "./index";
 import { Contact, Overview } from "../components/index";
 import { path } from "../../utils/constant";
-import { logout } from "../../store/actions/auth";
 
 const Home = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const { isLoggedIn } = useSelector((state) => state.auth);
-    const { user_data } = useSelector((state) => state.user);
-    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(actions.actionPrices());
         dispatch(actions.actionAreas());
+        dispatch(actions.actionProvince());
         dispatch(actions.newPost());
         dispatch(actions.actionTransactionType());
         dispatch(actions.realHomeTypes());
         dispatch(actions.actionGetNewsType());
-        dispatch(actions.actionGetAlllBlogType());
+        dispatch(actions.actionGetAllBlogType());
+        dispatch(actions.actionGetAllBlog());
+        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         setTimeout(() => {
             isLoggedIn && dispatch(actions.actionUser());
-            // eslint-disable-next-line
         }, 2000);
-    }, [isLoggedIn, dispatch]);
-
-    useEffect(() => {
-        if (isLoggedIn && !user_data) {
-            dispatch(logout());
-            navigate(`/${path.LOGIN}`);
-        }
         // eslint-disable-next-line
-    }, [user_data]);
+    }, [isLoggedIn, dispatch]);
 
     const checkUrl = (url) => {
         let incl = location.pathname.includes(url);
         if (incl) return true;
         return false;
+    };
+
+    const simplePage = () => {
+        if (
+            checkUrl("chi-tiet") ||
+            location.pathname === `/${path.SERVICE_PRICE}` ||
+            checkUrl(path.DETAIL_BLOG__TITLE_ID) ||
+            checkUrl("trang-ca-nhan") ||
+            checkUrl("blog")
+        ) {
+            return true;
+        } else return false;
     };
 
     return (
@@ -71,11 +75,7 @@ const Home = () => {
                         <Footer />
                     </div>
                 )}
-            {(checkUrl("chi-tiet") ||
-                location.pathname === `/${path.SERVICE_PRICE}` ||
-                checkUrl(path.DETAIL_BLOG__TITLE_ID) ||
-                checkUrl("trang-ca-nhan") ||
-                checkUrl("blog")) && (
+            {simplePage() && (
                 <div className="w-full">
                     <Header />
                     <div className="bg-[#D9D9D9]">

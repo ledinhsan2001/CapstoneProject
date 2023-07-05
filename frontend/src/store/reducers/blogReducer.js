@@ -8,6 +8,12 @@ const initState = {
 
 const blogReducer = (state = initState, action) => {
     switch (action.type) {
+        case actionTypes.GET_ALL_BLOG:
+            return {
+                ...state,
+                blogs: action.blogs || [],
+                message: action.message || "",
+            };
         case actionTypes.GET_ALL_LIMIT_BLOG:
             return {
                 ...state,

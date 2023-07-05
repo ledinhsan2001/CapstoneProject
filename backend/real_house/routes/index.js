@@ -2,6 +2,7 @@ import blogRouter from "./blogRouter.js";
 import blogTypeRouter from "./blogTypeRouter.js";
 import paymentHistoryRouter from "./paymentHistoryRouter.js";
 import paymentRouter from "./paymentRouter";
+import provinceRouter from "./provinceRouter.js";
 import savePostRouter from "./savePostRouter";
 
 const authRouter = require("./auth");
@@ -21,6 +22,7 @@ const initRoute = (app) => {
     app.use("/api/insert-data-db", insertDataDb);
     app.use("/api/get-price", priceRouter);
     app.use("/api/get-area", areaRouter);
+    app.use("/api/get-province", provinceRouter);
     app.use("/api/user", userRouter);
     app.use("/api/auth", authRouter);
 

@@ -1,30 +1,47 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { formatUniToString } from "../../utils/constant";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
-const LinkNavigate = ({ text, icon, className }) => {
+const LinkNavigate = ({ id, text, icon, className }) => {
+    const navigate = useNavigate();
+
     return (
         <>
+            {/* buysell or rental */}
             {className && (
                 <div className="linknav p-2 mx-2 justify-center max-h-[45px] w-[195px] text-start">
-                    <Link
-                        to={`/${formatUniToString(text)}`}
-                        className="items-center inline-flex hover:translate-x-3 hover:text-blue-500"
+                    <div
+                        className="items-center inline-flex hover:translate-x-3 hover:text-blue-500 hover:cursor-pointer"
+                        onClick={() =>
+                            navigate({
+                                pathname: `/${formatUniToString(text)}`,
+                                search: createSearchParams({
+                                    real_home_type_id: id,
+                                }).toString(),
+                            })
+                        }
                     >
                         {icon}
                         {text}
-                    </Link>
+                    </div>
                 </div>
             )}
             {!className && (
                 <div className="linknav p-2 mx-4 justify-center max-h-[45px]">
-                    <Link
-                        to={`/${formatUniToString(text)}`}
-                        className="items-center inline-flex hover:translate-x-3 hover:text-blue-500"
+                    <div
+                        className="items-center inline-flex hover:translate-x-3 hover:text-blue-500 hover:cursor-pointer"
+                        onClick={() =>
+                            navigate({
+                                pathname: `/${formatUniToString(text)}`,
+                                search: createSearchParams({
+                                    real_home_type_id: id,
+                                }).toString(),
+                            })
+                        }
                     >
                         {icon}
                         {text}
-                    </Link>
+                    </div>
                 </div>
             )}
         </>

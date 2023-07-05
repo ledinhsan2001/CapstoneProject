@@ -4,6 +4,30 @@ const catchAsync = require("../middlewares/catchAsync");
 require("dotenv").config();
 
 export const getAll = async (req, res) => {
+    try {
+        const blogs = await Blog.find(
+            { status: true },
+            { title: 1, thumbnail_url: 1, createdAt: 1 }
+        ).sort({
+            createdAt: -1,
+        });
+        if (blogs.length > 0) {
+            return res.status(200).json({
+                success: true,
+                data: blogs.slice(0, 10),
+            });
+        } else {
+            return res
+                .status(400)
+                .json({ success: false, message: "Danh sách blog trống." });
+        }
+    } catch (error) {
+        return res
+            .status(400)
+            .json({ success: false, message: "Danh sách blog trống." });
+    }
+};
+export const getAllLimit = async (req, res) => {
     const { page, blog_type_id } = req.query;
 
     let page_number = parseInt(page);

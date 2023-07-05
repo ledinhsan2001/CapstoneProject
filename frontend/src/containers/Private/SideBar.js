@@ -22,7 +22,9 @@ const SideBar = () => {
     const { isLoggedIn, message, accessToken, refreshToken } = useSelector(
         (state) => state.auth
     );
-    const { total_unpay, total_post } = useSelector((state) => state.real_home);
+    const { total_unpay, total_all_save_post } = useSelector(
+        (state) => state.real_home
+    );
     const [active, setactive] = useState("dang-tin");
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -163,7 +165,9 @@ const SideBar = () => {
                 >
                     <AiOutlineHeart size={25} className="mr-2" />
                     <p className="bg-red-500 text-white rounded-full p-1 absolute h-[24px] w-[24px] items-center justify-center flex font-bold top-0 right-3 mt-[-10px]">
-                        {total_post && +total_post > 99 ? "99+" : total_post}
+                        {total_all_save_post && +total_all_save_post > 99
+                            ? "99+"
+                            : total_all_save_post}
                     </p>
                     <p>Tin đăng đã lưu</p>
                 </Link>

@@ -13,6 +13,7 @@ import {
     apiGetnewsType,
     apiGetNumberDay,
     apiGetAllRealHome,
+    apiGetSavePostLimit,
 } from "../../services/index";
 
 // ----------------------------------------------------------
@@ -47,7 +48,7 @@ export const realHomeDetail = (id) => async (dispatch) => {
             dispatch({
                 type: actionTypes.GET_DETAIL_POST,
                 real_home_detail: response.data.data,
-                news_type_detail: response.data.news_type,
+                payment_detail: response.data.payment,
             });
         } else {
             dispatch({
@@ -116,29 +117,33 @@ export const realHomePublicByUser = (_id) => async (dispatch) => {
     }
 };
 
-export const realHomeByUser = (page) => async (dispatch) => {
+export const realHomeByUser = (payload) => async (dispatch) => {
     try {
-        const response = await apiGetAllRHByUser(page);
+        const response = await apiGetAllRHByUser(payload);
         if (response?.data.success === true) {
             dispatch({
                 type: actionTypes.GET_RHS_BY_USER,
-                real_homes_by_user: response.data.data.data,
-                page_count: response.data.data.page_count,
-                total_data: response.data.data.total_data,
+                data_post_by_user: response.data.data.data_post_by_user,
+                page_count_post_by_user:
+                    response.data.data.page_count_post_by_user,
+                total_data_post_by_user:
+                    response.data.data.total_data_post_by_user,
                 payment_data: response.data.data.payment,
             });
         } else {
             dispatch({
                 type: actionTypes.GET_RHS_BY_USER,
-                message: response.data.data.message,
+                message_real_home_by_user: response.data.data.message,
             });
         }
     } catch (error) {
         dispatch({
             type: actionTypes.GET_RHS_BY_USER,
-            real_homes_by_user: [],
-            payment: [],
-            message: error.response.data.message,
+            data_post_by_user: [],
+            page_count_post_by_user: 0,
+            total_data_post_by_user: 0,
+            payment_data: [],
+            message_real_home_by_user: error.response.data.message,
         });
     }
 };
@@ -294,6 +299,36 @@ export const actionGetSavePost = () => async (dispatch) => {
             message: error.response.data.message,
             saved_post: null,
             total_post: 0,
+        });
+    }
+};
+
+export const actionGetSavePostLimit = (page) => async (dispatch) => {
+    try {
+        const response = await apiGetSavePostLimit(page);
+        if (response?.data.success === true) {
+            dispatch({
+                type: actionTypes.GET_SAVE_POST_LIMIT,
+                limit_save_post: response.data.data.limit_save_post,
+                total_all_save_post: response.data.data.total_all_save_post,
+                page_count_save_post: response.data.data.page_count_save_post,
+            });
+        } else {
+            dispatch({
+                type: actionTypes.GET_SAVE_POST_LIMIT,
+                message: response.data.message,
+                limit_save_post: null,
+                total_all_save_post: 0,
+                page_count_save_post: 0,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_SAVE_POST_LIMIT,
+            message: error.response.data.message,
+            limit_save_post: null,
+            total_all_save_post: 0,
+            page_count_save_post: 0,
         });
     }
 };

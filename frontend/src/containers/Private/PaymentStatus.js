@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
-import { Link } from "react-router-dom";
-import { GetNummberFromString, formatUniToString } from "../../utils/constant";
+import { GetNummberFromString } from "../../utils/constant";
 import { EditPost } from ".";
 
 const PaymentStatus = () => {
@@ -118,7 +117,7 @@ const PaymentStatus = () => {
                                             <div>
                                                 <img
                                                     className=" h-[80px] w-[100%] object-cover rounded-sm "
-                                                    src={images[0]}
+                                                    src={images[0]?.url}
                                                     alt="img"
                                                 ></img>
                                             </div>

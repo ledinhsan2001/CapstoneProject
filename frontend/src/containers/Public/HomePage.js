@@ -3,12 +3,12 @@ import { title } from "../../utils/constant";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { UrlHomePage } from "./index";
 import List from "./List";
-import { useSelector } from "react-redux";
 import { ItemSidebarMain } from "../components/index";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { bds, bds1, bds2 } from "../../assets/images";
+import { useSelector } from "react-redux";
 
 const HomePage = () => {
     const { prices, areas } = useSelector((state) => state.price_area);
@@ -49,13 +49,13 @@ const HomePage = () => {
                 </Slider>
             </div>
             <div>
-                <div className="text-black mt-2 text-2xl">
+                <div className="text-black mt-4 text-2xl">
                     <b>{title.HeaderMain}</b>
                 </div>
                 <div className="column-main flex w-[98%]">
                     <UrlHomePage />
                 </div>
-                <div className="main flex justify-evenly mt-3">
+                <div className="main flex justify-evenly mt-4">
                     <div className="list block bg-[#F5F5F5] w-[67%] overflow-hidden text-ellipsis whitespace-nowrap">
                         <List />
                     </div>

@@ -4,29 +4,13 @@ import icons from "../../../utils/icons";
 import List from "../List";
 import { ItemSidebarMain } from "../../components/index";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { formatUniToString } from "../../../utils/constant";
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
 
 const { IoIosArrowForward } = icons;
 
 const BuySell = () => {
-    const location = useLocation();
-    const [transaction_type_id, setTransactionTypeId] = useState();
-    const { real_home_types_r, transaction_types } = useSelector(
-        (state) => state.real_home
-    );
+    const { real_home_types_r } = useSelector((state) => state.real_home);
     const { prices, areas } = useSelector((state) => state.price_area);
 
-    useEffect(() => {
-        const transaction_type = transaction_types.find(
-            (item) => `/${formatUniToString(item.name)}` === location.pathname
-        );
-        if (transaction_type) {
-            setTransactionTypeId(transaction_type._id);
-        }
-    }, [location, transaction_types]);
     return (
         <div>
             <div>
@@ -41,6 +25,7 @@ const BuySell = () => {
                                     return (
                                         <LinkNavigate
                                             key={item._id}
+                                            id={item._id}
                                             text={item.name}
                                             icon={
                                                 <IoIosArrowForward
@@ -57,7 +42,7 @@ const BuySell = () => {
                 </div>
                 <div className="main flex justify-evenly mt-3">
                     <div className="list block bg-[#F5F5F5] w-[67%] overflow-hidden text-ellipsis whitespace-nowrap">
-                        <List transaction_type_id={transaction_type_id} />
+                        <List />
                     </div>
                     <div className="sidebar mt-5 flex flex-col justify-start items-center w-[28%] bg-[#F5F5F5]">
                         <ItemSidebarMain
@@ -71,12 +56,14 @@ const BuySell = () => {
                             price="price"
                             type="price_id"
                             rental="rental"
+                            transaction_type
                         />
                         <ItemSidebarMain
                             title="Xem theo diện tích"
                             data_link={areas}
                             isDouble="ok"
                             type="area_id"
+                            transaction_type
                         />
                     </div>
                 </div>

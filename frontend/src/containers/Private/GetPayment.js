@@ -36,6 +36,7 @@ const GetPayment = () => {
         };
         window.location.pathname.includes("payment-success") &&
             fetchGetPayment();
+        // eslint-disable-next-line
     }, [window.location.pathname]);
     return (
         <div>

@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, createSearchParams, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { formatUniToString, path } from "../../../utils/constant";
@@ -22,15 +22,13 @@ const { MdPostAdd, AiOutlineHeart, RiUserSettingsLine, RiLogoutCircleRLine } =
 
 const Header = () => {
     const { isLoggedIn } = useSelector((state) => state.auth);
-    const { transaction_types, total_post } = useSelector(
+    const { transaction_types, total_all_save_post } = useSelector(
         (state) => state.real_home
     );
     const { user_data } = useSelector((state) => state.user);
     const [Show, setShow] = useState(false);
-    const [searchParams] = useSearchParams();
-
+    const location = useLocation();
     const dispatch = useDispatch();
-    // var query = window.location.search.substring(1);
     const headerRef = useRef();
     const navigate = useNavigate();
 
@@ -39,6 +37,7 @@ const Header = () => {
             setTimeout(() => {
                 dispatch(actions.actionUser());
                 dispatch(actions.actionGetSavePost());
+                dispatch(actions.actionGetSavePostLimit({ page: 0 }));
                 dispatch(actions.realHomeByUserUnPay());
             }, 2000);
         }
@@ -54,7 +53,7 @@ const Header = () => {
             behavior: "smooth",
             block: "start",
         });
-    }, [searchParams.get("page")]);
+    }, [location.search]);
 
     const logOut = (e) => {
         e.preventDefault();
@@ -95,13 +94,22 @@ const Header = () => {
                         transaction_types.map((item) => {
                             return (
                                 <li key={item._id} className="m-2 px-2">
-                                    <Link
-                                        to={`/${formatUniToString(item.name)}`}
+                                    <div
+                                        className="hover:font-bold text-blue-600 hover:text-blue-700 hover:cursor-pointer hover:underline text-lg"
+                                        onClick={() =>
+                                            navigate({
+                                                pathname: formatUniToString(
+                                                    item.name
+                                                ),
+                                                search: createSearchParams({
+                                                    transaction_type_id:
+                                                        item._id,
+                                                }).toString(),
+                                            })
+                                        }
                                     >
-                                        <div className="hover:font-bold text-blue-600 hover:text-blue-700 text-lg">
-                                            {item.name}
-                                        </div>
-                                    </Link>
+                                        {item.name}
+                                    </div>
                                 </li>
                             );
                         })}
@@ -147,7 +155,7 @@ const Header = () => {
                                     className="pr-1"
                                 ></img>
                                 <p className="bg-red-500 text-white rounded-full p-1 absolute h-[24px] w-[24px] items-center justify-center flex font-bold top-0 left-6 mt-[-10px]">
-                                    {total_post}
+                                    {total_all_save_post}
                                 </p>
                                 Yêu thích
                             </div>

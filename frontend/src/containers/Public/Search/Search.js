@@ -3,12 +3,7 @@ import { SelectSearchForm, SearchItem } from "../../components";
 import icons from "../../../utils/icons";
 import { path, title } from "../../../utils/constant";
 import { useSelector } from "react-redux";
-import {
-    createSearchParams,
-    useLocation,
-    useNavigate,
-    useSearchParams,
-} from "react-router-dom";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const {
@@ -23,7 +18,9 @@ const {
 const Search = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { prices, areas } = useSelector((state) => state.price_area);
+    const { prices, areas, provinces } = useSelector(
+        (state) => state.price_area
+    );
     const { real_home_types_bs, real_home_types_r, transaction_types } =
         useSelector((state) => state.real_home);
 
@@ -38,7 +35,6 @@ const Search = () => {
     });
     const [arrmaxmin, setarrmaxmin] = useState({});
     const [queries, setqueries] = useState({});
-    const [params] = useSearchParams();
 
     useEffect(() => {
         if (location.pathname !== `/${path.SEARCH}`) {
@@ -59,9 +55,20 @@ const Search = () => {
         (e, query, arrmaxmin) => {
             e.stopPropagation();
             setIsShowForm(false);
-            setqueries((prev) => ({ ...prev, ...query }));
+            // reset real_home_type
+            if (query["transaction_type"]) {
+                setqueries((prev) => ({
+                    ...prev,
+                    ...query,
+                    real_home_type: "--- Loại nhà đất ---",
+                    real_home_type_id: null,
+                }));
+            } else {
+                setqueries((prev) => ({ ...prev, ...query }));
+            }
             setarrmaxmin((prev) => ({ ...prev, ...arrmaxmin }));
         },
+        // eslint-disable-next-line
         [isShowForm, queries]
     );
 
@@ -76,6 +83,7 @@ const Search = () => {
                 item[1] !== "--- Diện tích ---" &&
                 //ex: [real_home_type_id, null]
                 item[1] !== null &&
+                //ex: [price_id, [[]]], have value [price_id, [[1ty, 2ty]]],
                 item[1][0]?.length > 0
         );
 
@@ -147,7 +155,7 @@ const Search = () => {
                         className="h-[30%] w-[80%]"
                         onClick={() => {
                             handleForm(
-                                "Khu vuc",
+                                provinces,
                                 "--- Khu vực ---",
                                 "province"
                             );

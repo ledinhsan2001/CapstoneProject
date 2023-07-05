@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Role = require("../real_house/models/role");
+const Role = require("../models/role");
 require("dotenv").config();
 
 async function connect() {

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { path } from "./utils/constant";
 import "./App.css";
@@ -12,7 +12,6 @@ import {
     Blog,
     Main,
     DetailRealHome,
-    DataSearch,
     HomePage,
     PersonalPage,
     BlogDetail,
@@ -29,8 +28,24 @@ import {
 } from "./containers/Private";
 import ResetPassword from "./containers/Public/Account/ResetPassword";
 import PaymentStatus from "./containers/Private/PaymentStatus";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { logout } from "./store/actions";
 
 function App() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { isLoggedIn } = useSelector((state) => state.auth);
+    const { user_data } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (isLoggedIn && !user_data) {
+            dispatch(logout());
+            navigate(`/${path.LOGIN}`);
+        }
+        // eslint-disable-next-line
+    }, [user_data]);
+
     return (
         <div className="App overflow-hidden w-screen">
             <div className="auth-wrapper">
@@ -67,113 +82,100 @@ function App() {
                                 path={path.DETAIL_BLOG__TITLE_ID}
                                 element={<BlogDetail />}
                             />
-                            {/*Page Search data  */}
-                            <Route
-                                path={path.SEARCH}
-                                element={<DataSearch />}
-                            />
 
+                            {/* Search */}
+                            <Route path={path.SEARCH} element={<Main />} />
                             {/* Buysell */}
                             <Route
                                 path={path.SELL_APARTMENTS}
-                                element={
-                                    <Main content={path.SELL_APARTMENTS} />
-                                }
+                                element={<Main content={"Bán căn hộ"} />}
                             />
                             <Route
                                 path={path.SELL_BOARDING_HOMES}
-                                element={
-                                    <Main content={path.SELL_BOARDING_HOMES} />
-                                }
+                                element={<Main content={"Bán nhà trọ"} />}
                             />
                             <Route
                                 path={path.SELL_FRONT_HOMES}
-                                element={
-                                    <Main content={path.SELL_FRONT_HOMES} />
-                                }
+                                element={<Main content={"Bán nhà mặt tiền"} />}
                             />
                             <Route
                                 path={path.SELL_HOTELS}
-                                element={<Main content={path.SELL_HOTELS} />}
+                                element={<Main content={"Bán khách sạn"} />}
                             />
                             <Route
                                 path={path.SELL_LAND}
-                                element={<Main content={path.SELL_LAND} />}
+                                element={<Main content={"Bán đất"} />}
                             />
                             <Route
                                 path={path.SELL_OWN_HOME}
-                                element={<Main content={path.SELL_OWN_HOME} />}
+                                element={<Main content={"Bán nhà riêng"} />}
                             />
                             <Route
                                 path={path.SELL_PROJECT_LAND}
-                                element={
-                                    <Main content={path.SELL_PROJECT_LAND} />
-                                }
+                                element={<Main content={"Bán đất nên dự án"} />}
                             />
                             <Route
                                 path={path.SELL_SHOP}
-                                element={<Main content={path.SELL_SHOP} />}
+                                element={<Main content={"Bán cửa hàng"} />}
                             />
                             <Route
                                 path={path.SELL_VILLA}
-                                element={<Main content={path.SELL_VILLA} />}
+                                element={<Main content={"Bán biệt thự"} />}
                             />
                             <Route
                                 path={path.SELL_WAREHOUSE}
-                                element={<Main content={path.SELL_WAREHOUSE} />}
+                                element={<Main content={"Bán nhà kho"} />}
                             />
 
                             {/* Rental */}
                             <Route
                                 path={path.RENTAL_APARTMENTS}
-                                element={
-                                    <Main content={path.RENTAL_APARTMENTS} />
-                                }
+                                element={<Main content={"Cho thuê căn hộ"} />}
                             />
                             <Route
                                 path={path.RENTAL_FRONT_HOMES}
                                 element={
-                                    <Main content={path.RENTAL_FRONT_HOMES} />
+                                    <Main content={"Cho thuê nhà mặt tiền"} />
                                 }
                             />
                             <Route
                                 path={path.RENTAL_GROUND}
-                                element={<Main content={path.RENTAL_GROUND} />}
+                                element={<Main content={"Cho thuê mặt bằng"} />}
                             />
                             <Route
                                 path={path.RENTAL_HOTELS}
-                                element={<Main content={path.RENTAL_HOTELS} />}
-                            />
-                            <Route
-                                path={path.RENTAL_IN_COMPOUND}
                                 element={
-                                    <Main content={path.RENTAL_IN_COMPOUND} />
+                                    <Main content={"Cho thuê khách sạn"} />
                                 }
                             />
                             <Route
+                                path={path.RENTAL_IN_COMPOUND}
+                                element={<Main content={"Ở ghép"} />}
+                            />
+                            <Route
                                 path={path.RENTAL_LAND}
-                                element={<Main content={path.RENTAL_LAND} />}
+                                element={<Main content={"Cho thuê đất"} />}
                             />
                             <Route
                                 path={path.RENTAL_MOTEL_ROOM}
                                 element={
-                                    <Main content={path.RENTAL_MOTEL_ROOM} />
+                                    <Main content={"Cho thuê phòng trọ"} />
                                 }
                             />
                             <Route
                                 path={path.RENTAL_OFFICE}
-                                element={<Main content={path.RENTAL_OFFICE} />}
+                                element={
+                                    <Main content={"Cho thuê văn phòng"} />
+                                }
                             />
                             <Route
                                 path={path.RENTAL_WAREHOUSE}
-                                element={
-                                    <Main content={path.RENTAL_WAREHOUSE} />
-                                }
+                                element={<Main content={"Cho thuê nhà kho"} />}
                             />
                             <Route
                                 path={path.RENTAL_WHOLE_HOUSE}
                                 element={
-                                    <Main content={path.RENTAL_WHOLE_HOUSE} />
+                                    <Main content={"Thuê nhà nguyên căn"} />
                                 }
                             />
                         </Route>

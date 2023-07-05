@@ -20,6 +20,12 @@ const pricesReducer = (state = initState, action) => {
                 areas: action.areas || [],
                 message: action.message || "",
             };
+        case actionTypes.GET_PROVINCES:
+            return {
+                ...state,
+                provinces: action.provinces || [],
+                message: action.message || "",
+            };
         default:
             return state;
     }
